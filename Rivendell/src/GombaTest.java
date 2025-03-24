@@ -2,15 +2,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 class GombaTest {
-    private Tekton hol; // A tekton, ahol a gombatest található
-    private List<GombaFonal> fonalak; // A gombatesthez kapcsolódó fonalak listája
-    private int kor; // A gombatest életkora
-    private boolean elegOreg; // Tud-e szórni távolabbi tektonra spórát
-    private int utolsoSporaszoras; // Az utolsó spóraszórás idõpontja
-    private int sporaszorasokSzama; // Az eddigi spóraszórások száma
-    private static int maxSporaszorasok = 4; // Maximálisan végrehajtható spóraszórások száma
+    private Tekton hol; // A tekton, ahol a gombatest talï¿½lhatï¿½
+    private List<GombaFonal> fonalak; // A gombatesthez kapcsolï¿½dï¿½ fonalak listï¿½ja
+    private int kor; // A gombatest ï¿½letkora
+    private boolean elegOreg; // Tud-e szï¿½rni tï¿½volabbi tektonra spï¿½rï¿½t
+    private int utolsoSporaszoras; // Az utolsï¿½ spï¿½raszï¿½rï¿½s idï¿½pontja
+    private int sporaszorasokSzama; // Az eddigi spï¿½raszï¿½rï¿½sok szï¿½ma
+    private static int maxSporaszorasok = 4; // Maximï¿½lisan vï¿½grehajthatï¿½ spï¿½raszï¿½rï¿½sok szï¿½ma
 
-    //Gombatest létrehozása
+    //Gombatest lï¿½trehozï¿½sa
     public GombaTest(Tekton h, int us,boolean oreg) {
     	hol=h;
     	utolsoSporaszoras=us;
@@ -23,30 +23,41 @@ class GombaTest {
     	System.out.println("GombaTest: elpusztul()");
         }
     
- // A fonál tovább növekszik egy új tektonra
+ // A fonï¿½l tovï¿½bb nï¿½vekszik egy ï¿½j tektonra
     public void fonalNoves(Tekton kiindulo, Tekton erkezo) {
     	System.out.println("GombaTest: fonalNoves(Tekton kiindulo, Tekton erkezo)");
-    	ujFonal(kiindulo, erkezo);
-    	if (kiindulo.getSporakSzama()==0) ujFonal(kiindulo, erkezo);
-    	}
+    	
+		/*ujFonal(kiindulo, erkezo);
+    	if (kiindulo.getSporakSzama()==0) ujFonal(kiindulo, erkezo);*/
+
+		if (kiindulo.getSporakSzama()==0) {ujFonal(kiindulo, erkezo);}
+		else  {
+			ujFonal(kiindulo, erkezo);
+			ujFonal(erkezo, erkezo.elsoTekton());
+		}
+    }
     
-    // Új fonál kapcsolódik a gombatesthez
+    // ï¿½j fonï¿½l kapcsolï¿½dik a gombatesthez
     public void ujFonal(Tekton kiindulo, Tekton erkezo) {
     	System.out.println("GombaTest: ujFonal(Tekton kiindulo, Tekton erkezo)");
     	List<Tekton> f = new ArrayList<>();
         f.add(kiindulo);
         f.add(erkezo);
         GombaFonal fonal = new GombaFonal(f);
+
+		//
+		kiindulo.ujFonal(fonal);
+		erkezo.ujFonal(fonal);
         }
     
-    //Elérhetõ fonalak
+    //Elï¿½rhetï¿½ fonalak
     public List<GombaFonal> elerhetoFonalak(){
     	System.out.println("GombaTest: elerhetoFonalak()");
     	List<GombaFonal> f = new ArrayList<>();
     	return f;
     }
     
-    // Eltávolít egy fonalat a gombatesthez tartozó fonalak listájából
+    // Eltï¿½volï¿½t egy fonalat a gombatesthez tartozï¿½ fonalak listï¿½jï¿½bï¿½l
     public void torolFonal(GombaFonal f) {
     	System.out.println("GombaTest: torolFonal(GombaFonal f)");
     	List<GombaFonal> elerheto = elerhetoFonalak();
@@ -56,11 +67,11 @@ class GombaTest {
     	fonalak=elerheto;
         }
     
-    // A gombatest spórákat szór egy közeli tektonra
+    // A gombatest spï¿½rï¿½kat szï¿½r egy kï¿½zeli tektonra
     public void sporaSzoras() {
     	System.out.println("GombaTest: sporaSzoras()");
     	if (utolsoSporaszoras<2) {
-    		System.out.println("Nem termelõdött elég spóra");
+    		System.out.println("Nem termelï¿½dï¿½tt elï¿½g spï¿½ra");
     		return;}
     	List<Tekton> sz;
     	if (!elegOreg) sz = hol.getSzomszedok();

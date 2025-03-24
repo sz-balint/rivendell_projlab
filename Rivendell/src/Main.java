@@ -3,21 +3,21 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-	static Scanner scanner = new Scanner(System.in); // Scanner létrehozása
+	static Scanner scanner = new Scanner(System.in); // Scanner lï¿½trehozï¿½sa
     public static void main(String[] args) {
-        System.out.println("Kérlek válassz egy tesztesetet:");
+        System.out.println("Kï¿½rlek vï¿½lassz egy tesztesetet:");
         
         int szam;
         do {
-            System.out.print("Adj meg egy számot 1 és 8 között: ");
-            while (!scanner.hasNextInt()) { // Ellenõrzi, hogy számot adtak-e meg
-                System.out.println("Hibás bemenet! Kérlek, adj meg egy számot.");
-                scanner.next(); // Hibás bemenet átugrása
+            System.out.print("Adj meg egy szï¿½mot 1 ï¿½s 9 kï¿½zï¿½tt: ");
+            while (!scanner.hasNextInt()) { // Ellenï¿½rzi, hogy szï¿½mot adtak-e meg
+                System.out.println("Hibï¿½s bemenet! Kï¿½rlek, adj meg egy szï¿½mot.");
+                scanner.next(); // Hibï¿½s bemenet ï¿½tugrï¿½sa
             }
             szam = scanner.nextInt();
-        } while (szam < 1 || szam > 8); // Csak akkor lép ki, ha 1 és 15 közötti számot adtak meg
+        } while (szam < 1 || szam > 9); // Csak akkor lï¿½p ki, ha 1 ï¿½s 15 kï¿½zï¿½tti szï¿½mot adtak meg
         
-        System.out.println("A teszteset száma: " + szam);
+        System.out.println("A teszteset szï¿½ma: " + szam);
         scanner.close();
         switch (szam) {
         case 1:
@@ -44,12 +44,15 @@ public class Main {
         case 8:
             test8();
             break;
+        case 9:
+            test9();
+            break;
         default:
-            System.out.println("Nincs ilyen függvény.");
+            System.out.println("Nincs ilyen fï¿½ggvï¿½ny.");
         }
     }
     
-    //Rovar lépése
+    //Rovar lï¿½pï¿½se
     public static void test1() {
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
@@ -57,7 +60,7 @@ public class Main {
     	r.lep(tekt2);
     }
     
-    //Fonal vágása
+    //Fonal vï¿½gï¿½sa
     public static void test2() {
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
@@ -70,7 +73,7 @@ public class Main {
     	r.elvag(fonal);
     }
     
-    //Sporaszórás
+    //Sporaszï¿½rï¿½s
     public static void test3() {
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
@@ -78,7 +81,7 @@ public class Main {
     	test.sporaSzoras();
     }
     
-    //Spóra evés
+    //Spï¿½ra evï¿½s
     public static void test4() {
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
@@ -89,7 +92,7 @@ public class Main {
     	r.eszik(sp);
     }
     
-    //Test növesztés
+    //Test nï¿½vesztï¿½s
     public static void test5() {
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
@@ -100,15 +103,16 @@ public class Main {
     	fonal.ujTest(tekt1);
     }
     
-    //Fonal növesztes
+    //Fonal nï¿½vesztes
     public static void test6() {
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
     	GombaTest test = new GombaTest(tekt1, 5, true);
     	test.fonalNoves(tekt1, tekt2);
     }
+
     
-    //Tekton törés
+    //Tekton tï¿½rï¿½s
     public static void test7() {
     	Tekton tekt1 = new Tekton ("ez");
     	GombaTest test = new GombaTest(tekt1, 5, true);
@@ -126,5 +130,17 @@ public class Main {
     	Rovar r;
     	r= new Rovar (tekt1, 1, Allapot.VAGASKEPTELEN );
     	r.elvag(fonal);
+    }
+
+    //Fonal nÃ¶vÃ©s 2-re
+    public static void test9() {
+    	Tekton tekt1 = new Tekton ("ez");
+    	Tekton tekt2 = new Tekton ("az");
+        Tekton tekt3 = new Tekton ("amaz");
+        tekt2.ujSzomszed(tekt3);
+        Spora s = new Spora(1,1,tekt1);
+        tekt1.sporatKap(s);
+    	GombaTest test = new GombaTest(tekt1, 5, true);
+    	test.fonalNoves(tekt1, tekt2);
     }
 }

@@ -2,16 +2,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Tekton {
-    private String tulajdonsagok; // A tekton saját tulajdonságai (pl. fonál növekedési sebessége)
-    private List<Tekton> szomszedok; // A tekton szomszédos tektonjai
-    private int sporakSzama; // A tektonon lévõ spórák száma
-    private List<Spora> sporak; // A tektonon található spórák listája
-    private List<GombaFonal> fonalak; // A tektonon növõ fonalak listája
-    private List<Rovar> rovarok; // A tektonon élõ rovarok listája
-    private GombaTest gombaTest; // Az adott tektonon lévõ gombatest
-    private List<Tekton> kapcsoltTekton; // Azon tektonok, amelyekkel fonál köti össze
+    private String tulajdonsagok; // A tekton sajï¿½t tulajdonsï¿½gai (pl. fonï¿½l nï¿½vekedï¿½si sebessï¿½ge)
+    private List<Tekton> szomszedok; // A tekton szomszï¿½dos tektonjai
+    private int sporakSzama; // A tektonon lï¿½vï¿½ spï¿½rï¿½k szï¿½ma
+    private List<Spora> sporak; // A tektonon talï¿½lhatï¿½ spï¿½rï¿½k listï¿½ja
+    private List<GombaFonal> fonalak; // A tektonon nï¿½vï¿½ fonalak listï¿½ja
+    private List<Rovar> rovarok; // A tektonon ï¿½lï¿½ rovarok listï¿½ja
+    private GombaTest gombaTest; // Az adott tektonon lï¿½vï¿½ gombatest
+    private List<Tekton> kapcsoltTekton; // Azon tektonok, amelyekkel fonï¿½l kï¿½ti ï¿½ssze
 
-    //Tekton létrehozása
+    //Tekton lï¿½trehozï¿½sa
     public Tekton(String tulajdonsagok) {
 		sporakSzama=0;
 		szomszedok = new ArrayList<>();
@@ -21,7 +21,7 @@ class Tekton {
 		kapcsoltTekton = new ArrayList<>(); 
     			}
     
-    // A tekton kettétörése
+    // A tekton kettï¿½tï¿½rï¿½se
     public void kettetores() {
 		System.out.println("Tekton: kettetores()");
 		for (GombaFonal fonal : fonalak) fonal.elpusztul();
@@ -36,86 +36,91 @@ class Tekton {
 		t.ujSzomszed(this);
 		}
     
-    // Egy adott spórát eltávolít a tektonról
+    // Egy adott spï¿½rï¿½t eltï¿½volï¿½t a tektonrï¿½l
     public void sporaElvesz(Spora s) {
 		System.out.println("Tekton: sporaElvesz(Spora s)");
 		}
     
-    // Új szomszéd tekton hozzáadása
+    // ï¿½j szomszï¿½d tekton hozzï¿½adï¿½sa
     public void ujSzomszed(Tekton t) {
 		System.out.println("Tekton: ujSzomszed(Tekton t)");
+		szomszedok.add(t);
 		}
     
-    // A tekton egy spórát kap
+    // A tekton egy spï¿½rï¿½t kap
     public void sporatKap(Spora s) {
 		System.out.println("Tekton: sporatKap(Spora s)");
+		sporak.add(s);
+		sporakSzama++;
 		}
     
-    // Új fonál rögzítése a tektonon
+    // ï¿½j fonï¿½l rï¿½gzï¿½tï¿½se a tektonon
     public void ujFonal(GombaFonal f) {
 		System.out.println("Tekton: ujFonal(GombaFonal f)");
 		}
     
-    // Fonál eltávolítása
+    // Fonï¿½l eltï¿½volï¿½tï¿½sa
     public void torolFonal(GombaFonal f) { 
 		System.out.println("Tekton: torolFonal(GombaFonal f)");
 		}
     
-    // Új rovar hozzáadása a tektonhoz
+    // ï¿½j rovar hozzï¿½adï¿½sa a tektonhoz
     public void ujRovar(Rovar r) {
 		System.out.println("Tekton: ujRovar(Rovar r)");
 		}
     
-    // Rovar eltávolítása
+    // Rovar eltï¿½volï¿½tï¿½sa
     public void torolRovar(Rovar r) {
 		System.out.println("Tekton: torolRovar(Rovar r)");
 		}
     
-    // Az elsõ szomszédos tekton visszaadása
+    // Az elsï¿½ szomszï¿½dos tekton visszaadï¿½sa
     public Tekton elsoTekton() {
 		System.out.println("Tekton: elsoTekton()");
-		return null; }
+		//return null; 
+		return szomszedok.get(0);
+	}
     
-    // Új gombatest létrehozása a tektonon
+    // ï¿½j gombatest lï¿½trehozï¿½sa a tektonon
     public void ujTest(GombaTest t) {
 		System.out.println("Tekton: ujTest(GombaTest t)");
 		}
     
-    // A spórák számának lekérdezése
+    // A spï¿½rï¿½k szï¿½mï¿½nak lekï¿½rdezï¿½se
     public int getSporakSzama() {
 		System.out.println("Tekton: getSporakSzama()");
 		 return sporakSzama; }
     
-    // A szomszédok lekérdezése
+    // A szomszï¿½dok lekï¿½rdezï¿½se
     public List<Tekton> getSzomszedok() {
 		System.out.println("Tekton: getSzomszedok()");
 		List<Tekton> lista = new ArrayList<>();
     	lista.add(new Tekton("a"));
 		return lista; }
     
-    // A szomszédok szomszédának lekérdezése
+    // A szomszï¿½dok szomszï¿½dï¿½nak lekï¿½rdezï¿½se
     public List<Tekton> getSzomszedSzomszedok() {
 		System.out.println("Tekton: getSzomszedSzomszedok()");
 		List<Tekton> lista = new ArrayList<>();
     	lista.add(new Tekton("b"));
 		return lista; }    
     
-    // Van-e elég spóra a tektonon
+    // Van-e elï¿½g spï¿½ra a tektonon
     public boolean vanElegSpora() {
 		System.out.println("Tekton: vanElegSpora()");
 		 return false; }
     
-    // Van-e hely egy új gombatest számára
+    // Van-e hely egy ï¿½j gombatest szï¿½mï¿½ra
     public boolean vanHely() { 
 		System.out.println("Tekton: vanHely()");
 		return false; }
     
-    //uj fonállal kapcsol tektont ad a listához
+    //uj fonï¿½llal kapcsol tektont ad a listï¿½hoz
     public void ujKapcsoltTekton(Tekton t) {
     	System.out.println("Tekton: ujKapcsoltTekton(Tekton t)");
     };
     
-  //elvesz egy fonállal kapcsol tektont a listából
+  //elvesz egy fonï¿½llal kapcsol tektont a listï¿½bï¿½l
     public void elveszKapcsoltTekton (Tekton t) {
     	System.out.println("Tekton: elveszKapcsoltTekton(Tekton t)");
     };
