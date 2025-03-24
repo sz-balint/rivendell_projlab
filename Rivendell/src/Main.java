@@ -20,33 +20,43 @@ public class Main {
         System.out.println("A teszteset szama: " + szam);
         scanner.close();
         switch (szam) {
+        //Rovar lepese
         case 1:
             test1();
             break;
+        //Fonal vagasa
         case 2:
             test2();
             break;
+        //Sporaszoras
         case 3:
             test3();
             break;
+        //Spora eves
         case 4:
             test4();
             break;
+         //Test novesztes
         case 5:
             test5();
             break;
+        //Fonal novesztes
         case 6:
             test6();
             break;
+        //Tekton tores
         case 7:
             test7();
             break;
+        //Nem tud vagni
         case 8:
             test8();
             break;
+        //Fonal novés 2-re
         case 9:
             test9();
             break;
+        //valami nagyon elromlott..
         default:
             System.out.println("Nincs ilyen fuggveny.");
         }

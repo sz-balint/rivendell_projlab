@@ -1,25 +1,25 @@
-enum Allapot { NORMAL, BENULT, GYORSITOTT, LASSITOTT, VAGASKEPTELEN } // A rovar lehets�ges �llapotai
+enum Allapot { NORMAL, BENULT, GYORSITOTT, LASSITOTT, VAGASKEPTELEN } // A rovar lehetseges allapotai
 
 class Rovar {
-    private Tekton hol; // A rovar jelenlegi tart�zkod�si helye
-    private int sebesseg; // A rovar mozg�si sebess�ge
-    private Allapot allapot; // A rovar jelenlegi �llapota
+    private Tekton hol; // A rovar jelenlegi tartozkodasi helye
+    private int sebesseg; // A rovar mozgasi sebessege
+    private Allapot allapot; // A rovar jelenlegi allapota
 
-    //Rovar l�trehoz�sa
+    //Rovar letrehozasa
     public Rovar(Tekton h, int s, Allapot all) {
     	hol=h;
     	sebesseg=s;
     	allapot = all;
     	}
 
-    // A rovar megeszik egy sp�r�t
+    // A rovar megeszik egy sporat
     public void eszik(Spora s) {
     	System.out.println("Rovar: eszik(Spora s)");
     	s.getHol().sporaElvesz(s);
     	allapotFrissites();
     	}
     
-    // A rovar �tl�p egy m�sik tektonra
+    // A rovar atlep egy masik tektonra
     public void lep(Tekton t) {
     	System.out.println("Rovar: lep(Tekton t)");
     	hol.torolRovar(this);
@@ -27,7 +27,7 @@ class Rovar {
     	helyzetFrissites(t);
     	}
     
-    // A rovar elv�g egy gombafonalat
+    // A rovar elvag egy gombafonalat
     public void elvag(GombaFonal f) {
     	System.out.println("Rovar: elvag(GombaFonal f)");
     	if (allapot==Allapot.VAGASKEPTELEN) return;
@@ -35,12 +35,12 @@ class Rovar {
     	
     	}
     
-    // Friss�ti a rovar helyzet�t
+    // Frissiti a rovar helyzetet
     public void helyzetFrissites(Tekton t) {
     	System.out.println("Rovar: helyzetFrissites(Tekton t)");
     	}
     
-    // Friss�ti a rovar �llapot�t
+    // Frissiti a rovar allapotat
     public void allapotFrissites() {
     	System.out.println("Rovar: allapotFrissites()");
     	}

@@ -3,50 +3,56 @@ import java.util.List;
 
 class GombaFonal {
 	
-    // A gombafonal a gombatesteket �s tektonokat k�ti �ssze
-    private List<GombaTest> kapcsoltTestek; // Azok a gombatestek, amelyekhez a fon�l k�zvetlen�l kapcsol�dik
-    private List<Tekton> kapcsoltTektonok; // Azon 2 tekton list�ja, amelyeken a fon�l n�
+    // A gombafonal a gombatesteket es tektonokat koti ossze
+    private List<GombaTest> kapcsoltTestek; // Azok a gombatestek, amelyekhez a fonal kozvetlenel kapcsolodik
+    private List<Tekton> kapcsoltTektonok; // Azon 2 tekton listaja, amelyeken a fonal no
 
-    //Gombafon�l l�trehoz�sa
+    //Gombafonal letrehozasa
     public GombaFonal(List<Tekton> tekt) {
+		//Random beallitasok, hogy lehessen tesztelni
 		kapcsoltTektonok=tekt;
     	kapcsoltTestek = new ArrayList<>();
     }
     
-    // Megn�zi, hogy a fon�l m�g �l-e
+    // Megnezi, hogy a fonal meg el-e
     public boolean eletbenE() { 
     	System.out.println("GombaFonal: eletbenE()");
     	return false; }
     
-    // A fon�l elpusztul, ha megsz�nik a kapcsolata a gombatestekkel
+    // A fonal elpusztul, ha megszonik a kapcsolata a gombatestekkel/ elvagjak
     public void elpusztul() {
     	System.out.println("GombaFonal: elpusztul()");
 		Tekton tekt1 = new Tekton ("ez");
-    	GombaTest elsoTest = new GombaTest(tekt1, 5, true);;
+    	GombaTest elsoTest = new GombaTest(tekt1, 5, true);
+		//kitoroljuk a gombatestek fonalainak listajabol
     	elsoTest.torolFonal(this);
+		//kitoroljuk a tektonok fonal listajabol
 		kapcsoltTektonok.get(0).torolFonal(this);
 		kapcsoltTektonok.get(1).torolFonal(this);
     	}
     
-    // �j gombatest j�n l�tre egy adott tektonon
+    // uj gombatest jon letre egy adott tektonon
     public GombaTest ujTest(Tekton t) { 
     	System.out.println("GombaFonal: ujTest(Tekton t)");
 		Spora s = new Spora(1,1,t);
+		//Megnezzuk, hogy van-e eleg spora a tektonon
     	if (t.getSporakSzama()<0) return null;
+		// ha igen elvesszuk a noveshez szukseges sporakat a tektonrol
     	t.sporaElvesz(s);
     	t.sporaElvesz(s);
     	t.sporaElvesz(s);
+		//Uj testet hozunk letre ami ehhez a fonalhoz kapcsolodik
     	GombaTest test = new GombaTest(t, 0, false);
     	kapcsolathozUjTest(test);
     	return test; 
     	}
     
-//  // �j tekton kapcsol�dik a fon�lhoz
+   // uj tekton kapcsolodik a fonalhoz
     public void kapcsolathozUjTekton(Tekton t) {
     	System.out.println("GombaFonal: kapcsolathozUjTekton(Tekton t)");
     	}
     
-    // �j gombatest kapcsol�dik a fon�lhoz
+    // uj gombatest kapcsolodik a fonalhoz
     public void kapcsolathozUjTest(GombaTest t) {
     	System.out.println("GombaFonal: kapcsolathozUjTest(GombaTest t)");
     	}
