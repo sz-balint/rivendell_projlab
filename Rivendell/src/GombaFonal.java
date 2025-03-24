@@ -9,6 +9,7 @@ class GombaFonal {
 
     //Gombafon�l l�trehoz�sa
     public GombaFonal(List<Tekton> tekt) {
+		kapcsoltTektonok=tekt;
     	kapcsoltTestek = new ArrayList<>();
     }
     
@@ -23,15 +24,18 @@ class GombaFonal {
 		Tekton tekt1 = new Tekton ("ez");
     	GombaTest elsoTest = new GombaTest(tekt1, 5, true);;
     	elsoTest.torolFonal(this);
+		kapcsoltTektonok.get(0).torolFonal(this);
+		kapcsoltTektonok.get(1).torolFonal(this);
     	}
     
     // �j gombatest j�n l�tre egy adott tektonon
     public GombaTest ujTest(Tekton t) { 
     	System.out.println("GombaFonal: ujTest(Tekton t)");
+		Spora s = new Spora(1,1,t);
     	if (t.getSporakSzama()<0) return null;
-    	t.sporaElvesz(null);
-    	t.sporaElvesz(null);
-    	t.sporaElvesz(null);
+    	t.sporaElvesz(s);
+    	t.sporaElvesz(s);
+    	t.sporaElvesz(s);
     	GombaTest test = new GombaTest(t, 0, false);
     	kapcsolathozUjTest(test);
     	return test; 

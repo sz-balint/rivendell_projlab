@@ -35,7 +35,6 @@ class GombaTest {
  // A fon�l tov�bb n�vekszik egy �j tektonra
     public void fonalNoves(Tekton kiindulo, Tekton erkezo) {
     	System.out.println("GombaTest: fonalNoves(Tekton kiindulo, Tekton erkezo)");
-    	
 		/*ujFonal(kiindulo, erkezo);
     	if (kiindulo.getSporakSzama()==0) ujFonal(kiindulo, erkezo);*/
 

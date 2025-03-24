@@ -2,9 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Tekton {
-    private String tulajdonsagok; // A tekton saj�	t tulajdons�gai (pl. fon�l n�veked�si sebess�ge)
-    private List<Tekton> szomszedok; // A tekton szomsz�dos tektonjai
-    private int sporakSzama; // A tektonon l�v� sp�r�k sz�ma
+    private String tulajdonsagok; // A tekton sajat tulajdonsagai (pl. fonal novekedesi sebessege)
+    private List<Tekton> szomszedok; // A tekton szomszedos tektonjai
+    private int sporakSzama; // A tektonon lev� sp�r�k sz�ma
     private List<Spora> sporak; // A tektonon tal�lhat� sp�r�k list�ja
     private List<GombaFonal> fonalak; // A tektonon n�v� fonalak list�ja
     private List<Rovar> rovarok; // A tektonon �l� rovarok list�ja
@@ -13,14 +13,16 @@ class Tekton {
 
     //Tekton l�trehoz�sa
     public Tekton(String tulajdonsagok) {
-		sporakSzama=0;
-		szomszedok = new ArrayList<>();
+		sporakSzama=1;
 		gombaTest = new GombaTest(this, 5, true);
+		Spora s = new Spora(1,1,this);
 		sporak = new ArrayList<>();
+		sporak.add(s);
 		kapcsoltTekton = new ArrayList<>(); 
 		List<Tekton> f = new ArrayList<>();
 		f.add(this);
         f.add(this);
+		szomszedok = f;
     	List <GombaFonal> fon = new ArrayList<>();
     	GombaFonal fonal = new GombaFonal(f);
 		GombaFonal fonal2 = new GombaFonal(f);
@@ -47,6 +49,7 @@ class Tekton {
     // Egy adott sp�r�t elt�vol�t a tektonr�l
     public void sporaElvesz(Spora s) {
 		System.out.println("Tekton: sporaElvesz(Spora s)");
+		s.eltunik();
 		}
     
     // �j szomsz�d tekton hozz�ad�sa
@@ -132,5 +135,11 @@ class Tekton {
     public void elveszKapcsoltTekton (Tekton t) {
     	System.out.println("Tekton: elveszKapcsoltTekton(Tekton t)");
     };
+
+	//visszaadja az elso sporat
+	//csak a teszteléshez kellő föggvény
+	public Spora elsoSpora (){
+			return sporak.get(0);
+		}
     
 }
