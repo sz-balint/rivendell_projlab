@@ -25,7 +25,7 @@ class GombaTest {
 		GombaFonal fonal2 = new GombaFonal(f);
 		fon.add(fonal);
 		fon.add(fonal2);
-    	fonalak = fon; 
+    	fonalak = fon;
     }
 
     // A gombatest elpusztul

@@ -153,11 +153,13 @@ public class Main {
 
     //Fonal novés 2-re
     public static void test9() {
-        System.out.println("Fonal 2-t no: (1. sor a teszt környezet felállítása)");
+        System.out.println("Fonal 2-t no: (2 sor a teszt környezet felállítása)");
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
         Tekton tekt3 = new Tekton ("amaz");
         tekt2.ujSzomszed(tekt3);
+        Spora s = new Spora(1,1,tekt1);
+        tekt1.sporatKap(s);
     	GombaTest test = new GombaTest(tekt1, 5, true);
     	test.fonalNoves(tekt1, tekt2);
     }

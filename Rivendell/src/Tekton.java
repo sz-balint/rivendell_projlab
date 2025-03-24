@@ -14,7 +14,7 @@ class Tekton {
     //Tekton letrehozosa
     public Tekton(String tulajdonsagok) {
 		//Random beallitasok, hogy lehessen tesztelni
-		sporakSzama=1;
+		sporakSzama=0;
 		gombaTest = new GombaTest(this, 5, true);
 		Spora s = new Spora(1,1,this);
 		sporak = new ArrayList<>();
