@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Tekton {
-    private String tulajdonsagok; // A tekton saj�t tulajdons�gai (pl. fon�l n�veked�si sebess�ge)
+    private String tulajdonsagok; // A tekton saj�	t tulajdons�gai (pl. fon�l n�veked�si sebess�ge)
     private List<Tekton> szomszedok; // A tekton szomsz�dos tektonjai
     private int sporakSzama; // A tektonon l�v� sp�r�k sz�ma
     private List<Spora> sporak; // A tektonon tal�lhat� sp�r�k list�ja
@@ -16,20 +16,28 @@ class Tekton {
 		sporakSzama=0;
 		szomszedok = new ArrayList<>();
 		gombaTest = new GombaTest(this, 5, true);
-		fonalak = new ArrayList<>();
 		sporak = new ArrayList<>();
 		kapcsoltTekton = new ArrayList<>(); 
-    			}
+		List<Tekton> f = new ArrayList<>();
+		f.add(this);
+        f.add(this);
+    	List <GombaFonal> fon = new ArrayList<>();
+    	GombaFonal fonal = new GombaFonal(f);
+		GombaFonal fonal2 = new GombaFonal(f);
+		fon.add(fonal);
+		fon.add(fonal2);
+    	fonalak = fon; 
+		}
     
     // A tekton kett�t�r�se
     public void kettetores() {
 		System.out.println("Tekton: kettetores()");
+		gombaTest.elpusztul();
 		for (GombaFonal fonal : fonalak) fonal.elpusztul();
 		fonalak.clear();
 		kapcsoltTekton.clear();
 		for (Spora spora : sporak)spora.eltunik();
 		sporak.clear();
-		gombaTest.elpusztul();
 		Tekton t=new Tekton (tulajdonsagok);
 		for (Tekton tekt : szomszedok)t.ujSzomszed(tekt);
 		ujSzomszed(t);

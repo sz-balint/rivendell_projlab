@@ -14,8 +14,17 @@ class GombaTest {
     public GombaTest(Tekton h, int us,boolean oreg) {
     	hol=h;
     	utolsoSporaszoras=us;
+		sporaszorasokSzama=3;
     	elegOreg=oreg;
-    	fonalak = new ArrayList<>(); 
+		List<Tekton> f = new ArrayList<>();
+        f.add(h);
+        f.add(h);
+    	List <GombaFonal> fon = new ArrayList<>();
+    	GombaFonal fonal = new GombaFonal(f);
+		GombaFonal fonal2 = new GombaFonal(f);
+		fon.add(fonal);
+		fon.add(fonal2);
+    	fonalak = fon; 
     }
 
     // A gombatest elpusztul
@@ -53,8 +62,7 @@ class GombaTest {
     //El�rhet� fonalak
     public List<GombaFonal> elerhetoFonalak(){
     	System.out.println("GombaTest: elerhetoFonalak()");
-    	List<GombaFonal> f = new ArrayList<>();
-    	return f;
+    	return fonalak;
     }
     
     // Elt�vol�t egy fonalat a gombatesthez tartoz� fonalak list�j�b�l
@@ -82,4 +90,10 @@ class GombaTest {
     		}
     	if (sporaszorasokSzama+1==maxSporaszorasok) elpusztul();  	    	
         }
+
+		//visszaadja az elso fonalat
+		//csak a teszteléshez kellő föggvény
+		public GombaFonal elsoFonal (){
+			return fonalak.get(0);
+		}
 }

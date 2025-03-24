@@ -3,21 +3,21 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-	static Scanner scanner = new Scanner(System.in); // Scanner l�trehoz�sa
+	static Scanner scanner = new Scanner(System.in); // Scanner letrehozasa
     public static void main(String[] args) {
-        System.out.println("K�rlek v�lassz egy tesztesetet:");
+        System.out.println("Kerlek valassz egy tesztesetet:");
         
         int szam;
         do {
-            System.out.print("Adj meg egy sz�mot 1 �s 9 k�z�tt: ");
-            while (!scanner.hasNextInt()) { // Ellen�rzi, hogy sz�mot adtak-e meg
-                System.out.println("Hib�s bemenet! K�rlek, adj meg egy sz�mot.");
+            System.out.print("Adj meg egy szamot 1 es 9 kozott: ");
+            while (!scanner.hasNextInt()) { // Ellenorzi, hogy szamot adtak-e meg
+                System.out.println("Hib�s bemenet! K�rlek, adj meg egy szamot.");
                 scanner.next(); // Hib�s bemenet �tugr�sa
             }
             szam = scanner.nextInt();
         } while (szam < 1 || szam > 9); // Csak akkor l�p ki, ha 1 �s 15 k�z�tti sz�mot adtak meg
         
-        System.out.println("A teszteset sz�ma: " + szam);
+        System.out.println("A teszteset szama: " + szam);
         scanner.close();
         switch (szam) {
         case 1:
@@ -48,12 +48,13 @@ public class Main {
             test9();
             break;
         default:
-            System.out.println("Nincs ilyen f�ggv�ny.");
+            System.out.println("Nincs ilyen fuggveny.");
         }
     }
     
-    //Rovar l�p�se
+    //Rovar lepese
     public static void test1() {
+        System.out.println("Rovar lepese:");
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
     	Rovar r= new Rovar (tekt1, 1, Allapot.NORMAL);
@@ -62,19 +63,18 @@ public class Main {
     
     //Fonal v�g�sa
     public static void test2() {
+        System.out.println("Fonal vagas:");
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
-    	List<Tekton> f = new ArrayList<>();
-        f.add(tekt1);
-        f.add(tekt2);
-    	GombaFonal fonal = new GombaFonal(f);
+        GombaTest test = new GombaTest(tekt1, 5, true);
     	Rovar r;
     	r= new Rovar (tekt1, 1, Allapot.NORMAL);
-    	r.elvag(fonal);
+    	r.elvag(test.elsoFonal());
     }
     
     //Sporasz�r�s
     public static void test3() {
+        System.out.println("Spora szoras:");
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
     	GombaTest test = new GombaTest(tekt1, 5, true);
@@ -83,6 +83,7 @@ public class Main {
     
     //Sp�ra ev�s
     public static void test4() {
+        System.out.println("Spora eves: (1.sor a teszt környezet felállítása)");
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
     	GombaTest test = new GombaTest(tekt1, 5, true);
@@ -92,8 +93,9 @@ public class Main {
     	r.eszik(sp);
     }
     
-    //Test n�veszt�s
+    //Test novesztes
     public static void test5() {
+        System.out.println("Test novesztes:");
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
     	List<Tekton> f = new ArrayList<>();
@@ -105,6 +107,7 @@ public class Main {
     
     //Fonal n�vesztes
     public static void test6() {
+        System.out.println("Fonal novesztes:");
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
     	GombaTest test = new GombaTest(tekt1, 5, true);
@@ -112,15 +115,25 @@ public class Main {
     }
 
     
-    //Tekton t�r�s
+    //Tekton tores
     public static void test7() {
+        System.out.println("Tekton tores: (1.sor a teszt környezet felállítása)");
     	Tekton tekt1 = new Tekton ("ez");
+    	Tekton tekt2 = new Tekton ("az");
+    	List<Tekton> f = new ArrayList<>();
+        f.add(tekt1);
+        f.add(tekt2);
+    	GombaFonal fonal = new GombaFonal(f);
     	GombaTest test = new GombaTest(tekt1, 5, true);
+        Rovar r= new Rovar (tekt1, 1, Allapot.NORMAL);
+        Spora sp= new Spora(1,2,tekt1);
+		tekt1.sporatKap(sp);
     	tekt1.kettetores();
     }
     
     //Nem tud vagni
     public static void test8() {
+        System.out.println("Abnormal rovar (nem tud vagni):");
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
     	List<Tekton> f = new ArrayList<>();
@@ -134,6 +147,7 @@ public class Main {
 
     //Fonal növés 2-re
     public static void test9() {
+        System.out.println("Fonal 2-t no: (2 sor a teszt környezet felállítása)");
     	Tekton tekt1 = new Tekton ("ez");
     	Tekton tekt2 = new Tekton ("az");
         Tekton tekt3 = new Tekton ("amaz");

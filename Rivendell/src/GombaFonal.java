@@ -3,31 +3,29 @@ import java.util.List;
 
 class GombaFonal {
 	
-    // A gombafonal a gombatesteket és tektonokat köti össze
-    private List<GombaTest> kapcsoltTestek; // Azok a gombatestek, amelyekhez a fonál közvetlenül kapcsolódik
-    private List<Tekton> kapcsoltTektonok; // Azon 2 tekton listája, amelyeken a fonál nõ
+    // A gombafonal a gombatesteket ï¿½s tektonokat kï¿½ti ï¿½ssze
+    private List<GombaTest> kapcsoltTestek; // Azok a gombatestek, amelyekhez a fonï¿½l kï¿½zvetlenï¿½l kapcsolï¿½dik
+    private List<Tekton> kapcsoltTektonok; // Azon 2 tekton listï¿½ja, amelyeken a fonï¿½l nï¿½
 
-    //Gombafonál létrehozása
+    //Gombafonï¿½l lï¿½trehozï¿½sa
     public GombaFonal(List<Tekton> tekt) {
     	kapcsoltTestek = new ArrayList<>();
-    	Tekton tekt1 = new Tekton ("a");
-    	GombaTest test = new GombaTest(tekt1, 5, true);
-    	kapcsoltTestek.add(test);
     }
     
-    // Megnézi, hogy a fonál még él-e
+    // Megnï¿½zi, hogy a fonï¿½l mï¿½g ï¿½l-e
     public boolean eletbenE() { 
     	System.out.println("GombaFonal: eletbenE()");
     	return false; }
     
-    // A fonál elpusztul, ha megszûnik a kapcsolata a gombatestekkel
+    // A fonï¿½l elpusztul, ha megszï¿½nik a kapcsolata a gombatestekkel
     public void elpusztul() {
     	System.out.println("GombaFonal: elpusztul()");
-    	GombaTest elsoTest = kapcsoltTestek.get(0);
+		Tekton tekt1 = new Tekton ("ez");
+    	GombaTest elsoTest = new GombaTest(tekt1, 5, true);;
     	elsoTest.torolFonal(this);
     	}
     
-    // Új gombatest jön létre egy adott tektonon
+    // ï¿½j gombatest jï¿½n lï¿½tre egy adott tektonon
     public GombaTest ujTest(Tekton t) { 
     	System.out.println("GombaFonal: ujTest(Tekton t)");
     	if (t.getSporakSzama()<0) return null;
@@ -39,12 +37,12 @@ class GombaFonal {
     	return test; 
     	}
     
-//  // Új tekton kapcsolódik a fonálhoz
+//  // ï¿½j tekton kapcsolï¿½dik a fonï¿½lhoz
     public void kapcsolathozUjTekton(Tekton t) {
     	System.out.println("GombaFonal: kapcsolathozUjTekton(Tekton t)");
     	}
     
-    // Új gombatest kapcsolódik a fonálhoz
+    // ï¿½j gombatest kapcsolï¿½dik a fonï¿½lhoz
     public void kapcsolathozUjTest(GombaTest t) {
     	System.out.println("GombaFonal: kapcsolathozUjTest(GombaTest t)");
     	}
