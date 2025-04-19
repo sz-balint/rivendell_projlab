@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
-class Tekton {
-    private String tulajdonsagok; // A tekton sajat tulajdonsagai (pl. fonal novekedesi sebessege)
+public class Tekton {
+    public String tulajdonsagok; // A tekton sajat tulajdonsagai (pl. fonal novekedesi sebessege)
     private List<Tekton> szomszedok; // A tekton szomszedos tektonjai
     private int sporakSzama; // A tektonon levo sporak szama
     private List<Spora> sporak; // A tektonon talalhato sporak listaja
@@ -31,8 +31,8 @@ class Tekton {
 		fon.add(fonal2);
     	fonalak = fon; 
 		}
-    
-    // A tekton kettetorese
+
+ // A tekton kettetorese
     public void kettetores() {
 		System.out.println("Tekton: kettetores()");
 		// meghal a rajta levo gombatest
@@ -51,101 +51,125 @@ class Tekton {
 		ujSzomszed(t);
 		t.ujSzomszed(this);
 		}
-    
+
     // Egy adott sporat eltavolit a tektonrol
     public void sporaElvesz(Spora s) {
 		System.out.println("Tekton: sporaElvesz(Spora s)");
 		s.eltunik();
 		}
-    
+
     // uj szomszed tekton hozzaadasa
     public void ujSzomszed(Tekton t) {
 		System.out.println("Tekton: ujSzomszed(Tekton t)");
 		szomszedok.add(t);
 		}
-    
+
     // A tekton egy sporat kap
     public void sporatKap(Spora s) {
 		System.out.println("Tekton: sporatKap(Spora s)");
 		sporak.add(s);
 		sporakSzama++;
 		}
-    
+
     // uj fonal rogzitese a tektonon
     public void ujFonal(GombaFonal f) {
 		System.out.println("Tekton: ujFonal(GombaFonal f)");
+		fonalak.add(f);
 		}
-    
+
     // Fonal eltavolitasa
     public void torolFonal(GombaFonal f) { 
 		System.out.println("Tekton: torolFonal(GombaFonal f)");
 		}
-    
+
     // uj rovar hozzaadasa a tektonhoz
     public void ujRovar(Rovar r) {
 		System.out.println("Tekton: ujRovar(Rovar r)");
+		rovarok.add(r)
 		}
-    
+
     // Rovar eltavolitasa
     public void torolRovar(Rovar r) {
 		System.out.println("Tekton: torolRovar(Rovar r)");
 		}
-    
-    // Az elso szomszedos tekton visszaadasa
+
+         // Az elso szomszedos tekton visszaadasa
     public Tekton elsoTekton() {
 		System.out.println("Tekton: elsoTekton()");
 		//return null; 
 		return szomszedok.get(0);
 	}
-    
-    // uj gombatest letrehozasa a tektonon
+
+     // uj gombatest letrehozasa a tektonon
     public void ujTest(GombaTest t) {
 		System.out.println("Tekton: ujTest(GombaTest t)");
+		gombaTest=t;
 		}
-    
-    // A sporak szamanak lekardezese
+
+    // Gombatest eltávolítása a tektonról.
+    public void torolTest() {}
+
+   // A sporak szamanak lekardezese
     public int getSporakSzama() {
 		System.out.println("Tekton: getSporakSzama()");
 		 return sporakSzama; }
-    
+
     // A szomszedok lekerdezese
     public List<Tekton> getSzomszedok() {
 		System.out.println("Tekton: getSzomszedok()");
 		List<Tekton> lista = new ArrayList<>();
     	lista.add(new Tekton("a"));
 		return lista; }
-    
+
     // A szomszedok szomszedainak lekerdezese
     public List<Tekton> getSzomszedSzomszedok() {
 		System.out.println("Tekton: getSzomszedSzomszedok()");
 		List<Tekton> lista = new ArrayList<>();
     	lista.add(new Tekton("b"));
-		return lista; }    
-    
+		return lista; }
+
     // Van-e eleg spora a tektonon
     public boolean vanElegSpora() {
 		System.out.println("Tekton: vanElegSpora()");
 		 return false; }
-    
-    // Van-e hely egy uj gombatest szamara
+
+// Van-e hely egy uj gombatest szamara
     public boolean vanHely() { 
 		System.out.println("Tekton: vanHely()");
 		return false; }
-    
+
+    // Visszaadja a fonállal kapcsolt szomszédokat.
+    public List<Tekton> getKapcsolSzomszedok() { return kapcsoltTekton; }
+
+    // Visszaadja a spórák listáját.
+    public List<Spora> getSporak() { return sporak; }
+
+    // Visszaadja a fonalak listáját.
+    public List<GombaFonal> getFonalak() { return fonalak; }
+
     //uj fonallal kapcsol tektont ad a listahoz
     public void ujKapcsoltTekton(Tekton t) {
     	System.out.println("Tekton: ujKapcsoltTekton(Tekton t)");
+		kapcsoltTekton.add(t);
     };
-    
-  //elvesz egy fonallal kapcsol tektont a listabol
+
+   //elvesz egy fonallal kapcsol tektont a listabol
     public void elveszKapcsoltTekton (Tekton t) {
     	System.out.println("Tekton: elveszKapcsoltTekton(Tekton t)");
     };
 
-	//visszaadja az elso sporat
-	//csak a teszteléshez kellő föggvény
-	public Spora elsoSpora (){
-			return sporak.get(0);
-		}
-    
+    // Visszaadja a tektonon lévő gombatestet.
+    public GombaTest getGombaTest() { return gombaTest; }
+
+    // Visszaadja a tekton tulajdonságait.
+    public String getTulajdonsagok() { return tulajdonsagok; }
+
+    // Visszaadja egy gombász fonalait a tektonon.
+    public List<GombaFonal> getGomaszFonalai(Gombasz g) { return null; }
+
+    // Megvizsgálja, hogy a gombászhoz tartozó fonalak elhalnak-e.
+    public boolean elhal(Tekton t, Gombasz g) { 
+		//mélységi kereséssel megnézi van e test valahol
+		return false;
+	}
 }

@@ -1,15 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
-class GombaTest {
+public class GombaTest {
     private Tekton hol; // A tekton, ahol a gombatest talalhato
-    private List<GombaFonal> fonalak; // A gombatesthez kapcsolodo fonalak listaja
-    private int kor; // A gombatest eletkora
-    private boolean elegOreg; // Tud-e szorni tavolabbi tektonra sporat
-    private int utolsoSporaszoras; // Az utolso sporaszoras idopontja
+    public int kor; // A gombatest eletkora
+    public boolean elegOreg; // Tud-e szorni tavolabbi tektonra sporat
+    public int utolsoSporaszoras; // Az utolso sporaszoras idopontja
     private int sporaszorasokSzama; // Az eddigi sporaszorasok szama
-    private static int maxSporaszorasok = 4; // Maximalisan vegrehajthato sporaszorasok szama
-
+    public static int maxSporaszorasok = 4; // Maximalisan vegrehajthato sporaszorasok szama
+    public static Gombasz kie; // A gombász, akihez a test tartozik.
     //Gombatest letrehozasa
     public GombaTest(Tekton h, int us,boolean oreg) {
 		//Random beallitasok, hogy lehessen tesztelni
@@ -17,27 +16,20 @@ class GombaTest {
     	utolsoSporaszoras=us;
 		sporaszorasokSzama=3;
     	elegOreg=oreg;
-		List<Tekton> f = new ArrayList<>();
-        f.add(h);
-        f.add(h);
-    	List <GombaFonal> fon = new ArrayList<>();
-    	GombaFonal fonal = new GombaFonal(f);
-		GombaFonal fonal2 = new GombaFonal(f);
-		fon.add(fonal);
-		fon.add(fonal2);
-    	fonalak = fon;
     }
 
     // A gombatest elpusztul
-    public void elpusztul() {
+    private void elpusztul() {
     	System.out.println("GombaTest: elpusztul()");
         }
-    
- // A fonal tovabb novekszik egy uj tektonra
+
+    /*
+    !!!!Valahogy meg kell oldani a fonál növesztést, de ezek szerintem már nagyon nem jók így...
+    // A fonal tovabb novekszik egy uj tektonra
     public void fonalNoves(Tekton kiindulo, Tekton erkezo) {
     	System.out.println("GombaTest: fonalNoves(Tekton kiindulo, Tekton erkezo)");
-		/*ujFonal(kiindulo, erkezo);
-    	if (kiindulo.getSporakSzama()==0) ujFonal(kiindulo, erkezo);*/
+		//ujFonal(kiindulo, erkezo);
+    	//if (kiindulo.getSporakSzama()==0) ujFonal(kiindulo, erkezo);
 		//ha van eleg spora akkor 2-t no
 		if (kiindulo.getSporakSzama()==0) {ujFonal(kiindulo, erkezo);}
 		else  {
@@ -45,7 +37,7 @@ class GombaTest {
 			ujFonal(erkezo, erkezo.elsoTekton());
 		}
     }
-    
+
     // uj fonal kapcsolodik a gombatesthez
     public void ujFonal(Tekton kiindulo, Tekton erkezo) {
     	System.out.println("GombaTest: ujFonal(Tekton kiindulo, Tekton erkezo)");
@@ -56,13 +48,9 @@ class GombaTest {
 		kiindulo.ujFonal(fonal);
 		erkezo.ujFonal(fonal);
         }
-    
-    //Fonalak amikhez meg eler a test
-    public List<GombaFonal> elerhetoFonalak(){
-    	System.out.println("GombaTest: elerhetoFonalak()");
-    	return fonalak;
-    }
-    
+
+    */
+
     // Eltavolit egy fonalat a gombatesthez tartozo fonalak listajabol
     public void torolFonal(GombaFonal f) {
     	System.out.println("GombaTest: torolFonal(GombaFonal f)");
@@ -72,16 +60,19 @@ class GombaTest {
     	}
     	fonalak=elerheto;
         }
-    
+
     // A gombatest sporakat szor egy kozeli tektonra
     public void sporaSzoras() {
     	System.out.println("GombaTest: sporaSzoras()");
+        /*
+        Validakció dolga:
 		//Megnezzuk termelt-e eleg sporat
     	if (utolsoSporaszoras<2) return;
     	List<Tekton> sz;
 		//Megnezzuk eleg oreg-e hogy tavolabbra szorjon
     	if (!elegOreg) sz = hol.getSzomszedok();
     	else sz= hol.getSzomszedSzomszedok();
+        */
 		//A megfelelo tektonok kozul 3ra sporat rak
     	for (int i=0; i<3; i++){
     		Spora sp= new Spora(1,2,sz.get(0));
@@ -91,9 +82,4 @@ class GombaTest {
     	if (sporaszorasokSzama+1==maxSporaszorasok) elpusztul();  	    	
         }
 
-		//visszaadja az elso fonalat
-		//csak a teszteléshez kellő föggvény
-		public GombaFonal elsoFonal (){
-			return fonalak.get(0);
-		}
 }
