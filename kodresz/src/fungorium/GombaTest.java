@@ -32,11 +32,11 @@ public class GombaTest {
     }
 
     // A gombatest elpusztul
-    private void elpusztul() {
+    public void elpusztul() {
         //eltavolitjuk a tektonrol
-        hol.elveszGombaTest();
+        hol.torolTest();
         //eltavolitjuk a gombatestet a gombaszrol
-        kie.elveszGombaTest();
+        kie.TorolGombaTest(this);
         //majd a gombatest elpusztul
         hol = null;
         kie = null;

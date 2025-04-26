@@ -36,7 +36,6 @@ public class Spora {
 		hol.sporaElvesz(this);
 		//majd a spora elpusztul
 		hol = null;
-		this= null;
 	}
 
 	@Override

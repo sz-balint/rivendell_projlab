@@ -49,21 +49,29 @@ public class GombaFonal {
 
     // A fonal elpusztul, ha megszonik a kapcsolata a gombatestekkel/ elvagjak
     public void elpusztul() {
+    	Tekton tek0=kapcsoltTektonok.get(0);
+    	Tekton tek1=kapcsoltTektonok.get(1);
 		//kitoroljuk a tektonok fonal listajabol
-		kapcsoltTektonok.get(0).torolFonal(this);
-		kapcsoltTektonok.get(1).torolFonal(this);
-
-        ///TODO!!!!!!!!!!!!!!
-        //A k�vi csak ha nincs m�sik fonal ami �sszek�ti �ket (work brain pls)
-
-        //kitoroljuk a tektonok kapcsolt tekton listajabol
-        kapcsoltTektonok.get(0).elveszKapcsoltTekton(kapcsoltTektonok.get(1));
-        kapcsoltTektonok.get(1).elveszKapcsoltTekton(kapcsoltTektonok.get(0));
+		tek1.torolFonal(this);
+		tek0.torolFonal(this);
+		//Menezzuk van-e még fonal ami osszekapcsolja a ket tektont
+		boolean maradkapocs=false;
+		for (GombaFonal fonal : tek0.getFonalak()) {
+			if (fonal.kapcsoltTektonok.contains(tek0)&&fonal.kapcsoltTektonok.contains(tek1)) {
+				maradkapocs=true;
+				break;
+			}
+		}
+		if (maradkapocs==false) {
+	        //kitoroljuk a tektonok kapcsolt tekton listajabol ha nem talaltunk masik osszekottetest
+	        tek0.elveszKapcsoltTekton(tek1);
+	        tek1.elveszKapcsoltTekton(tek0);
+		}
         kie.TorolGombaFonal(this);
         //megn�zz�k, hogy a 2 kapcsolt tektonon van-e test (erre van fv a tektonn�l)
         //Ha nincs ott mindenFonalElhal() fon�l fvv megh�v�sa
-        if (kapcsoltTektonok.get(0).elhal(kie)) mindenFonalElhal(kapcsoltTektonok.get(0));
-        if (kapcsoltTektonok.get(0).elhal(kie)) mindenFonalElhal(kapcsoltTektonok.get(0));
+        if (tek0.elhal(kie)) mindenFonalElhal(tek0);
+        if (tek1.elhal(kie)) mindenFonalElhal(tek1);
         kapcsoltTektonok=null;
         kie=null;
     }
@@ -91,8 +99,7 @@ public class GombaFonal {
     // A fon�l megeszi a rovart, �s ha tud, gombatestet n�veszt.
     public void rovarEves(Rovar r) {
         //Megnezzuk, hogy b�nult- e a rovar
-        Allapot all=BENULT;
-        if (r.allapot!=all) return;
+        if (r.getAllapot()!=Allapot.BENULT) return;
         //Megnezzuk, van-e test a tektonon, ha igen testet n�veszt
         if (r.getHol().vanHely()) {
             GombaTest test = new GombaTest(r.getHol(), kie);
@@ -124,14 +131,14 @@ public class GombaFonal {
 			//Vessz�k a k�vetkez� bej�rand� tektont
 			Tekton tek = bejarando.get(0);
 			//Megn�zz�k, hogy a tektonon l�v� gomb�szhoz tartoz� fonalak (ha vannak) tektonjai benne vannek-e m�r az egyik list�ban
-			if (tek.getGomaszFonalai(g)!=null){
-				for (GombaFonal fonal : tek.getGomaszFonalai(g)) {
+			if (tek.getGomaszFonalai(kie)!=null){
+				for (GombaFonal fonal : tek.getGomaszFonalai(kie)) {
                     //Megoljuk a fonalat (megn�zhetn�nk �l-e de igaz�b�l az nem fontos)
                     fonal.megolik();
 					//Ha a fonal tektonja nem szerepel a bej�rt list�ban �s a bej�rand�ban sem, akkor hozz�adjuk a bej�rand�hoz
-					if (!bejart.constains(fonal.getKapcsoltTektonok().get(0))&&!bejarando.constains(fonal.getKapcsoltTektonok().get(0)))
+					if (!bejart.contains(fonal.getKapcsoltTektonok().get(0))&&!bejarando.contains(fonal.getKapcsoltTektonok().get(0)))
 					bejarando.add(fonal.getKapcsoltTektonok().get(0));
-					if (!bejart.constains(fonal.getKapcsoltTektonok().get(1))&&!bejarando.constains(fonal.getKapcsoltTektonok().get(1)))
+					if (!bejart.contains(fonal.getKapcsoltTektonok().get(1))&&!bejarando.contains(fonal.getKapcsoltTektonok().get(1)))
 					bejarando.add(fonal.getKapcsoltTektonok().get(1));
 				}
 			}

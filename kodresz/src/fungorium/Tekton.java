@@ -135,16 +135,17 @@ public class Tekton {
 		if  (gombaTest==null) {
 			//hozzáadjuk a tektonhoz
 			gombaTest=t;
+			/*
 			//majd a gombatesthez is
 			t.ujTekton(this);
-		//TODO kell-e, hogy lesz ez?
-		gombaTest=t;
+			//TODO kell-e, hogy lesz ez?
+			gombaTest=t;*/
 		}
 		}
 
     // Gombatest eltávolítása a tektonról.
     public void torolTest() {
-		Gombatest t = null;
+    	gombaTest = null;
 	}
 
 	// A sporak szamanak lekardezese
@@ -214,10 +215,10 @@ public class Tekton {
     // Visszaadja egy gombász fonalait a tektonon.
     public List<GombaFonal> getGomaszFonalai(Gombasz g) { 
 		//Létrehozzuk a listát amit visszaadunk
-		List<Tekton> gf = new ArrayList<>();
+		List<GombaFonal> gf = new ArrayList<>();
 		//Ha a jelenlegi tektonnak vannak fonalai azokon végigmegyünk
 		if (fonalak != null) {
-            for (Tekton fonal : fonalak) {
+            for (GombaFonal fonal : fonalak) {
 				//Ha az adott fonál a megfelelő gombászé, akkor hozzáadjuk a listához
 				if (fonal.kie==g ) gf.add(fonal);					
             }
@@ -245,9 +246,9 @@ public class Tekton {
 			if (t.getGomaszFonalai(g)!=null){
 				for (GombaFonal fonal : t.getGomaszFonalai(g)) {
 					//Ha a fonal tektonja nem szerepel a bejárt listában és a bejárandóban sem, akkor hozzáadjuk a bejárandóhoz
-					if (!bejart.constains(fonal.getKapcsoltTektonok().get(0))&&!bejarando.constains(fonal.getKapcsoltTektonok().get(0)))
+					if (!bejart.contains(fonal.getKapcsoltTektonok().get(0))&&!bejarando.contains(fonal.getKapcsoltTektonok().get(0)))
 					bejarando.add(fonal.getKapcsoltTektonok().get(0));
-					if (!bejart.constains(fonal.getKapcsoltTektonok().get(1))&&!bejarando.constains(fonal.getKapcsoltTektonok().get(1)))
+					if (!bejart.contains(fonal.getKapcsoltTektonok().get(1))&&!bejarando.contains(fonal.getKapcsoltTektonok().get(1)))
 					bejarando.add(fonal.getKapcsoltTektonok().get(1));
 				}
 			}

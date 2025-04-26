@@ -1,4 +1,7 @@
 package fungorium;
+
+import java.util.List;
+
 // A j�t�k logik�j�t vez�rl� oszt�ly, kezeli a k�r�ket, a j�t�kosok l�p�seit �s a tektonokat.
 public class JatekLogika {
     public static int korokSzama;   // A j�t�k �sszes k�reinek sz�ma.
