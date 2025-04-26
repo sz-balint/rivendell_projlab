@@ -102,6 +102,10 @@ public class Rovar {
         hol.ujRovar(ujRovar);
     }
     
+    public Allapot getAllapot() {
+        return allapot;
+    }
+    
     @Override
 	public String toString() {
 		return "Rovar{" +
