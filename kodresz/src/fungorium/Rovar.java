@@ -110,8 +110,8 @@ public class Rovar {
 	public String toString() {
 		return "Rovar{" +
            "hol='" + hol  +
-           ", allapot=" + allapot +
-           ", kie=" + kie +           
+           ",allapot=" + allapot +
+           ",kie=" + kie +           
            '}';
 	}
 }

@@ -103,11 +103,11 @@ public class GombaTest {
     public String toString() {
         return "GombaTest{" +
            "hol=" + hol +
-           ", kor=" + kor +
-           ", elegOreg=" + elegOreg +
-           ", utolsoSporaszoras=" + utolsoSporaszoras +
-           ", sporaszorasokSzama=" + sporaszorasokSzama +
-           ", kie=" + kie +
+           ",kor=" + kor +
+           ",elegOreg=" + elegOreg +
+           ",utolsoSporaszoras=" + utolsoSporaszoras +
+           ",sporaszorasokSzama=" + sporaszorasokSzama +
+           ",kie=" + kie +
            '}';
     }
 }

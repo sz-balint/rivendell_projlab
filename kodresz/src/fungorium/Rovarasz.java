@@ -5,6 +5,8 @@ import java.util.List;
 // A rovarász játékostípus osztálya, aki rovarokat irányít.
 public class Rovarasz extends Jatekos {
 
+    public Rovarasz(String nev, int pontok){ super(nev, pontok);}
+
     // A rovarász által irányított rovarok listája.
     private List<Rovar> Rovarok;
 
@@ -32,9 +34,9 @@ public class Rovarasz extends Jatekos {
     
     @Override
     public String toString() {
-        return "Gombasz{" +
+        return "Rovarasz{" +
            "nev=" + nev +
-           ", pontok=" + pontok +
+           ",pontok=" + pontok +
            '}';
     }
 }

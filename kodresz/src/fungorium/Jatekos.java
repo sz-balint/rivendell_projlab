@@ -13,4 +13,9 @@ public abstract class Jatekos {
 
     // A játékos pontjainak frissítése, az eredmények eltárolásához.
     public abstract void pontokFrissit();
+
+    public Jatekos(String nev, int pontok) {
+        this.nev=nev;
+        this.pontok=pontok;
+    }
 }

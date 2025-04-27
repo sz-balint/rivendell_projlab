@@ -6,7 +6,8 @@ import java.util.Random;
 
 public class Tekton {
     public String tulajdonsagok="testnelkuli"; // A tekton sajat tulajdonsagai (pl. fonal novekedesi sebessege)
-    private List<Tekton> szomszedok; // A tekton szomszedos tektonjai
+    private int id; // A tektonok azonosítására szolgál
+	private List<Tekton> szomszedok; // A tekton szomszedos tektonjai
     private int sporakSzama=0; // A tektonon levo sporak szama
     private List<Spora> sporak; // A tektonon talalhato sporak listaja
     private List<GombaFonal> fonalak; // A tektonon novo fonalak listaja
@@ -14,12 +15,15 @@ public class Tekton {
     private GombaTest gombaTest; // Az adott tektonon levo gombatest
     private List<Tekton> kapcsoltTekton; // Azon tektonok, amelyekkel foal koti ossze
     
+	private static int idCounter = 0; // Osztályon belül nézi hogy melyik azonosítók voltak már használva
+
     Random random = new Random();
     List <String> spectul = new ArrayList<>(List.of("fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal"));
 
 	//TODO
     //Tekton letrehozosa semmivel
     public Tekton(String tul) {
+		id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
 		tulajdonsagok=tul;
 		szomszedok = new ArrayList<>();
 		sporak = new ArrayList<>();
@@ -31,6 +35,7 @@ public class Tekton {
 
 	//Tekton letrehozosa fajta és a szomszédok megadásával
     public Tekton(String tul, List<Tekton> tekt) {
+		id = idCounter++;
 		tulajdonsagok=tul;
 		szomszedok = tekt;
 		sporak = new ArrayList<>();
@@ -41,6 +46,7 @@ public class Tekton {
 		}
 	//Tekton letrehozosa mindennel 
     public Tekton(String tul, List<Tekton> tekt, int ssz, List<Spora> spk, List<GombaFonal> f, List<Rovar> r, GombaTest t, List<Tekton> kapcs) {
+		id = idCounter++;
 		tulajdonsagok=tul;
 		szomszedok = tekt;
 		sporakSzama=ssz;
@@ -261,17 +267,75 @@ public class Tekton {
 		return true;
 	}
 
+	// Visszaadja a tekton id-ját abban az esetben ha nincs szükségünk a tekton tulajdonságaira
+	// A #-re azért van szükség hogy kilistázáskor el tudjuk különíteni egymástól az id-kat
 	@Override
 	public String toString() {
+		return '#' + String.valueOf(id);  
+	}
+
+	public String listaz() {
 		return "Tekton{" +
+		   "id=" + id +
            "tulajdonsagok='" + tulajdonsagok + '\'' +
-           ", szomszedok=" + szomszedok +
-           ", sporakSzama=" + sporakSzama +
-           ", sporak=" + sporak +
-           ", fonalak=" + fonalak +
-           ", rovarok=" + rovarok +
-           ", gombaTest=" + gombaTest +
-           ", kapcsoltTekton=" + kapcsoltTekton +
+		   ";szomszedok=" + szomszedok +
+           ";sporakSzama=" + sporakSzama +
+           ";sporak=" + sporak +
+           ";fonalak=" + fonalak +
+           ";rovarok=" + rovarok +
+           ";gombaTest=" + gombaTest +
+           ";kapcsoltTekton=" + kapcsoltTekton +
            '}';
+	}
+
+	public static Tekton fromString(String data) {
+		Tekton tekton = new Tekton("testnelkuli"); // Alapértelmezett tulajdonság
+		data = data.replace("Tekton{", "").replace("{", "").replace("}", ""); // Töröljük a kereteket
+		String[] parts = data.split(";");
+	
+		for (String part : parts) {
+			String[] attrValue = part.split("=");
+			String attr = attrValue[0].trim();
+			String value = attrValue[1].trim();
+	
+			switch (attr) {
+				case "id":
+					tekton.id = Integer.parseInt(value.replace("#", "")); // ID beállítása
+					break;
+				case "tulajdonsagok":
+					tekton.tulajdonsagok = value.replace("'", "");
+					break;
+				case "sporakSzama":
+					tekton.sporakSzama = Integer.parseInt(value);
+					break;
+				case "sporak":
+					
+					break;
+				case "fonalak":
+					// Fonálak feldolgozása, ha szükséges
+					break;
+				case "rovarok":
+					// Rovarok feldolgozása, ha szükséges
+					break;
+				case "gombaTest":
+					// Gombatest feldolgozása, ha szükséges
+					break;
+				case "kapcsoltTekton":
+					// Kapcsolt Tektonok feldolgozása, ha szükséges
+					break;
+				default:
+					System.out.println("Ismeretlen attribútum: " + attr);
+					break;
+			}
+		}
+	
+		return tekton;
+	}
+
+	public void addSzomszed(Tekton t) {
+		if (!szomszedok.contains(t)) {
+			szomszedok.add(t);
+			t.ujSzomszed(this); // Kölcsönös kapcsolat létrehozása
+		}
 	}
 }

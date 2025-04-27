@@ -42,8 +42,8 @@ public class Spora {
 	public String toString() {
 		return "Spora{" +
            "sporaType=" + sporaType +
-           ", tapertek=" + tapertek +
-           ", hol=" + hol +
+           ",tapertek=" + tapertek +
+           ",hol=" + hol +
            '}';
 	}
 }

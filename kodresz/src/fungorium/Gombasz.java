@@ -10,6 +10,8 @@ public class Gombasz extends Jatekos {
 
     // A gomb�szhoz tartoz� gombafonalak list�ja.
     private List<GombaFonal> Fonalak;
+
+    public Gombasz(String nev, int pontok){ super(nev, pontok);}
     
     // Egy megadott gombafon�lb�l �j gombatestet n�veszt.
     private void testNoveszt(GombaFonal fonal, Tekton tekton) { //melyik fonálból növesztünk, és hova
@@ -112,7 +114,7 @@ public class Gombasz extends Jatekos {
     public String toString() {
         return "Gombasz{" +
            "nev=" + nev +
-           ", pontok=" + pontok +
+           ",pontok=" + pontok +
            '}';
     }
 }

@@ -153,9 +153,9 @@ public class GombaFonal {
     public String toString() {
         return "GombaFonal{" +
            "kapcsoltTektonok=" + kapcsoltTektonok +
-           ", kie=" + kie +
-           ", megel=" + megel +
-           ", el=" + el +
+           ",kie=" + kie +
+           ",megel=" + megel +
+           ",el=" + el +
            '}';
     }
 }
