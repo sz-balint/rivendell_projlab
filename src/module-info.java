@@ -4,5 +4,5 @@
 /**
  * 
  */
-module projlab {
+module ProjLaborHazi {
 }

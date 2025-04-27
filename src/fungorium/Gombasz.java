@@ -12,8 +12,6 @@ public class Gombasz extends Jatekos {
     // A gomb�szhoz tartoz� gombafonalak list�ja.
     private List<GombaFonal> Fonalak;
 
-    //Tipus
-    private String tipus;
     //Konstruktor
     public Gombasz(String nev, int pontok, String tipus){ super(nev, pontok); tipus = "Gombasz";}
     
