@@ -193,7 +193,32 @@ public class CommandLine {
 				}
 				
 				else if (valasz.equals("help")) {
-					
+					System.out.println("Elerheto parancsok listaja:");
+					System.out.println("------------------------------------------------------");
+					System.out.println("addRovar [ID] - Rovart ad a jatekterhez (Rovarasz ID-ja)");
+					System.out.println("kettetores [ID] - Kivalasztott tekton kettetorese (Tekton ID-ja)");
+					System.out.println("sporaszoras [ID] - Sporaszoras (GombaTest ID-ja)");
+					System.out.println("ujTest [ID] [nev] - Uj gombatest letrehozasa (Tekton ID es jatekos nev)");
+					System.out.println("fonalnoveszt -g [ID] -t1 [ID] -t2 [ID] - Gombafonal novesztese");
+					System.out.println("   -g: Gombatest ID");
+					System.out.println("   -t1: Kiindulo tekton ID");
+					System.out.println("   -t2: Cel tekton ID");
+					System.out.println("vagas -f [ID] -r [ID] - Gombafonal elvagasa");
+					System.out.println("   -f: Gombafonal ID");
+					System.out.println("   -r: Rovar ID");
+					System.out.println("lep -t [ID] -r [ID] - Rovar leptetese");
+					System.out.println("   -t: Cel tekton ID");
+					System.out.println("   -r: Rovar ID");
+					System.out.println("eszik [ID] - Spora eves (Rovar ID)");
+					System.out.println("allapot - Jatek aktualis allapotanak kiirasa");
+					System.out.println("random [y/n] - Random generalas be/ki");
+					System.out.println("save [fajlnev] - Jatek mentese");
+					System.out.println("load [fajlnev] - Jatek betoltese");
+					System.out.println("help - Parancsok listazasa");
+					System.out.println("------------------------------------------------------");
+					System.out.println("Gombasz parancsai: sporaszoras, ujTest, fonalnoveszt");
+					System.out.println("Rovarasz parancsai: vagas, lep, eszik");
+					System.out.println("Mindenki parancsai: addRovar, kettetores, allapot, random, save, load, help");
 				}
 			}
 
