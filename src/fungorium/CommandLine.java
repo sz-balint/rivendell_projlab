@@ -1,5 +1,7 @@
 package fungorium;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -79,23 +81,40 @@ public class CommandLine {
 					continue;
 				}
 				
-				//Gombászok
+				// Gombászok
+				List<String> existingNames = new ArrayList<>();
 				for(int i = 0; i < jatekosokSzama/2; i++) {
-					System.out.print("Add meg a " + (i+1) + ". Gombász nevét: ");
-					String nev = scanner.nextLine();  // Beolvassuk a nevet
-					
-					Jatekos jatekos = new Gombasz(nev, 0, "Gombasz");
-					jatek.addJatekos(jatekos);
+					while(true) {
+						System.out.print("Add meg a " + (i+1) + ". Gombász nevét: ");
+						String nev = scanner.nextLine();
+						
+						if(existingNames.contains(nev)) {
+							System.out.println("Ez a név már foglalt! Válassz másik nevet.");
+						} else {
+							Jatekos jatekos = new Gombasz(nev, 0, "Gombasz");
+							jatek.addJatekos(jatekos);
+							existingNames.add(nev);
+							break;
+						}
+					}
 				}
 					
-				//Rovarászok
+				// Rovarászok
 				for(int i = jatekosokSzama/2; i < jatekosokSzama; i++) {
-					System.out.print("Add meg a " + (i+1) + ". Rovarász nevét: ");
-					String nev = scanner.nextLine();  // Beolvassuk a nevet
-					
-					Jatekos jatekos = new Rovarasz(nev, 0, "Rovarasz");
-					jatek.addJatekos(jatekos);
-				}
+					while(true) {
+						System.out.print("Add meg a " + (i+1) + ". Rovarász nevét: ");
+						String nev = scanner.nextLine();
+						
+						if(existingNames.contains(nev)) {
+							System.out.println("Ez a név már foglalt! Válassz másik nevet.");
+						} else {
+							Jatekos jatekos = new Rovarasz(nev, 0, "Rovarasz");
+							jatek.addJatekos(jatekos);
+							existingNames.add(nev);
+							break;
+						}
+					}
+}
 			}
 			
 			//2. A palya elkeszitese:
@@ -108,7 +127,16 @@ public class CommandLine {
 				jatek.setAktivJatekos(jatek.getJatekosok().get(i));
 				
 				//Lepes
-				System.out.println(nev + " Lep : \naddRovar\nkettetores\nsporaszoras\nujTest\nfonalnoveszt\nvagas\nlep\neszik\nallapot\nrandom\nsave\nload\nhelp\n");
+				String tipus = jatek.getAktivJatekos().getTipus();
+				System.out.println("\n"+nev + " parancsai:");
+				if (tipus != null && tipus.equals("Gombasz")) {
+					System.out.println("Gombász: sporaszoras, ujTest, fonalnoveszt, rovartEszik");
+				} else {
+					System.out.println("Rovarasz: addRovar, vagas, lep, eszik");
+				}
+				System.out.println("Általános: kettetores, allapot, random, save, load, help");
+				System.out.print("Választott parancs: ");
+
 				String valasz = scanner.nextLine();
 					
 				if (valasz.equals("kettetores")) { //Barki
@@ -136,6 +164,17 @@ public class CommandLine {
 				}
 				
 				else if (valasz.equals("fonalnoveszt")) { //Gombasz
+					if(jatek.getAktivJatekos().getTipus() == "Gombasz") { //A jatekoshoz megfelelo lepest valaszt
+						jatek.getAktivJatekos().Kor(valasz, jatek);
+					}
+					else {
+						System.out.println("Hibas! Ez egy Gombasz lepes, te Rovarasz vagy. Lepj ujra!");
+						i--;
+					}
+				}
+
+				//??
+				else if (valasz.equals("rovartEszik")) {
 					if(jatek.getAktivJatekos().getTipus() == "Gombasz") { //A jatekoshoz megfelelo lepest valaszt
 						jatek.getAktivJatekos().Kor(valasz, jatek);
 					}
@@ -221,66 +260,61 @@ public class CommandLine {
 				}
 				
 				else if (valasz.equals("save")) {
+					System.out.print("Add meg a mentés fájlnevét: ");
+					String filename = scanner.nextLine();
 					
+					Fajlkezelo fajlkezelo = new Fajlkezelo();
+					try {
+						fajlkezelo.save(jatek);
+						System.out.println("Játék állapota sikeresen mentve '" + filename + "' fájlba!");
+					} catch (IOException e) {
+						System.out.println("Hiba történt a mentés során: " + e.getMessage());
+					}
 				}
-				
+
 				else if (valasz.equals("load")) {
+					System.out.print("Add meg a betöltendő fájlnevét: ");
+					String filename = scanner.nextLine();
 					
+					Fajlkezelo fajlkezelo = new Fajlkezelo();
+					try {
+						JatekLogika loadedGame = fajlkezelo.load();
+						this.jatek = loadedGame;
+						System.out.println("Játék állapota sikeresen betöltve '" + filename + "' fájlból!");
+						
+						this.jatekosokSzama = loadedGame.getJatekosok().size();
+						this.tektonokSzama = loadedGame.getJatekter().size();
+					} catch (IOException e) {
+						System.out.println("Hiba történt a betöltés során: " + e.getMessage());
+					}
 				}
 				
 				else if (valasz.equals("help")) {
-					System.out.println("Elerheto parancsok listaja:");
- 					System.out.println("------------------------------------------------------");
- 					System.out.println("addRovar [ID] - Rovart ad a jatekterhez (Rovarasz ID-ja)");
- 					System.out.println("kettetores [ID] - Kivalasztott tekton kettetorese (Tekton ID-ja)");
- 					System.out.println("sporaszoras [ID] - Sporaszoras (GombaTest ID-ja)");
- 					System.out.println("ujTest [ID] [nev] - Uj gombatest letrehozasa (Tekton ID es jatekos nev)");
- 					System.out.println("fonalnoveszt -g [ID] -t1 [ID] -t2 [ID] - Gombafonal novesztese");
- 					System.out.println("   -g: Gombatest ID");
- 					System.out.println("   -t1: Kiindulo tekton ID");
- 					System.out.println("   -t2: Cel tekton ID");
- 					System.out.println("vagas -f [ID] -r [ID] - Gombafonal elvagasa");
- 					System.out.println("   -f: Gombafonal ID");
- 					System.out.println("   -r: Rovar ID");
- 					System.out.println("lep -t [ID] -r [ID] - Rovar leptetese");
- 					System.out.println("   -t: Cel tekton ID");
- 					System.out.println("   -r: Rovar ID");
- 					System.out.println("eszik [ID] - Spora eves (Rovar ID)");
- 					System.out.println("allapot - Jatek aktualis allapotanak kiirasa");
- 					System.out.println("random [y/n] - Random generalas be/ki");
- 					System.out.println("save [fajlnev] - Jatek mentese");
- 					System.out.println("load [fajlnev] - Jatek betoltese");
- 					System.out.println("help - Parancsok listazasa");
- 					System.out.println("------------------------------------------------------");
- 					System.out.println("Gombasz parancsai: sporaszoras, ujTest, fonalnoveszt");
- 					System.out.println("Rovarasz parancsai: vagas, lep, eszik");
- 					System.out.println("Mindenki parancsai: addRovar, kettetores, allapot, random, save, load, help");
+					System.out.println("\nElérhető parancsok listája:");
 					System.out.println("------------------------------------------------------");
-					System.out.println("addRovar [ID] - Rovart ad a jatekterhez (Rovarasz ID-ja)");
-					System.out.println("kettetores [ID] - Kivalasztott tekton kettetorese (Tekton ID-ja)");
-					System.out.println("sporaszoras [ID] - Sporaszoras (GombaTest ID-ja)");
-					System.out.println("ujTest [ID] [nev] - Uj gombatest letrehozasa (Tekton ID es jatekos nev)");
-					System.out.println("fonalnoveszt -g [ID] -t1 [ID] -t2 [ID] - Gombafonal novesztese");
-					System.out.println("   -g: Gombatest ID");
-					System.out.println("   -t1: Kiindulo tekton ID");
-					System.out.println("   -t2: Cel tekton ID");
-					System.out.println("vagas -f [ID] -r [ID] - Gombafonal elvagasa");
-					System.out.println("   -f: Gombafonal ID");
-					System.out.println("   -r: Rovar ID");
-					System.out.println("lep -t [ID] -r [ID] - Rovar leptetese");
-					System.out.println("   -t: Cel tekton ID");
-					System.out.println("   -r: Rovar ID");
-					System.out.println("eszik [ID] - Spora eves (Rovar ID)");
-					System.out.println("allapot - Jatek aktualis allapotanak kiirasa");
-					System.out.println("random [y/n] - Random generalas be/ki");
-					System.out.println("save [fajlnev] - Jatek mentese");
-					System.out.println("load [fajlnev] - Jatek betoltese");
-					System.out.println("help - Parancsok listazasa");
-					System.out.println("------------------------------------------------------");
-					System.out.println("Gombasz parancsai: sporaszoras, ujTest, fonalnoveszt");
-					System.out.println("Rovarasz parancsai: vagas, lep, eszik");
-					System.out.println("Mindenki parancsai: addRovar, kettetores, allapot, random, save, load, help");
-
+					System.out.println("Gombász parancsai:");
+					System.out.println("  sporaszoras [ID] - Spóraszórás (GombaTest ID-ja)");
+					System.out.println("  ujTest [ID] [név] - Új gombatest létrehozása");
+					System.out.println("  fonalnoveszt -g [ID] -t1 [ID] -t2 [ID] - Gombafonal növesztése");
+					System.out.println("  rovartEszik - Fonál megeszi a rovart");
+					
+					System.out.println("\nRovarasz parancsai:");
+					System.out.println("  addRovar [ID] - Rovart ad a játéktérhez");
+					System.out.println("  vagas -f [ID] -r [ID] - Gombafonal elvágása");
+					System.out.println("  lep -t [ID] -r [ID] - Rovar léptetése");
+					System.out.println("  eszik [ID] - Spóra evés (Rovar ID)");
+					
+					System.out.println("\nÁltalános parancsok:");
+					System.out.println("  kettetores [ID] - Tekton kettétörése");
+					System.out.println("  allapot - Játék állapotának kiírása");
+					System.out.println("  random [y/n] - Random generálás be/ki");
+					System.out.println("  save [fájlnév] - Játék mentése");
+					System.out.println("  load [fájlnév] - Játék betöltése");
+					System.out.println("  help - Parancsok listázása");
+					System.out.println("------------------------------------------------------\n");
+					
+					i--;
+					continue;
 				}
 			}
 
