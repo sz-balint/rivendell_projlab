@@ -5,7 +5,8 @@ import java.util.List;
 // A rovarász játékostípus osztálya, aki rovarokat irányít.
 public class Rovarasz extends Jatekos {
 
-    public Rovarasz(String nev, int pontok){ super(nev, pontok);}
+    //Konstruktor
+     public Rovarasz(String nev, int pontok, String tipus){ super(nev, pontok); tipus = "Rovarasz";}
 
     // A rovarász által irányított rovarok listája.
     private List<Rovar> Rovarok;
@@ -30,7 +31,7 @@ public class Rovarasz extends Jatekos {
     public void pontokFrissit() { pontok++; }
 
     @Override
-    public void Kor() {}
+    public void Kor(String parancs,JatekLogika jatek) {}
     
     @Override
     public String toString() {
@@ -44,6 +45,6 @@ public class Rovarasz extends Jatekos {
         String[] parts = str.replace("Rovarasz{", "").replace("}", "").split(",");
         String nev = parts[0].split("=")[1];
         int pontok = Integer.parseInt(parts[1].split("=")[1]);
-        return new Rovarasz(nev, pontok);
+        return new Rovarasz(nev, pontok, "Rovarasz");
     }
 }

@@ -31,6 +31,7 @@ public class GombaTest {
         kie=g;
     }
 
+    public Tekton getTekton() {return hol;}
     // A gombatest elpusztul
     public void elpusztul() {
         //eltavolitjuk a tektonrol

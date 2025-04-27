@@ -46,9 +46,9 @@ public class Fajlkezelo {
             String p = attibutumok[1].split("=")[1];
             Jatekos j;
             if(jatekos[0].equals("Rovarasz")){
-                j = new Rovarasz(n, Integer.parseInt(p));                
+                j = new Rovarasz(n, Integer.parseInt(p), "Rovarasz");                
             }else if(jatekos[0].equals("Gombasz")){
-                j = new Gombasz(n, Integer.parseInt(p));
+                j = new Gombasz(n, Integer.parseInt(p), "Gombasz");
             }
             else {
                 throw new IOException("Nem megfelelő fájl!");

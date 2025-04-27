@@ -8,14 +8,21 @@ public abstract class Jatekos {
     // A játékos által szerzett pontok.
     protected int pontok;
 
-    // A játékos lépésének végrehajtása.
-    public abstract void Kor();
+    //A játékos típusa
+    public String tipus;
 
-    // A játékos pontjainak frissítése, az eredmények eltárolásához.
-    public abstract void pontokFrissit();
+   // A játékos lépésének végrehajtása.
+   public abstract void Kor(String parancs, JatekLogika jatek);
+
+   // A játékos pontjainak frissítése, az eredmények eltárolásához.
+   public abstract void pontokFrissit();
 
     public Jatekos(String nev, int pontok) {
         this.nev=nev;
         this.pontok=pontok;
     }
+
+    public String getNev() {return nev;}
+    
+    public String getTipus() {return tipus;}
 }

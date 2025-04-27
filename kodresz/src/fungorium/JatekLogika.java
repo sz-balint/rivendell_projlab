@@ -34,7 +34,7 @@ public class JatekLogika {
     }
 
     // Meghívja a Jatekter egy random tektonjára a kettétörés függvényt és az új tektont elmenti
-    private void tores() {
+   public void tores() {
         Random rnd = new Random();
         int idx = rnd.nextInt(Jatekter.size());
         Jatekter.add(Jatekter.get(idx).kettetores());
@@ -83,7 +83,7 @@ public class JatekLogika {
     // elmentésére a Játékos osztályon belül.
     // Valamint a pontok attribútumot átírtam publicra átmenetileg, hogy működjön de 
     // ahhoz majd írjatok légy gettert 
-    private boolean jatekVege() {
+    public boolean jatekVege() {
         if (jelenKor != korokSzama)
             return false;
         List<Jatekos> gombasz = new ArrayList<>();

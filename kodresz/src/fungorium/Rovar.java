@@ -125,7 +125,7 @@ public class Rovar {
         String[] parts = str.replace("Rovar{", "").replace("}", "").split(",");
         Tekton hol = new Tekton(parts[0].split("=")[1]);
         Allapot allapot = Allapot.valueOf(parts[1].split("=")[1]);
-        Rovarasz kie = new Rovarasz(parts[2].split("=")[1], Integer.parseInt(parts[3].split("=")[1]));
+        Rovarasz kie = new Rovarasz(parts[2].split("=")[1], Integer.parseInt(parts[3].split("=")[1]), "Rovarasz");
         return new Rovar(hol, allapot, kie);
     }
 }

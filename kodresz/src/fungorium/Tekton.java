@@ -370,6 +370,8 @@ public class Tekton {
 		return id;
 	}
 
+	public void setTest(GombaTest test) { gombaTest = test; }
+
 	//Azokat az attributumokat amiket beolvasás közben nem lehett megadni azokat ebben adjuk meg
 	public void strToAttr() {
 		JatekLogika jatek = new JatekLogika();
