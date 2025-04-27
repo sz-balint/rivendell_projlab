@@ -176,6 +176,43 @@ public class CommandLine {
 				}
 				
 				else if (valasz.equals("allapot")) {
+					System.out.println("Játék állapot: \n------------------------------------------------------\nGomba testek:");
+					Gombasz gom;
+					for (Jatekos j : jatek.getJatekosok() ) {
+						if (j.getTipus()=="Gombasz") {
+							gom = (Gombasz) j;
+							for (GombaTest t : gom.getTestek()) {
+								System.out.println("Tekton id: " + t.getTekton().getId() + "GombaTest id: "+ t.getId() + "Jatekos nev" + j.getNev());
+							}
+						}
+					};
+					System.out.println("------------------------------------------------------\nFonalak:");
+					for (Jatekos j : jatek.getJatekosok() ) {
+						if (j.getTipus()=="Gombasz") {
+							gom = (Gombasz) j;
+							System.out.println(gom + ":");
+							for (GombaFonal f : gom.getFonalak()) {
+								///--Fonal típus? legyen inkább él-e?
+								System.out.println("Tekton id: " + f.getKapcsoltTektonok().get(0) + "Tekton id: " + f.getKapcsoltTektonok().get(1) + "GombaFonal id: "+ f.getId());
+							}
+						}
+					};
+					System.out.println("------------------------------------------------------\nSpórák:");
+					for (Tekton t : jatek.getJatekter()) {
+						if (t.getSporakSzama()>0) System.out.println("Tekton id: " + t.getId() + "Spórák száma" + t.getSporakSzama());
+					}
+					System.out.println("------------------------------------------------------\nRovarok:");
+					for (Tekton t : jatek.getJatekter()) {
+						if (t.getRovarok()!=null) {
+							for (Rovar r : t.getRovarok()) {
+								System.out.println("Tekton id: " + t.getId() + "Rovar id" + r.getId() + "Jatekos nev" + r.getKie());
+							}
+						}
+					}
+					System.out.println("------------------------------------------------------\nAktív tektonok:");
+					for (Tekton t : jatek.getJatekter()) {
+						System.out.println("Tekton id: " + t.getId());
+					}
 					
 				}
 				

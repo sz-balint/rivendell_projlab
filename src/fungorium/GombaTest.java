@@ -11,13 +11,21 @@ public class GombaTest {
     private int sporaszorasokSzama=0; // Az eddigi sporaszorasok szama
     public static int maxSporaszorasok = 4; // Maximalisan vegrehajthato sporaszorasok szama
     public static Gombasz kie; // A gombász, akihez a test tartozik.
+    private int id; // A testek azonosítására szolgál
 
     Random random = new Random();
+	private static int idCounter = 0; // Osztályon belül nézi hogy melyik azonosítók voltak már használva
+
+	public int getId() {
+		return id;
+	}
+
     
     //Gombatest letrehozasa minimum attribútummal- játék közbenhez
     public GombaTest(Tekton h, Gombasz g) {
     	hol=h;
     	kie=g;
+    	id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
     //Gombatest letrehozasa pontos adatokkal- betolteshez
@@ -28,9 +36,12 @@ public class GombaTest {
         utolsoSporaszoras=uS;
         sporaszorasokSzama=sSz;
         kie=g;
+        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
+    //Visszaadja melyik tektonon van
     public Tekton getTekton() {return hol;}
+    
     // A gombatest elpusztul
     public void elpusztul() {
         //eltavolitjuk a tektonrol
@@ -41,34 +52,6 @@ public class GombaTest {
         hol = null;
         kie = null;
         }
-
-    /*
-    !!!!Valahogy meg kell oldani a fonál növesztést, de ezek szerintem már nagyon nem jók így...
-    // A fonal tovabb novekszik egy uj tektonra
-    public void fonalNoves(Tekton kiindulo, Tekton erkezo) {
-    	System.out.println("GombaTest: fonalNoves(Tekton kiindulo, Tekton erkezo)");
-		//ujFonal(kiindulo, erkezo);
-    	//if (kiindulo.getSporakSzama()==0) ujFonal(kiindulo, erkezo);
-		//ha van eleg spora akkor 2-t no
-		if (kiindulo.getSporakSzama()==0) {ujFonal(kiindulo, erkezo);}
-		else  {
-			ujFonal(kiindulo, erkezo);
-			ujFonal(erkezo, erkezo.elsoTekton());
-		}
-    }
-
-    // uj fonal kapcsolodik a gombatesthez
-    public void ujFonal(Tekton kiindulo, Tekton erkezo) {
-    	System.out.println("GombaTest: ujFonal(Tekton kiindulo, Tekton erkezo)");
-    	List<Tekton> f = new ArrayList<>();
-        f.add(kiindulo);
-        f.add(erkezo);
-        GombaFonal fonal = new GombaFonal(f);
-		kiindulo.ujFonal(fonal);
-		erkezo.ujFonal(fonal);
-        }
-
-    */
 
     // A gombatest sporakat szor egy kozeli tektonra
     public void sporaSzoras() {

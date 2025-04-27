@@ -35,6 +35,14 @@ public class Gombasz extends Jatekos {
         tekton.ujTest(test);
     	this.UjGombaTest(test);
     }
+    
+    public List<GombaTest> getTestek(){
+    	return Testek;
+    };
+    
+    public List<GombaFonal> getFonalak(){
+    	return Fonalak;
+    }
 
     // Meghatározza, merre nőjenek a fonalak két tekton között.
     private void fonalIrany(Tekton indulo, Tekton erkezo) { 

@@ -8,23 +8,33 @@ public class Rovar {
     private Tekton hol;        // A rovar jelenlegi tartózkodási helye
     private Allapot allapot;   // A rovar jelenlegi állapota
     private Rovarasz kie;      // A rovarászt jelöli, aki a rovart irányítja
+    private int id; // A testek azonosítására szolgál
 
+    private static int idCounter = 0; // Osztályon belül nézi hogy melyik azonosítók voltak már használva
+
+	public int getId() {
+		return id;
+	}
+    
     // Rovar létrehozása megadott állapottal
     public Rovar(Tekton h, Allapot all) {
         hol = h;
         allapot = all;
+        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
     // Rovar létrehozása, alapértelmezett állapot: NORMAL
     public Rovar(Tekton h) {
         hol = h;
         allapot = Allapot.NORMAL;
+        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
     public Rovar(Tekton hol, Allapot allapot, Rovarasz kie) {
         this.hol = hol;
         this.allapot = allapot;
         this.kie = kie;
+        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
     // Visszaadja, hogy hol tartózkodik a rovar
