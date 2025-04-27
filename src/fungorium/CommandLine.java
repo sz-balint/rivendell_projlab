@@ -108,7 +108,7 @@ public class CommandLine {
 				jatek.setAktivJatekos(jatek.getJatekosok().get(i));
 				
 				//Lepes
-				System.out.println(nev + "Lep : \naddRovar\nkettetores\nsporaszoras\nujTest\nfonalnoveszt\nvagas\nlep\neszik\nallapot\nrandom\nsave\nload\nhelp\n");
+				System.out.println(nev + " Lep : \naddRovar\nkettetores\nsporaszoras\nujTest\nfonalnoveszt\nvagas\nlep\neszik\nallapot\nrandom\nsave\nload\nhelp\n");
 				String valasz = scanner.nextLine();
 					
 				if (valasz.equals("kettetores")) { //Barki
@@ -193,7 +193,7 @@ public class CommandLine {
 				
 				else if (valasz.equals("help")) {
 					System.out.println("Elerheto parancsok listaja:");
-<<<<<<< HEAD
+
  					System.out.println("------------------------------------------------------");
  					System.out.println("addRovar [ID] - Rovart ad a jatekterhez (Rovarasz ID-ja)");
  					System.out.println("kettetores [ID] - Kivalasztott tekton kettetorese (Tekton ID-ja)");
@@ -219,7 +219,7 @@ public class CommandLine {
  					System.out.println("Gombasz parancsai: sporaszoras, ujTest, fonalnoveszt");
  					System.out.println("Rovarasz parancsai: vagas, lep, eszik");
  					System.out.println("Mindenki parancsai: addRovar, kettetores, allapot, random, save, load, help");
-=======
+
 					System.out.println("------------------------------------------------------");
 					System.out.println("addRovar [ID] - Rovart ad a jatekterhez (Rovarasz ID-ja)");
 					System.out.println("kettetores [ID] - Kivalasztott tekton kettetorese (Tekton ID-ja)");
@@ -245,7 +245,7 @@ public class CommandLine {
 					System.out.println("Gombasz parancsai: sporaszoras, ujTest, fonalnoveszt");
 					System.out.println("Rovarasz parancsai: vagas, lep, eszik");
 					System.out.println("Mindenki parancsai: addRovar, kettetores, allapot, random, save, load, help");
->>>>>>> 40faec5609d45768dd6849e1ae168b1e78fb2ac1
+
 				}
 			}
 
