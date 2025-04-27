@@ -277,7 +277,7 @@ public class Tekton {
 	public String listaz() {
 		return "Tekton{" +
 		   "id=" + id +
-           "tulajdonsagok='" + tulajdonsagok + '\'' +
+           ";tulajdonsagok='" + tulajdonsagok + '\'' +
 		   ";szomszedok=" + szomszedok +
            ";sporakSzama=" + sporakSzama +
            ";sporak=" + sporak +
@@ -338,4 +338,10 @@ public class Tekton {
 			t.ujSzomszed(this); // Kölcsönös kapcsolat létrehozása
 		}
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	
 }

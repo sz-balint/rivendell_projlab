@@ -21,6 +21,12 @@ public class Rovar {
         allapot = Allapot.NORMAL;
     }
 
+    public Rovar(Tekton hol, Allapot allapot, Rovarasz kie) {
+        this.hol = hol;
+        this.allapot = allapot;
+        this.kie = kie;
+    }
+
     // Visszaadja, hogy hol tartózkodik a rovar
     public Tekton getHol() {
         return hol;
@@ -114,4 +120,12 @@ public class Rovar {
            ",kie=" + kie +           
            '}';
 	}
+
+    public Rovar fromString(String str){
+        String[] parts = str.replace("Rovar{", "").replace("}", "").split(",");
+        Tekton hol = new Tekton(parts[0].split("=")[1]);
+        Allapot allapot = Allapot.valueOf(parts[1].split("=")[1]);
+        Rovarasz kie = new Rovarasz(parts[2].split("=")[1], Integer.parseInt(parts[3].split("=")[1]));
+        return new Rovar(hol, allapot, kie);
+    }
 }

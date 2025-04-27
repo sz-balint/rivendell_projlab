@@ -10,9 +10,9 @@ import java.util.Random;
 public class JatekLogika {
     public static int korokSzama;   // A j t k  sszes k reinek sz ma.
     public static List<Jatekos> Jatekosok;  // A j t kban r sztvev  j t kosok list ja.
-    private int jelenKor;   // Az aktu lis k r sz ma.
-    private Jatekos aktivJatekos;   // Az a j t kos, aki  ppen soron van.
-    private List<Tekton> Jatekter;  // A j t k  sszes tektonj t tartalmaz  lista.
+    private static int jelenKor;   // Az aktu lis k r sz ma.
+    private static Jatekos aktivJatekos;   // Az a j t kos, aki  ppen soron van.
+    private static List<Tekton> Jatekter;  // A j t k  sszes tektonj t tartalmaz  lista.
 
     //Konstruktorok:
     
@@ -107,7 +107,7 @@ public class JatekLogika {
         }
         gyoztesG = gombasz.get(idx);
         pont = 0;
-        
+
         for (Jatekos jatekos : rovarasz) {
             if (jatekos.pontok > pont) {
                 idx = rovarasz.indexOf(jatekos);
@@ -155,5 +155,23 @@ public class JatekLogika {
         }
 
         return sb.toString();
+    }
+
+    public Tekton getTektonById(int id) {
+        for (Tekton t : Jatekter) {
+            if (t.getId() == id) {
+                return t;
+            }
+        }
+        return null; // Ha nem található a tekton, akkor null-t ad vissza.
+    }
+
+    public Jatekos getJatekosByNev(String nev) {
+        for (Jatekos j : Jatekosok) {
+            if (j.nev.equals(nev)) {
+                return j;
+            }
+        }
+        return null; // Ha nem található a játékos, akkor null-t ad vissza.
     }
 }

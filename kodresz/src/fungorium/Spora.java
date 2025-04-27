@@ -46,4 +46,14 @@ public class Spora {
            ",hol=" + hol +
            '}';
 	}
+
+	// Static factory method to create a Spora instance from a string representation
+	public static Spora fromString(String s) {
+		String[] parts = s.replace("Spora{", "").replace("}", "").split(",");
+		int sporaType = Integer.parseInt(parts[0].split("=")[1]);
+		int tapertek = Integer.parseInt(parts[1].split("=")[1]);
+		int tektonId = Integer.parseInt(parts[2].split("=")[1].replace("#", ""));
+		JatekLogika jatek = new JatekLogika();
+		return new Spora(sporaType, tapertek, jatek.getTektonById(tektonId));
+	}
 }

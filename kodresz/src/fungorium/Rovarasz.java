@@ -39,4 +39,11 @@ public class Rovarasz extends Jatekos {
            ",pontok=" + pontok +
            '}';
     }
+
+    public Rovarasz fromString(String str){
+        String[] parts = str.replace("Rovarasz{", "").replace("}", "").split(",");
+        String nev = parts[0].split("=")[1];
+        int pontok = Integer.parseInt(parts[1].split("=")[1]);
+        return new Rovarasz(nev, pontok);
+    }
 }

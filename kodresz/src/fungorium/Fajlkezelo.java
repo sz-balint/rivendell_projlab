@@ -20,10 +20,6 @@ public class Fajlkezelo {
     }
 
     // Bet lti a j t k  llapot t.
-    /**
-     * @return
-     * @throws IOException
-     */
     public JatekLogika load() throws IOException {
         JatekLogika jatek = new JatekLogika();
         List<String> lines = new ArrayList<>();

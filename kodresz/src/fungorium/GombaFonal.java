@@ -158,4 +158,16 @@ public class GombaFonal {
            ",el=" + el +
            '}';
     }
+
+    public GombaFonal fromString(String str){
+        JatekLogika jatek = new JatekLogika();
+        String[] parts = str.replace("GombaFonal{", "").replace("}", "").split(",");
+        String tektonok1 = parts[0].split("=")[1].split("#")[1];
+        String tektonok2 = parts[0].split("=")[1].split("#")[2];
+        String kie = parts[1].split("=")[1];
+        String megel = parts[2].split("=")[1];
+        String el = parts[3].split("=")[1];
+        
+        return new GombaFonal(jatek.getTektonById(Integer.parseInt(tektonok1)),jatek.getTektonById(Integer.parseInt(tektonok1)) , (Gombasz)jatek.getJatekosByNev(kie), Integer.parseInt(megel), Boolean.parseBoolean(el));
+    }
 }

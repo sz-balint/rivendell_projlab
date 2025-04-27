@@ -110,4 +110,15 @@ public class GombaTest {
            ",kie=" + kie +
            '}';
     }
+
+    public static GombaTest fromString(String str) {
+        String[] parts = str.replace("GombaTest{", "").replace("}", "").split(",");
+        Tekton hol = Tekton.fromString(parts[0].split("=")[1].trim());
+        int kor = Integer.parseInt(parts[1].split("=")[1].trim());
+        boolean elegOreg = Boolean.parseBoolean(parts[2].split("=")[1].trim());
+        int utolsoSporaszoras = Integer.parseInt(parts[3].split("=")[1].trim());
+        int sporaszorasokSzama = Integer.parseInt(parts[4].split("=")[1].trim());
+        JatekLogika jatek = new JatekLogika();
+        return new GombaTest(hol, kor, elegOreg, utolsoSporaszoras, sporaszorasokSzama, (Gombasz)jatek.getJatekosByNev(parts[5].split("=")[1].trim()));
+    }
 }
