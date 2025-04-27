@@ -1,5 +1,6 @@
 package fungorium;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -108,7 +109,7 @@ public class CommandLine {
 				jatek.setAktivJatekos(jatek.getJatekosok().get(i));
 				
 				//Lepes
-				System.out.println(nev + " Lep : \naddRovar\nkettetores\nsporaszoras\nujTest\nfonalnoveszt\nvagas\nlep\neszik\nallapot\nrandom\nsave\nload\nhelp\n");
+				System.out.println(nev + " Lep : \naddRovar\nkettetores\nsporaszoras\nujTest\nfonalnoveszt\nrovartEszik\nvagas\nlep\neszik\nallapot\nrandom\nsave\nload\nhelp\n");
 				String valasz = scanner.nextLine();
 					
 				if (valasz.equals("kettetores")) { //Barki
@@ -136,6 +137,17 @@ public class CommandLine {
 				}
 				
 				else if (valasz.equals("fonalnoveszt")) { //Gombasz
+					if(jatek.getAktivJatekos().getTipus() == "Gombasz") { //A jatekoshoz megfelelo lepest valaszt
+						jatek.getAktivJatekos().Kor(valasz, jatek);
+					}
+					else {
+						System.out.println("Hibas! Ez egy Gombasz lepes, te Rovarasz vagy. Lepj ujra!");
+						i--;
+					}
+				}
+
+				//??
+				else if (valasz.equals("rovartEszik")) {
 					if(jatek.getAktivJatekos().getTipus() == "Gombasz") { //A jatekoshoz megfelelo lepest valaszt
 						jatek.getAktivJatekos().Kor(valasz, jatek);
 					}
@@ -184,11 +196,33 @@ public class CommandLine {
 				}
 				
 				else if (valasz.equals("save")) {
+					System.out.print("Add meg a mentés fájlnevét: ");
+					String filename = scanner.nextLine();
 					
+					Fajlkezelo fajlkezelo = new Fajlkezelo();
+					try {
+						fajlkezelo.save(jatek);
+						System.out.println("Játék állapota sikeresen mentve '" + filename + "' fájlba!");
+					} catch (IOException e) {
+						System.out.println("Hiba történt a mentés során: " + e.getMessage());
+					}
 				}
-				
+
 				else if (valasz.equals("load")) {
+					System.out.print("Add meg a betöltendő fájlnevét: ");
+					String filename = scanner.nextLine();
 					
+					Fajlkezelo fajlkezelo = new Fajlkezelo();
+					try {
+						JatekLogika loadedGame = fajlkezelo.load();
+						this.jatek = loadedGame;
+						System.out.println("Játék állapota sikeresen betöltve '" + filename + "' fájlból!");
+						
+						this.jatekosokSzama = loadedGame.getJatekosok().size();
+						this.tektonokSzama = loadedGame.getJatekter().size();
+					} catch (IOException e) {
+						System.out.println("Hiba történt a betöltés során: " + e.getMessage());
+					}
 				}
 				
 				else if (valasz.equals("help")) {
