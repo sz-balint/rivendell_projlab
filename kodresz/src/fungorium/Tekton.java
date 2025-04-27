@@ -14,6 +14,9 @@ public class Tekton {
     private List<Rovar> rovarok; // A tektonon ratozkodo rovarok listaja
     private GombaTest gombaTest; // Az adott tektonon levo gombatest
     private List<Tekton> kapcsoltTekton; // Azon tektonok, amelyekkel foal koti ossze
+
+	private String kapcsoltTektonStr;
+	private String szomszedokStr;
     
 	private static int idCounter = 0; // Osztályon belül nézi hogy melyik azonosítók voltak már használva
 
@@ -276,25 +279,27 @@ public class Tekton {
 
 	public String listaz() {
 		return "Tekton{" +
-		   "id=" + id +
-           ";tulajdonsagok='" + tulajdonsagok + '\'' +
-		   ";szomszedok=" + szomszedok +
-           ";sporakSzama=" + sporakSzama +
-           ";sporak=" + sporak +
-           ";fonalak=" + fonalak +
-           ";rovarok=" + rovarok +
-           ";gombaTest=" + gombaTest +
-           ";kapcsoltTekton=" + kapcsoltTekton +
+		   "id:" + id +
+           ";tulajdonsagok:'" + tulajdonsagok + '\'' +
+		   ";szomszedok:" + szomszedok +
+           ";sporakSzama:" + sporakSzama +
+           ";sporak:" + sporak +
+           ";fonalak:" + fonalak +
+           ";rovarok:" + rovarok +
+           ";gombaTest:" + gombaTest +
+           ";kapcsoltTekton:" + kapcsoltTekton +
            '}';
 	}
 
-	public static Tekton fromString(String data) {
+
+
+	public  Tekton fromString(String data) {
 		Tekton tekton = new Tekton("testnelkuli"); // Alapértelmezett tulajdonság
 		data = data.replace("Tekton{", "").replace("{", "").replace("}", ""); // Töröljük a kereteket
 		String[] parts = data.split(";");
 	
 		for (String part : parts) {
-			String[] attrValue = part.split("=");
+			String[] attrValue = part.split(":");
 			String attr = attrValue[0].trim();
 			String value = attrValue[1].trim();
 	
@@ -305,23 +310,45 @@ public class Tekton {
 				case "tulajdonsagok":
 					tekton.tulajdonsagok = value.replace("'", "");
 					break;
+				case "szomszedok":
+					//Mivel még nem létezik az összes tekton, ezért még nem tudjuk beállítani a szomszédokat
+					//ezért elmentjük egy stringbe és később beállítjuk
+					szomszedokStr = value;
+					break;
 				case "sporakSzama":
 					tekton.sporakSzama = Integer.parseInt(value);
 					break;
 				case "sporak":
-					
+					String[] egyesSporak = value.split("}");
+					for (String spora : egyesSporak) {
+						if (!spora.trim().isEmpty()) {
+							tekton.sporak.add(Spora.fromString(spora + "}")); // Spórák hozzáadása
+						}
+					}
 					break;
 				case "fonalak":
-					// Fonálak feldolgozása, ha szükséges
+					String[] egyesFonalak = value.split("}");
+					for (String fonal : egyesFonalak) {
+						if (!fonal.trim().isEmpty()) {
+							tekton.fonalak.add(GombaFonal.fromString(fonal + "}")); // Fonálak hozzáadása
+						}
+					}
 					break;
 				case "rovarok":
-					// Rovarok feldolgozása, ha szükséges
+					String[] egyesRovarok = value.split("}");
+					for (String rovar : egyesRovarok) {
+						if (!rovar.trim().isEmpty()) {
+							tekton.rovarok.add(Rovar.fromString(rovar + "}")); // Rovarok hozzáadása
+						}
+					}
 					break;
 				case "gombaTest":
-					// Gombatest feldolgozása, ha szükséges
+					tekton.gombaTest = GombaTest.fromString(value); 
 					break;
 				case "kapcsoltTekton":
-					// Kapcsolt Tektonok feldolgozása, ha szükséges
+					//Ugyan az a helyzet mint a szomszédokkal, ezért elmentjük egy stringbe és később beállítjuk
+					//a kapcsolt tektonokat
+					kapcsoltTektonStr = value.replace("'", "");
 					break;
 				default:
 					System.out.println("Ismeretlen attribútum: " + attr);
@@ -343,5 +370,19 @@ public class Tekton {
 		return id;
 	}
 
+	//Azokat az attributumokat amiket beolvasás közben nem lehett megadni azokat ebben adjuk meg
+	public void strToAttr() {
+		JatekLogika jatek = new JatekLogika();
+		// Szomszédok string konvertálása listává
+		String[] szomszedokArray = szomszedokStr.split("#");
+		for (String s : szomszedokArray) {
+			szomszedok.add(jatek.getTektonById(Integer.parseInt(s.trim())));
+		}
 	
+		// Kapcsolt tekton string konvertálása listává
+		String[] kapcsoltTektonArray = kapcsoltTektonStr.split("#");
+		for (String s : kapcsoltTektonArray) {
+			kapcsoltTekton.add(jatek.getTektonById(Integer.parseInt(s.trim())));
+		}
+	}
 }

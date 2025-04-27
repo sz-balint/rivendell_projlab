@@ -121,7 +121,7 @@ public class Rovar {
            '}';
 	}
 
-    public Rovar fromString(String str){
+    public static Rovar fromString(String str){
         String[] parts = str.replace("Rovar{", "").replace("}", "").split(",");
         Tekton hol = new Tekton(parts[0].split("=")[1]);
         Allapot allapot = Allapot.valueOf(parts[1].split("=")[1]);

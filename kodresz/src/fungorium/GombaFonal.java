@@ -159,7 +159,7 @@ public class GombaFonal {
            '}';
     }
 
-    public GombaFonal fromString(String str){
+    public static GombaFonal fromString(String str){
         JatekLogika jatek = new JatekLogika();
         String[] parts = str.replace("GombaFonal{", "").replace("}", "").split(",");
         String tektonok1 = parts[0].split("=")[1].split("#")[1];

@@ -63,23 +63,13 @@ public class Fajlkezelo {
         while (sor < lines.size()) {
             String line = lines.get(sor);
             if (line.isEmpty()) break; // Üres sor esetén kilépünk
-            Tekton tekton = Tekton.fromString(line);
-            jatek.addTekton(tekton);
+            Tekton tekton = new Tekton("testnelkuli");
+            jatek.addTekton(tekton.fromString(line));
             sor++;
         }
 
         for (Tekton tekton : jatek.getJatekter()) {
-            List<Tekton> kapcsoltSzomszedok = new ArrayList<>();
-            for (Tekton szomszed : tekton.getKapcsolSzomszedok()) {
-                Tekton valodiSzomszed = jatek.getJatekter().stream()
-                    .filter(t -> t.toString().equals(szomszed.toString()))
-                    .findFirst()
-                    .orElse(null);
-                if (valodiSzomszed != null) {
-                    kapcsoltSzomszedok.add(valodiSzomszed);
-                }
-            }
-           
+            tekton.strToAttr();
         }
 
         return jatek; // Itt majd meg lesz hívva a sok paraméteres konstruktor 
