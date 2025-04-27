@@ -84,7 +84,7 @@ public class Gombasz extends Jatekos {
         
     }
 
- // Új gombafonál hozzáadása a listához.
+    // Új gombafonál hozzáadása a listához.
     public void UjGombaFonal(GombaFonal f) {
         
         // Ellenőrzi, hogy a gombafonál már létezik-e a listában.
@@ -167,9 +167,31 @@ public class Gombasz extends Jatekos {
     	
     	//Gombasz uj Fonalat noveszt
     	if (parancs.equals("fonalnoveszt")) { 
+    		//Kiirjuk a GombaTesteket
+			System.out.println("Lehetséges GombaTestek: ");
+			for(int i = 0; i < Testek.size(); i++) {
+				System.out.println(i + 1 + ". " + Testek.get(i).toString());
+			}
+			
+			System.out.println("Add meg a sorszámát:");
+			int valasz2 = scanner.nextInt();
+			
+			//A valasztott Test Tektonja lesz a kezdo Tekton
+			Tekton kezdoTekton = Testek.get(valasz2-1).getTekton();
+			
+			System.out.println("Lehetséges cél Tektonok: "); 
     		
-    		
-    		
+			//Kiirjuk, hogy melyikek lehetnek a cel Tektonok, tulajdonkeppen a szomszedok
+			for(int i=0; i < Testek.size(); i++) { //Kiirjuk a szomszedos Tektonokat
+				Testek.get(i).getTekton().listaz();
+			}
+			
+			System.out.println("Add meg a választott Tektonok id-át: "); //Megvajuk a Tekton id-t
+			valasz2 = scanner.nextInt();
+			//A valasztott lesz a cel Tekton
+			Tekton celTekton = Testek.get(valasz2-1).getTekton();
+			
+			fonalIrany(kezdoTekton, celTekton);
     		
 		}
     	
