@@ -63,37 +63,37 @@ public class CommandLine {
 	
 	//______________________________________
 	public void jatekKonzolbol() {
-		
 		Scanner scanner = new Scanner(System.in); //A beolvasásokhoz
 		
-		while(jatek.jatekVege()==false) {
+		while(jatek.jatekVege() == false) {
 			
 			//1. Játékosok megadása:
-			if(jatek.getJelenKor()==0) {
-				System.out.println("Hány Játékos fog játszani?");
-				 if (scanner.hasNextInt()) {
-					 jatekosokSzama = scanner.nextInt();  // Beolvassuk a számot
-			        } else {
-			            System.out.println("Egy számot adj meg!");
-			     }
-				 
+			if(jatek.getJelenKor() == 0) {
+				System.out.print("Hány Játékos fog játszani? ");
+				if (scanner.hasNextInt()) {
+					jatekosokSzama = scanner.nextInt();  // Beolvassuk a számot
+					scanner.nextLine();
+				} else {
+					System.out.println("Egy számot adj meg!");
+					scanner.nextLine();//invalid input torlese
+					continue;
+				}
+				
 				//Gombászok
-				for(int i=0; i<jatekosokSzama/2; i++) {
-					System.out.println("Add meg a Gombász nevét: ");
-					String nev = scanner.nextLine();  // Beolvassuk a számot
+				for(int i = 0; i < jatekosokSzama/2; i++) {
+					System.out.print("Add meg a " + (i+1) + ". Gombász nevét: ");
+					String nev = scanner.nextLine();  // Beolvassuk a nevet
 					
-					Jatekos jatekos = new Gombasz(nev , 0, "Gombasz");
-					
+					Jatekos jatekos = new Gombasz(nev, 0, "Gombasz");
 					jatek.addJatekos(jatekos);
 				}
 					
 				//Rovarászok
-				for(int i=jatekosokSzama/2+1; i<=jatekosokSzama; i++) { //A paratlan szamok miatt
-					System.out.println("Add meg a Rovarász nevét: ");
-					String nev = scanner.nextLine();  // Beolvassuk a számot
+				for(int i = jatekosokSzama/2; i < jatekosokSzama; i++) {
+					System.out.print("Add meg a " + (i+1) + ". Rovarász nevét: ");
+					String nev = scanner.nextLine();  // Beolvassuk a nevet
 					
-					Jatekos jatekos = new Rovarasz(nev , 0, "Rovarasz");
-					
+					Jatekos jatekos = new Rovarasz(nev, 0, "Rovarasz");
 					jatek.addJatekos(jatekos);
 				}
 			}
@@ -193,7 +193,6 @@ public class CommandLine {
 				
 				else if (valasz.equals("help")) {
 					System.out.println("Elerheto parancsok listaja:");
-
  					System.out.println("------------------------------------------------------");
  					System.out.println("addRovar [ID] - Rovart ad a jatekterhez (Rovarasz ID-ja)");
  					System.out.println("kettetores [ID] - Kivalasztott tekton kettetorese (Tekton ID-ja)");
@@ -219,7 +218,6 @@ public class CommandLine {
  					System.out.println("Gombasz parancsai: sporaszoras, ujTest, fonalnoveszt");
  					System.out.println("Rovarasz parancsai: vagas, lep, eszik");
  					System.out.println("Mindenki parancsai: addRovar, kettetores, allapot, random, save, load, help");
-
 					System.out.println("------------------------------------------------------");
 					System.out.println("addRovar [ID] - Rovart ad a jatekterhez (Rovarasz ID-ja)");
 					System.out.println("kettetores [ID] - Kivalasztott tekton kettetorese (Tekton ID-ja)");
