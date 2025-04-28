@@ -24,7 +24,7 @@ public class CommandLine {
 		tektonokSzama = 2 * jatekosokSzama; 
 		// 1. Létrehozzuk az n darab tekton-t
         for (int i = 0; i < tektonokSzama; i++) {
-            tektonok.add(new Tekton("testnelkuli")); 
+            tektonok.add(new Tekton("sima")); 
         }
 		
         Random random = new Random();
@@ -135,7 +135,8 @@ public class CommandLine {
 				}
 			}
 		}
-	}
+		}
+	
 	//______________________________________
 	
 	
