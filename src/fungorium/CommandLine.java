@@ -610,8 +610,6 @@ public class CommandLine {
 		}
 		jatekosokSzama++;
 		System.out.println("Jatekosok" + jatek.getJatekosok());
-		System.out.println("Játékosok száma: " + jatek.getJatekosok().size());
-		System.out.println("Játékosok száma: " + jatekosokSzama);
 		
 	}
 
