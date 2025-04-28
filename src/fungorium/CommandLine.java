@@ -145,7 +145,6 @@ public class CommandLine {
 		Scanner scanner = new Scanner(System.in); //A beolvasásokhoz
 		
 		while(jatek.jatekVege() == false) {
-			System.out.println("While eleje");
 			//1. Játékosok megadása:
 			if(jatek.getJelenKor() == 0) {
 				System.out.print("Hány Játékos fog játszani? ");
@@ -204,7 +203,6 @@ public class CommandLine {
 			
 			//jatek egy kore
 			for(int i=0; i<jatekosokSzama; i++) {
-				System.out.println("jelenlegi kor: " + jatek.getJelenKor());
 				String nev = jatek.getJatekosok().get(i).getNev(); //Jatekos
 				
 
@@ -253,7 +251,6 @@ public class CommandLine {
 				else if (valasz.equals("fonalnoveszt")) { //Gombasz
 					if(jatek.getAktivJatekos().getTipus() == "Gombasz") { //A jatekoshoz megfelelo lepest valaszt
 						jatek.getAktivJatekos().Kor(valasz, jatek, scanner);
-						System.out.println("Sikeres fonalnovesztes!");
 					}
 					else {
 						System.out.println("Hibas! Ez egy Gombasz lepes, te Rovarasz vagy. Lepj ujra!");
@@ -474,8 +471,6 @@ public class CommandLine {
 					i--;
 					continue;
 				}
-				System.out.println("A jatekos lepett, a kovetkezp jon");
-				System.out.println("jelenlegi kor: " + jatek.getJelenKor());
 			}
 			
 			jatek.setJelenKor(jatek.getJelenKor()+1);

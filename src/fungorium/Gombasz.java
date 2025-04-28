@@ -211,6 +211,7 @@ public class Gombasz extends Jatekos {
 			fonalIrany(kezdoTekton, celTekton);
     		
 		}
+    	String valasz = scanner.nextLine();
     }
     
     @Override

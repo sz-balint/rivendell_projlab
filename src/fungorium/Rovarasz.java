@@ -118,6 +118,7 @@ public class Rovarasz extends Jatekos {
 			
 			eves(rovar,spora);
 		}
+    	String valasz = scanner.nextLine();
     }
     
     @Override
