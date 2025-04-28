@@ -15,14 +15,10 @@ public class Rovar {
 	public int getId() {
 		return id;
 	}
-<<<<<<< HEAD
     
     //üres konstruktor
     public Rovar(){}
 
-=======
-    /*
->>>>>>> refs/remotes/origin/main
     // Rovar létrehozása megadott állapottal
     public Rovar(Tekton h, Allapot all, Rovarasz kie) {
         hol = h;
@@ -30,7 +26,7 @@ public class Rovar {
         this.kie = kie;
         id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
-    */
+   
     
     // Rovar létrehozása, alapértelmezett állapot: NORMAL
     public Rovar(Tekton h, Rovarasz kie) {
@@ -40,12 +36,6 @@ public class Rovar {
         id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
-    public Rovar(Tekton hol, Allapot allapot, Rovarasz kie) {
-        this.hol = hol;
-        this.allapot = allapot;
-        this.kie = kie;
-        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
-    }
 
     // Visszaadja, hogy hol tartózkodik a rovar
     public Tekton getHol() {
