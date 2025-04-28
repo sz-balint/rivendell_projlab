@@ -24,7 +24,8 @@ public class Tekton {
     List <String> spectul = new ArrayList<>(List.of("fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal"));
 
 	//TODO
-    //Tekton letrehozosa semmivel
+    
+    //Tekton letrehozosa tulajdonsaggal
     public Tekton(String tul) {
 		id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
 		tulajdonsagok=tul;
@@ -156,6 +157,10 @@ public class Tekton {
     public void torolTest() {
     	gombaTest = null;
 	}
+    
+    public List<Rovar> getRovarok(){
+    	return rovarok;
+    }
 
 	// A sporak szamanak lekardezese
 	public int getSporakSzama() {

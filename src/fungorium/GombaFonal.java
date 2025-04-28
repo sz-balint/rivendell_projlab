@@ -9,12 +9,21 @@ public class GombaFonal {
     public Gombasz kie;  // A gomb�sz, akihez a fon�l tartozik.
     private int megel;  // A t�l�l�si id�, am�g a fon�l test n�lk�l �letben maradhat, ebb�l sz�molunk le ha m�r nem �l
     private boolean el=true; // Jelzi, hogy a fon�l m�g �l-e.
+    private int id; // A fonalak azonosítására szolgál
+    
     Random random = new Random();
+    private static int idCounter = 0; // Osztályon belül nézi hogy melyik azonosítók voltak már használva
+
+	public int getId() {
+		return id;
+	}
+	
     //Gombafonal letrehozasa csak tekton list�val + Gomb�sszal (sz�ks�gess�ge k�rd�ses)
     public GombaFonal(List<Tekton> tekt, Gombasz g) {
 		kapcsoltTektonok=tekt;
         kie=g;
         megel=random.nextInt(5) + 1;
+        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
     //Gombafonal letrehozasa csak 2 tektonnal + Gomb�sszal
@@ -24,6 +33,7 @@ public class GombaFonal {
         kapcsoltTektonok.add(tek2);
         kie=g;
         megel=random.nextInt(5) + 1;
+        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
     //Gombafonal letrehozasa pontos adatokkal, tekton list�val 
@@ -32,6 +42,7 @@ public class GombaFonal {
         kie=g;
         megel=m;
         el=e;
+        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
     //Gombafonal letrehozasa pontos adatokkal, 2 tektonnal
@@ -42,6 +53,7 @@ public class GombaFonal {
         kie=g;
         megel=m;
         el=e;
+        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
     // Megmondja, hogy a fon�l m�g �letben van-e.
