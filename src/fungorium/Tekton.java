@@ -5,7 +5,7 @@ import java.util.Random;
 
 
 public class Tekton {
-    public String tulajdonsagok="testnelkuli"; // A tekton sajat tulajdonsagai (pl. fonal novekedesi sebessege)
+    public String tulajdonsagok="sima"; // A tekton sajat tulajdonsagai (pl. fonal novekedesi sebessege)
     private int id; // A tektonok azonosítására szolgál
 	private List<Tekton> szomszedok; // A tekton szomszedos tektonjai
     private int sporakSzama=0; // A tektonon levo sporak szama
@@ -21,7 +21,7 @@ public class Tekton {
 	private static int idCounter = 0; // Osztályon belül nézi hogy melyik azonosítók voltak már használva
 
     Random random = new Random();
-    List <String> spectul = new ArrayList<>(List.of("fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal"));
+    List <String> spectul = new ArrayList<>(List.of("sima","fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal"));
 
 	//TODO
     
@@ -299,7 +299,7 @@ public class Tekton {
 
 
 	public  Tekton fromString(String data) {
-		Tekton tekton = new Tekton("testnelkuli"); // Alapértelmezett tulajdonság
+		Tekton tekton = new Tekton("sima"); // Alapértelmezett tulajdonság
 		data = data.replace("Tekton{", "").replace("{", "").replace("}", ""); // Töröljük a kereteket
 		String[] parts = data.split(";");
 	

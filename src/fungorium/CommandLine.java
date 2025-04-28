@@ -24,7 +24,7 @@ public class CommandLine {
 		tektonokSzama = 2 * jatekosokSzama; 
 		// 1. Létrehozzuk az n darab tekton-t
         for (int i = 0; i < tektonokSzama; i++) {
-            tektonok.add(new Tekton("testnelkuli")); 
+            tektonok.add(new Tekton("sima")); 
         }
 		
         Random random = new Random();
@@ -50,15 +50,27 @@ public class CommandLine {
 	
 	//Pályafeltoltes
 	//______________________________________
-	public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok ,int gombaszokSzama, int rovaraszokSzama){
+	public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok){
 		Random random = new Random();
-		for (int i = 0; i < gombaszokSzama; i++) {
-			Tekton t = jatekter.get(random.nextInt(tektonokSzama));
-			if(t.vanHely()==true) {
-				//NINCS KESZ VAROM A MEGVALTAST 
-				
+		Gombasz gom;
+		Rovarasz rov;
+		for (Jatekos j : jatek.getJatekosok() ) {
+			if (j.getTipus()=="Gombasz") {
+				gom = (Gombasz) j;
+				Tekton t = jatekter.get(random.nextInt(tektonokSzama));
+				while (t.vanHely()!=true) {
+					t = jatekter.get(random.nextInt(tektonokSzama));
+				}
+				GombaTest test= new GombaTest(t, gom);
+				gom.UjGombaTest(test);
 			}
-        }
+			else {
+				rov = (Rovarasz) j;
+				Tekton t = jatekter.get(random.nextInt(tektonokSzama));
+				Rovar rovar= new Rovar(t, rov);
+				rov.UjRovar(rovar);
+			}
+		}
 	}
 	//______________________________________
 	
@@ -120,6 +132,9 @@ public class CommandLine {
 			//2. A palya elkeszitese:
 			//Pálya létrehozása:
 			palyaGeneralas(jatek.getJatekter());
+			//És feltöltése
+			//TODO Jók-e a gombász/rovarász számok?
+			palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
 			
 			for(int i=0; i<jatekosokSzama; i++) {
 				String nev = jatek.getJatekosok().get(i).getNev(); //Jatekos

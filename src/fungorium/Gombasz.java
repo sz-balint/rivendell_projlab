@@ -1,5 +1,6 @@
 package fungorium;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -7,13 +8,13 @@ import java.util.Scanner;
 public class Gombasz extends Jatekos {
 
     // A gombaszhoz tartoz� gombatestek list�ja.
-    private List<GombaTest> Testek;
+    private List<GombaTest> Testek = new ArrayList<>();
 
     // A gomb�szhoz tartoz� gombafonalak list�ja.
-    private List<GombaFonal> Fonalak;
+    private List<GombaFonal> Fonalak= new ArrayList<>();
 
     //Konstruktor
-    public Gombasz(String nev, int pontok, String tipus){ super(nev, pontok); tipus = "Gombasz";}
+    public Gombasz(String nev, int pontok, String tipus){ super(nev, pontok); this.tipus = "Gombasz";}
     
     // Egy megadott gombafon�lb�l �j gombatestet n�veszt.
     private void testNoveszt(GombaFonal fonal, Tekton tekton) { //melyik fonálból növesztünk, és hova
@@ -188,11 +189,17 @@ public class Gombasz extends Jatekos {
 			Tekton kezdoTekton = Testek.get(valasz2-1).getTekton();
 			
 			System.out.println("Lehetséges cél Tektonok: "); 
-    		
+			//Kiirjuk, hogy melyikek lehetnek a cel Tektonok, tulajdonkeppen a szomszedok
+			for (Tekton tekt :kezdoTekton.getSzomszedok()) {
+				tekt.listaz();
+			}
+			/*Szerintem a fenti jó kéne legyen
+			System.out.println("Lehetséges cél Tektonok: "); 
 			//Kiirjuk, hogy melyikek lehetnek a cel Tektonok, tulajdonkeppen a szomszedok
 			for(int i=0; i < Testek.size(); i++) { //Kiirjuk a szomszedos Tektonokat
 				Testek.get(i).getTekton().listaz();
-			}
+			}*/
+
 			
 			System.out.println("Add meg a választott Tektonok id-át: "); //Megvajuk a Tekton id-t
 			valasz2 = scanner.nextInt();

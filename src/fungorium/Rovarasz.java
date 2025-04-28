@@ -1,5 +1,6 @@
 package fungorium;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -8,10 +9,10 @@ import java.util.Scanner;
 public class Rovarasz extends Jatekos {
 
     //Konstruktor
-     public Rovarasz(String nev, int pontok, String tipus){ super(nev, pontok); tipus = "Rovarasz";}
+     public Rovarasz(String nev, int pontok, String tipus){ super(nev, pontok); this.tipus = "Rovarasz";}
 
     // A rovarász által irányított rovarok listája.
-    private List<Rovar> Rovarok;
+    private List<Rovar> Rovarok= new ArrayList<>();
 
     // Rovart mozgat egyik tektonról a másikra.
     private void rovarLepes(Rovar r, Tekton t) { r.lep(t); }

@@ -15,18 +15,21 @@ public class Rovar {
 	public int getId() {
 		return id;
 	}
-    
+    /*
     // Rovar létrehozása megadott állapottal
-    public Rovar(Tekton h, Allapot all) {
+    public Rovar(Tekton h, Allapot all, Rovarasz kie) {
         hol = h;
         allapot = all;
+        this.kie = kie;
         id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
-
+    */
+    
     // Rovar létrehozása, alapértelmezett állapot: NORMAL
-    public Rovar(Tekton h) {
+    public Rovar(Tekton h, Rovarasz kie) {
         hol = h;
         allapot = Allapot.NORMAL;
+        this.kie = kie;
         id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
@@ -113,7 +116,7 @@ public class Rovar {
 
     // A rovar szaporodik, új példányt hoz létre
     private void osztodik() {
-        Rovar ujRovar = new Rovar(hol);
+        Rovar ujRovar = new Rovar(hol, kie);
         ujRovar.kie = this.kie;
         hol.ujRovar(ujRovar);
     }
