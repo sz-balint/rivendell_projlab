@@ -127,7 +127,7 @@ public class Tests {
         assertTrue(newFonal.getKapcsoltTektonok().contains(tekton3), "Nem tartalmazza érkező Tekton-t");
     
         // Szöveges tesztkimenet
-        System.out.println("fonalnoveszt " + gombasz.getNev() + ":");
+        System.out.println("\nfonalnoveszt " + gombasz.getNev() + ":");
         System.out.println("    GombaFonal " + newFonal.getId() + " ID null " + newFonal.getId());
         System.out.println("    GombaFonal " + newFonal.getId() + " ForrásTekton null " + tekton1.getId());
         System.out.println("    GombaFonal " + newFonal.getId() + " CélTekton null " + tekton3.getId());
@@ -184,7 +184,7 @@ public class Tests {
         tekton3.ujFonal(secondFonal);
         gombasz.UjGombaFonal(secondFonal);
     
-        System.out.println("fonalnoveszt " + gombasz.getNev() + ":");
+        System.out.println("\n" + "fonalnoveszt2tavra " + gombasz.getNev() + ":");
     
         // Első fonal adatai
         System.out.println("    GombaFonal " + firstFonal.getId() + " ID null " + firstFonal.getId());
@@ -213,7 +213,7 @@ public class Tests {
         System.out.println("    GombaTest " + gombaTest.getId() + " Fonalak " + regiFonalak2 + " " + ujFonalak2);
     }
     
-
+/*
     public static void testSporaSzoras() {
         gombaTest.sporaSzoras();
         assertTrue(!tekton2.getSporak().isEmpty(), "Spóra nem szóródott");
@@ -225,6 +225,60 @@ public class Tests {
         gombaTest.sporaSzoras();
         assertTrue(!tekton3.getSporak().isEmpty() || !tekton1.getSporak().isEmpty(), "Távoli spóra szórás nem történt");
     }
+*/
+
+public static void testSporaSzoras() {
+    // Előkészítés
+    int regiSporakSzama = tekton2.getSporak().size();
+    int regiSporaSzorasokSzama = gombaTest.sporaszorasokSzama;
+    int regiUtolsoSporaszoras = gombaTest.utolsoSporaszoras;
+
+    // Gombatest spóra szórás
+    gombaTest.sporaSzoras();
+
+    // Ellenőrzés
+    assertTrue(!tekton2.getSporak().isEmpty(), "Spóra nem szóródott");
+
+    System.out.println("\n" + //
+                "sporaszoras " + gombasz.getNev() + ":");
+
+    // Mivel nincs Spóra ID, azt helyettesítjük
+    System.out.println("    Spóra: új spóra szórva. (Spóra ID: [nincs ID], Cél Tekton ID: " + tekton2.getId() + ")");
+    System.out.println("    Tekton ID: " + tekton2.getId() + ", Spórák száma előtte: " + regiSporakSzama + ", Spórák száma utána: " + tekton2.getSporak().size());
+    System.out.println("    GombaTest ID: " + gombaTest.getId() + ", Spóra szórások száma előtte: " + regiSporaSzorasokSzama + ", utána: " + gombaTest.sporaszorasokSzama);
+    System.out.println("    GombaTest ID: " + gombaTest.getId() + ", Utolsó spóraszórás értéke előtte: " + regiUtolsoSporaszoras + ", utána: 0");
+}
+
+public static void testSporaSzoras2tavra() {
+    gombaTest.kor = 3;
+    gombaTest.elegOreg = true;
+
+    int regiSporakSzama1 = tekton1.getSporak().size();
+    int regiSporakSzama3 = tekton3.getSporak().size();
+    int regiSporaSzorasokSzama = gombaTest.sporaszorasokSzama;
+    int regiUtolsoSporaszoras = gombaTest.utolsoSporaszoras;
+
+    gombaTest.sporaSzoras();
+
+    assertTrue(!tekton1.getSporak().isEmpty() || !tekton3.getSporak().isEmpty(), "Távoli spóra szórás nem történt");
+
+    System.out.println("\nsporaszoras2tavra " + gombasz.getNev() + ":");
+
+    if (tekton1.getSporak().size() > regiSporakSzama1) {
+        System.out.println("    Spóra: új spóra szórva. (Spóra ID: [nincs ID], Cél Tekton ID: " + tekton1.getId() + ")");
+        System.out.println("    Tekton ID: " + tekton1.getId() + ", Spórák száma előtte: " + regiSporakSzama1 + ", Spórák száma utána: " + tekton1.getSporak().size());
+    }
+
+    if (tekton3.getSporak().size() > regiSporakSzama3) {
+        System.out.println("    Spóra: új spóra szórva. (Spóra ID: [nincs ID], Cél Tekton ID: " + tekton3.getId() + ")");
+        System.out.println("    Tekton ID: " + tekton3.getId() + ", Spórák száma előtte: " + regiSporakSzama3 + ", Spórák száma utána: " + tekton3.getSporak().size());
+    }
+
+    System.out.println("    GombaTest ID: " + gombaTest.getId() + ", Spóra szórások száma előtte: " + regiSporaSzorasokSzama + ", utána: " + gombaTest.sporaszorasokSzama);
+    System.out.println("    GombaTest ID: " + gombaTest.getId() + ", Utolsó spóraszórás értéke előtte: " + regiUtolsoSporaszoras + ", utána: 0");
+}
+
+
 
     public static void testGombaTestLetrehozasa() {
         tekton2.getSporak().add(new Spora(tekton2));

@@ -8,7 +8,7 @@ public class GombaTest {
     public int kor=0; // A gombatest eletkora
     public boolean elegOreg=false; // Tud-e szorni tavolabbi tektonra sporat
     public int utolsoSporaszoras=0; // Az utolso sporaszoras ota eltelt idő
-    private int sporaszorasokSzama=0; // Az eddigi sporaszorasok szama
+    public int sporaszorasokSzama=0; // Az eddigi sporaszorasok szama
     public static int maxSporaszorasok = 4; // Maximalisan vegrehajthato sporaszorasok szama
     public static Gombasz kie; // A gombász, akihez a test tartozik.
     private int id; // A testek azonosítására szolgál
