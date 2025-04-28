@@ -511,6 +511,7 @@ public class CommandLine {
 					System.out.println("Használj 'help' parancsot a segítséghez.");
 					break;
 			}
+			jatek.ujKor(); //Kör növelése
 		}
 	}
 
@@ -534,14 +535,17 @@ public class CommandLine {
 			}
 		}
 
+		jatek.setAktivJatekos(jatek.getJatekosok().get(0)); //Az első játékos lesz az aktív játékos
+		jatek.setJelenKor(0); //Kezdő kör beállítása
+
 		System.out.println("Hány kör legyen a játékban? ");
 		String korokInput = scanner.nextLine();
 		while (!korokInput.matches("\\d+")) {
 			System.out.println("Kérlek adj meg egy számot!");
 			korokInput = scanner.nextLine();
 		}
-		int korokSzama = Integer.parseInt(korokInput);
-		jatek.setKorokSzama(korokSzama*jatekosokSzama);
+		int korokSzama = Integer.parseInt(korokInput)*jatekosokSzama;
+		jatek.setKorokSzama(korokSzama);
 	}
 
 	private void jatekosBeolvaso(String  tipus, Scanner scanner, List<String> existingNames) {
@@ -574,7 +578,7 @@ public class CommandLine {
 		} else {
 			System.out.println("Rovarasz: vagas, lep, eszik");
 		}
-		System.out.println("Általános: kettetores, allapot, random, save, load");
+		System.out.println("Általános: addJatekos, kettetores, allapot, random, save, load");
 		System.out.print("A parancsokhoz szükséges argumentumokhoz használd a 'help' parancsot.");
 
 	}
@@ -582,25 +586,32 @@ public class CommandLine {
 	//Megvalósítja a játkos hozzáadását
 	private void addJatekos(String[] parameterek){
 		// Megnézi hogy a megfelelő paraméterek vannak-e megadva
-		if(parameterek.length < 3 || !parameterek[1].equals("-n")) {
+		if(parameterek.length != 3 || !parameterek[1].equals("-n")) {
 			System.out.println("Hiba: Nem megfeleő paraméter!");
 			System.out.println("Használat: addJatekos -g(:Gombasz)/-r(:Rovarasz)  -n [név]");
 			System.out.println("Példa: addJatekos -g -n Gombasz1");
+			System.out.println("A név ne tartalmazzon szóközt!");
 			return;
 		}
 		//Létrehozza és hozzáadja a játékosokat a játéktérhez a paraméterek alapján
 		if(parameterek[0].equals("-g")) {
 			String nev = parameterek[2];
-			Jatekos jatekos = new Gombasz(parameterek[2], 0, "Gombasz");
+			Jatekos jatekos = new Gombasz(nev, 0, "Gombasz");
 			jatek.addJatekos(jatekos);
+			System.out.println("Gombász hozzáadva: " + jatekos);
 		} else if(parameterek[0].equals("-r")) {
 			String nev = parameterek[2];
-			Jatekos jatekos = new Rovarasz(parameterek[2], 0, "Rovarasz");
+			Jatekos jatekos = new Rovarasz(nev, 0, "Rovarasz");
 			jatek.addJatekos(jatekos);
+			System.out.println("Rovarász hozzáadva: " + jatekos);
 		} else {
 			System.out.println("Hiba: Ismeretlen játékos típus!");
+			return;
 		}
-
+		jatekosokSzama++;
+		System.out.println("Jatekosok" + jatek.getJatekosok());
+		System.out.println("Játékosok száma: " + jatek.getJatekosok().size());
+		System.out.println("Játékosok száma: " + jatekosokSzama);
 		
 	}
 

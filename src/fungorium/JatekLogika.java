@@ -62,7 +62,7 @@ public class JatekLogika {
     // Egy  j k r ind t sa.
     // Megnézi hogy vége van-e a játéknak, ha nem akkor növeli az aktuális kör számát 
     // és továbblép a következő játékosra
-    private void ujKor() {
+    public void ujKor() {
         if (!jatekVege()) {
             return;
         }
