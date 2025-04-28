@@ -121,7 +121,7 @@ public class CommandLine {
 					
 					// 4. Létrehozzuk és elhelyezzük a gombatestet
 					GombaTest test = new GombaTest(randomTekton, g);
-					g.UjGombaTest(test, randomTekton);
+					g.UjGombaTest(test);
 					
 					// 5. Kezdő fonalak létrehozása szomszédos tektónokra
 					for (Tekton szomszed : randomTekton.getSzomszedok()) {
@@ -145,7 +145,7 @@ public class CommandLine {
 		Scanner scanner = new Scanner(System.in); //A beolvasásokhoz
 		
 		while(jatek.jatekVege() == false) {
-			
+			System.out.println("While eleje");
 			//1. Játékosok megadása:
 			if(jatek.getJelenKor() == 0) {
 				System.out.print("Hány Játékos fog játszani? ");
@@ -202,8 +202,12 @@ public class CommandLine {
 				palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
 			}
 			
+			//jatek egy kore
 			for(int i=0; i<jatekosokSzama; i++) {
+				System.out.println("jelenlegi kor: " + jatek.getJelenKor());
 				String nev = jatek.getJatekosok().get(i).getNev(); //Jatekos
+				
+
 				
 				jatek.setAktivJatekos(jatek.getJatekosok().get(i));
 				
@@ -228,7 +232,7 @@ public class CommandLine {
 				
 				else if (valasz.equals("sporaszoras")) { //Gombasz
 					if(jatek.getAktivJatekos().getTipus() == "Gombasz") { //A jatekoshoz megfelelo lepest valaszt
-						jatek.getAktivJatekos().Kor(valasz, jatek);
+						jatek.getAktivJatekos().Kor(valasz, jatek, scanner);
 					}
 					else {
 						System.out.println("Hibas! Ez egy Gombasz lepes, te Rovarasz vagy. Lepj ujra!");
@@ -238,7 +242,7 @@ public class CommandLine {
 				
 				else if (valasz.equals("ujTest")) { //Gombasz
 					if(jatek.getAktivJatekos().getTipus() == "Gombasz") { //A jatekoshoz megfelelo lepest valaszt
-						jatek.getAktivJatekos().Kor(valasz, jatek);
+						jatek.getAktivJatekos().Kor(valasz, jatek, scanner);
 					}
 					else {
 						System.out.println("Hibas! Ez egy Gombasz lepes, te Rovarasz vagy. Lepj ujra!");
@@ -248,7 +252,7 @@ public class CommandLine {
 				
 				else if (valasz.equals("fonalnoveszt")) { //Gombasz
 					if(jatek.getAktivJatekos().getTipus() == "Gombasz") { //A jatekoshoz megfelelo lepest valaszt
-						jatek.getAktivJatekos().Kor(valasz, jatek);
+						jatek.getAktivJatekos().Kor(valasz, jatek, scanner);
 						System.out.println("Sikeres fonalnovesztes!");
 					}
 					else {
@@ -259,7 +263,7 @@ public class CommandLine {
 
 				else if (valasz.equals("rovartEszik")) {
 					if(jatek.getAktivJatekos().getTipus() == "Gombasz") { //A jatekoshoz megfelelo lepest valaszt
-						jatek.getAktivJatekos().Kor(valasz, jatek);
+						jatek.getAktivJatekos().Kor(valasz, jatek, scanner);
 					}
 					else {
 						System.out.println("Hibas! Ez egy Gombasz lepes, te Rovarasz vagy. Lepj ujra!");
@@ -269,7 +273,7 @@ public class CommandLine {
 				
 				else if (valasz.equals("vagas")) { //Rovarasz
 					if(jatek.getAktivJatekos().getTipus() == "Rovarasz") { //A jatekoshoz megfelelo lepest valaszt
-						jatek.getAktivJatekos().Kor(valasz, jatek);
+						jatek.getAktivJatekos().Kor(valasz, jatek, scanner);
 					}
 					else {
 						System.out.println("Hibas! Ez egy Rovarasz lepes, te Gombasz vagy. Lepj ujra!");
@@ -279,7 +283,7 @@ public class CommandLine {
 				
 				else if (valasz.equals("lep")) { //Rovarasz
 					if(jatek.getAktivJatekos().getTipus() == "Rovarasz") { //A jatekoshoz megfelelo lepest valaszt
-						jatek.getAktivJatekos().Kor(valasz, jatek);
+						jatek.getAktivJatekos().Kor(valasz, jatek, scanner);
 					}
 					else {
 						System.out.println("Hibas! Ez egy Rovarasz lepes, te Gombasz vagy. Lepj ujra!");
@@ -289,7 +293,7 @@ public class CommandLine {
 				
 				else if (valasz.equals("eszik")) { //Rovarasz
 					if(jatek.getAktivJatekos().getTipus() == "Rovarasz") { //A jatekoshoz megfelelo lepest valaszt
-						jatek.getAktivJatekos().Kor(valasz, jatek);
+						jatek.getAktivJatekos().Kor(valasz, jatek, scanner);
 					}
 					else {
 						System.out.println("Hibas! Ez egy Rovarasz lepes, te Gombasz vagy. Lepj ujra!");
@@ -407,8 +411,8 @@ public class CommandLine {
 						System.out.println("\t[TEKTON ID] " + t.getId());
 					}
 					
-					System.out.println("------------------------------------------------------");}
-				
+					System.out.println("------------------------------------------------------");
+				}
 				else if (valasz.equals("random")) {
 					
 				}
@@ -470,8 +474,11 @@ public class CommandLine {
 					i--;
 					continue;
 				}
+				System.out.println("A jatekos lepett, a kovetkezp jon");
+				System.out.println("jelenlegi kor: " + jatek.getJelenKor());
 			}
-
+			
+			jatek.setJelenKor(jatek.getJelenKor()+1);
 		}
 		
 			// Scanner bezárása

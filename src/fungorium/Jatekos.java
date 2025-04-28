@@ -1,4 +1,7 @@
 package fungorium;
+
+import java.util.Scanner;
+
 // Absztrakt osztály, a játékosok közös tulajdonságainak és viselkedésének biztosátására.
 public abstract class Jatekos {
 
@@ -12,7 +15,7 @@ public abstract class Jatekos {
     public String tipus;
 
    // A játékos lépésének végrehajtása.
-   public abstract void Kor(String parancs, JatekLogika jatek);
+   public abstract void Kor(String parancs, JatekLogika jatek, Scanner scanner);
 
    // A játékos pontjainak frissítése, az eredmények eltárolásához.
    public abstract void pontokFrissit();

@@ -134,8 +134,7 @@ public class Gombasz extends Jatekos {
 
 
         @Override
-    public void Kor(String parancs, JatekLogika jatek) {
-    	Scanner scanner = new Scanner(System.in); //A beolvasásokhoz
+    public void Kor(String parancs, JatekLogika jatek, Scanner scanner) {
     	
     	//Gombasz Sporaszoras lepese
     	if (parancs.equals("sporaszoras")) { 
@@ -212,9 +211,6 @@ public class Gombasz extends Jatekos {
 			fonalIrany(kezdoTekton, celTekton);
     		
 		}
-    	
-    	// Scanner bezárása
-        scanner.close();
     }
     
     @Override

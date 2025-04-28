@@ -37,10 +37,7 @@ public class Rovarasz extends Jatekos {
     public void pontokFrissit() { pontok++; }
 
     @Override
-    public void Kor(String parancs,JatekLogika jatek) {
-    	
-    	Scanner scanner = new Scanner(System.in); //A beolvasásokhoz
-    	
+    public void Kor(String parancs,JatekLogika jatek, Scanner scanner) {
     	//Rovarasz vagas lepese
     	if (parancs.equals("vagas")) { 
     		//Kivalasszuk melyik Rovarral akarunk vagni
@@ -121,9 +118,6 @@ public class Rovarasz extends Jatekos {
 			
 			eves(rovar,spora);
 		}
-    	
-    	// Scanner bezárása
-        scanner.close();
     }
     
     @Override
