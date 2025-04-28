@@ -46,42 +46,6 @@ public class CommandLine {
             }
         }
 	}  
-	//______________________________________
-	
-	//Pályafeltoltes
-	//______________________________________
-	/* 
-	public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok ,int gombaszokSzama, int rovaraszokSzama){
-		Random random = new Random();
-		for (int i = 0; i < gombaszokSzama; i++) {
-			Tekton t = jatekter.get(random.nextInt(tektonokSzama));
-			if(t.vanHely()==true) {
-				//NINCS KESZ VAROM A MEGVALTAST 
-				
-			}
-        }
-	}*/
-
-	/*public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok) {
-		Random random = new Random();
-		
-		for (Jatekos j : jatekosok) {
-			if (j instanceof Rovarasz) {
-				Rovarasz r = (Rovarasz)j;
-				
-				// Rovar létrehozása
-				Rovar rovar = new Rovar();
-				rovar.setKie(r);
-				
-				// Véletlenszerű elhelyezés
-				Tekton randomTekton = jatekter.get(random.nextInt(jatekter.size()));
-				rovar.lep(randomTekton);
-				
-				// Rovarasz nyilvántartásában is szerepeljen
-				r.UjRovar(rovar);
-			}
-		}
-	}*/
 
 	public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok) {
 		Random random = new Random();
