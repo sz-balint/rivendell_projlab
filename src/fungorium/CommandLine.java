@@ -173,7 +173,6 @@ public class CommandLine {
 					}
 				}
 
-				//??
 				else if (valasz.equals("rovartEszik")) {
 					if(jatek.getAktivJatekos().getTipus() == "Gombasz") { //A jatekoshoz megfelelo lepest valaszt
 						jatek.getAktivJatekos().Kor(valasz, jatek);
@@ -281,7 +280,6 @@ public class CommandLine {
 				}
 			}
 
-				
 		}
 		
 			// Scanner bezárása
