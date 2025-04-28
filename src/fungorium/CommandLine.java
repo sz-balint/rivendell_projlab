@@ -85,15 +85,22 @@ public class CommandLine {
 
 	public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok) {
 		Random random = new Random();
-		
+
 		for (Jatekos j : jatekosok) {
 			if (j instanceof Rovarasz) {
-				// Rovarász kezdő rovarkezelése
-				Rovarasz r = (Rovarasz)j;
+				Rovarasz r = (Rovarasz) j;
+	
+				// Null check: ha nincs még lista, inicializáljuk
+				if (r.getRovarok() == null) {
+					r.setRovarok(new ArrayList<>());
+				}
+	
 				Rovar rovar = new Rovar();
 				rovar.setKie(r);
+	
 				Tekton randomTekton = jatekter.get(random.nextInt(jatekter.size()));
 				rovar.lep(randomTekton);
+	
 				r.UjRovar(rovar);
 			}
 			else if (j instanceof Gombasz) {
@@ -188,7 +195,12 @@ public class CommandLine {
 			
 			//2. A palya elkeszitese:
 			//Pálya létrehozása:
-			palyaGeneralas(jatek.getJatekter());
+			//palyaGeneralas(jatek.getJatekter());
+			//A palya elkeszitese csak akkor, ha 0. kör van
+			if(jatek.getJelenKor() == 0) {
+				palyaGeneralas(jatek.getJatekter());
+				palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
+			}
 			
 			for(int i=0; i<jatekosokSzama; i++) {
 				String nev = jatek.getJatekosok().get(i).getNev(); //Jatekos
