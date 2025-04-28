@@ -136,9 +136,6 @@ public class CommandLine {
 			palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
 			
 			for(int i=0; i<jatekosokSzama; i++) {
-				for (Jatekos j : jatek.getJatekosok() ) {
-					System.out.println(j.getNev());
-				}
 				String nev = jatek.getJatekosok().get(i).getNev(); //Jatekos
 				
 				jatek.setAktivJatekos(jatek.getJatekosok().get(i));
