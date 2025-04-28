@@ -90,9 +90,9 @@ public class JatekLogika {
         List<Jatekos> rovarasz = new ArrayList<>();
 
         for (Jatekos jatekos : Jatekosok) {
-            if(jatekos instanceof Gombasz) {
+            if(jatekos.getTipus().equals( "Gombasz")) {
                 gombasz.add(jatekos);
-            } else if (jatekos instanceof Rovarasz) {
+            } else if (jatekos.getTipus().equals( "Rovarasz")) {
                 rovarasz.add(jatekos);
             }
         }
@@ -115,8 +115,8 @@ public class JatekLogika {
             }
         }
         gyoztesR = rovarasz.get(idx);
-        System.out.printf("Győztes Rovarász: ", gombasz.get(idx).nev, '\n');
-        System.out.printf("Győztes Gombász: ", rovarasz.get(idx).nev, '\n');
+        System.out.printf("Győztes Rovarász: ", gyoztesG.getNev(), '\n');
+        System.out.printf("Győztes Gombász: ", gyoztesR.getNev(), '\n');
         
         return true;
     }

@@ -477,6 +477,160 @@ public class CommandLine {
 			// Scanner bezárása
 	        scanner.close();
 	}
+
+	public void cli(){
+		Scanner scanner = new Scanner(System.in);
+
+		setup(scanner);
+
+		while (!jatek.jatekVege()) {
+			parancsokKiirasa();
+			System.out.print("Választott parancs: ");
+
+			String bemenet = scanner.nextLine();
+			String[] parancsok = bemenet.split(" ");
+			String parancs = parancsok[0];
+			String[] argumentumok = new String[parancsok.length - 1];
+			System.arraycopy(parancsok, 1, argumentumok, 0, parancsok.length - 1);
+
+			switch (parancs) {
+				case "exit":
+					System.exit(0);
+					break;
+
+				case "addJatekos":
+					addJatekos(argumentumok); //Meghívja az addJatekos metódust
+					break;
+				
+				case "help":
+					help();
+					break;
+			
+				default:
+					System.out.println("Ismeretlen parancs: " + parancs);
+					System.out.println("Használj 'help' parancsot a segítséghez.");
+					break;
+			}
+		}
+	}
+
+	private void setup(Scanner scanner) {
+		System.out.print("Hány Játékos fog játszani? ");
+		String input = scanner.nextLine();
+		while (!input.matches("\\d+")) {
+			System.out.println("Kérlek adj meg egy számot!");
+			input = scanner.nextLine();
+		}
+		
+		jatekosokSzama = Integer.parseInt(input);
+		
+
+		List<String> existingNames = new ArrayList<>();
+		for (int i = 0; i < jatekosokSzama; i++) {
+			if(i < jatekosokSzama / 2) {
+				jatekosBeolvaso("Gombasz", scanner, existingNames);
+			} else {
+				jatekosBeolvaso("Rovarasz", scanner, existingNames);
+			}
+		}
+
+		System.out.println("Hány kör legyen a játékban? ");
+		String korokInput = scanner.nextLine();
+		while (!korokInput.matches("\\d+")) {
+			System.out.println("Kérlek adj meg egy számot!");
+			korokInput = scanner.nextLine();
+		}
+		int korokSzama = Integer.parseInt(korokInput);
+		jatek.setKorokSzama(korokSzama*jatekosokSzama);
+	}
+
+	private void jatekosBeolvaso(String  tipus, Scanner scanner, List<String> existingNames) {
+		System.out.print("Add meg a " + tipus + " nevét: ");
+		String nev = scanner.nextLine();
+		while (existingNames.contains(nev) && !nev.isEmpty()) {
+			System.out.println("Ez a név már foglalt! Válassz másik nevet.");
+			System.out.print("Addj meg egy másik nevet: ");
+			nev = scanner.nextLine();
+		}
+		Jatekos jatekos = null;
+		if (tipus.equals("Gombasz")) {
+			jatekos = new Gombasz(nev, 0, tipus);
+			existingNames.add(nev);
+		} else if (tipus.equals("Rovarasz")) {
+			jatekos = new Rovarasz(nev, 0, tipus);
+			existingNames.add(nev);
+		}
+		jatek.addJatekos(jatekos);
+		System.out.println("Játékos hozzáadva: " + nev + " (" + tipus + ")");
+	}
+
+	private void parancsokKiirasa(){
+		String tipus = jatek.getAktivJatekos().getTipus();
+		String nev = jatek.getAktivJatekos().getNev(); 
+		System.out.println("\n'"+nev + "' parancsai:");
+
+		if (tipus != null && tipus.equals("Gombasz")) {
+			System.out.println("Gombász: sporaszoras, ujTest, fonalnoveszt, rovartEszik");
+		} else {
+			System.out.println("Rovarasz: vagas, lep, eszik");
+		}
+		System.out.println("Általános: kettetores, allapot, random, save, load");
+		System.out.print("A parancsokhoz szükséges argumentumokhoz használd a 'help' parancsot.");
+
+	}
+
+	//Megvalósítja a játkos hozzáadását
+	private void addJatekos(String[] parameterek){
+		// Megnézi hogy a megfelelő paraméterek vannak-e megadva
+		if(parameterek.length < 3 || !parameterek[1].equals("-n")) {
+			System.out.println("Hiba: Nem megfeleő paraméter!");
+			System.out.println("Használat: addJatekos -g(:Gombasz)/-r(:Rovarasz)  -n [név]");
+			System.out.println("Példa: addJatekos -g -n Gombasz1");
+			return;
+		}
+		//Létrehozza és hozzáadja a játékosokat a játéktérhez a paraméterek alapján
+		if(parameterek[0].equals("-g")) {
+			String nev = parameterek[2];
+			Jatekos jatekos = new Gombasz(parameterek[2], 0, "Gombasz");
+			jatek.addJatekos(jatekos);
+		} else if(parameterek[0].equals("-r")) {
+			String nev = parameterek[2];
+			Jatekos jatekos = new Rovarasz(parameterek[2], 0, "Rovarasz");
+			jatek.addJatekos(jatekos);
+		} else {
+			System.out.println("Hiba: Ismeretlen játékos típus!");
+		}
+
+		
+	}
+
+	private void help(){
+		System.out.println("\nElérhető parancsok listája:");
+					System.out.println("------------------------------------------------------");
+					System.out.println("Gombász parancsai:");
+					System.out.println("  sporaszoras [ID] - Spóraszórás (GombaTest ID-ja)");
+					System.out.println("  ujTest [ID] [név] - Új gombatest létrehozása");
+					System.out.println("  fonalnoveszt -g [ID] -t1 [ID] -t2 [ID] - Gombafonal növesztése");
+					System.out.println("  rovartEszik - Fonál megeszi a rovart");
+					
+					System.out.println("\nRovarasz parancsai:");
+					//System.out.println("  addRovar [ID] - Rovart ad a játéktérhez");
+					System.out.println("  vagas -f [ID] -r [ID] - Gombafonal elvágása");
+					System.out.println("  lep -t [ID] -r [ID] - Rovar léptetése");
+					System.out.println("  eszik [ID] - Spóra evés (Rovar ID)");
+					
+					System.out.println("\nÁltalános parancsok:");
+					System.out.println("  addJatekos -g(:Gombasz) -r(:Rovarasz)  -n [név] - Játékos hozzáadása");
+					System.out.println("  kettetores [ID] - Tekton kettétörése");
+					System.out.println("  allapot - Játék állapotának kiírása");
+					System.out.println("  random [y/n] - Random generálás be/ki");
+					System.out.println("  save [fájlnév] - Játék mentése");
+					System.out.println("  load [fájlnév] - Játék betöltése");
+					System.out.println("  help - Parancsok listázása");
+					System.out.println("------------------------------------------------------\n");
+					
+	}
+
 }
 
 

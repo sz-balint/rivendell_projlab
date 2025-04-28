@@ -7,6 +7,7 @@ public class Main {
         System.out.println(System.getProperty("user.dir"));
         JatekLogika ez= new JatekLogika();
         CommandLine az = new CommandLine (ez) ;
-        az.jatekKonzolbol();
+        //az.jatekKonzolbol();
+        az.cli();
     }    
 }
