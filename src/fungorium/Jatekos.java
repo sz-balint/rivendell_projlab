@@ -3,7 +3,7 @@ package fungorium;
 public abstract class Jatekos {
 
     // A játékos neve.
-    public static String nev;
+    public String nev;
 
     // A játékos által szerzett pontok.
     protected int pontok;

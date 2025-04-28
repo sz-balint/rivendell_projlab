@@ -87,7 +87,7 @@ public class Rovarasz extends Jatekos {
     		
 			for(int i=0; i < rovar.getHol().getSzomszedok().size(); i++) {
 				System.out.println(i); 
-				rovar.getHol().getSzomszedok().get(i).listaz();
+				System.out.println(rovar.getHol().getSzomszedok().get(i).listaz());
 			}
 			
 			valasz = scanner.nextInt();

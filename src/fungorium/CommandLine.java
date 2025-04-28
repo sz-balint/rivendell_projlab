@@ -99,7 +99,6 @@ public class CommandLine {
 					while(true) {
 						System.out.print("Add meg a " + (i+1) + ". Gombász nevét: ");
 						String nev = scanner.nextLine();
-						
 						if(existingNames.contains(nev)) {
 							System.out.println("Ez a név már foglalt! Válassz másik nevet.");
 						} else {
@@ -137,6 +136,9 @@ public class CommandLine {
 			palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
 			
 			for(int i=0; i<jatekosokSzama; i++) {
+				for (Jatekos j : jatek.getJatekosok() ) {
+					System.out.println(j.getNev());
+				}
 				String nev = jatek.getJatekosok().get(i).getNev(); //Jatekos
 				
 				jatek.setAktivJatekos(jatek.getJatekosok().get(i));
@@ -151,7 +153,7 @@ public class CommandLine {
 				}
 				System.out.println("Általános: kettetores, allapot, random, save, load, help");
 				System.out.print("Választott parancs: ");
-
+				
 				String valasz = scanner.nextLine();
 					
 				if (valasz.equals("kettetores")) { //Barki
@@ -181,6 +183,7 @@ public class CommandLine {
 				else if (valasz.equals("fonalnoveszt")) { //Gombasz
 					if(jatek.getAktivJatekos().getTipus() == "Gombasz") { //A jatekoshoz megfelelo lepest valaszt
 						jatek.getAktivJatekos().Kor(valasz, jatek);
+						System.out.println("Sikeres fonalnovesztes!");
 					}
 					else {
 						System.out.println("Hibas! Ez egy Gombasz lepes, te Rovarasz vagy. Lepj ujra!");

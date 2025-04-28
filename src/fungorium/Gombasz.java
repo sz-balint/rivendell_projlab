@@ -142,7 +142,7 @@ public class Gombasz extends Jatekos {
     		System.out.println("Lehetséges Tektonok: "); 
     		
 			for(int i=0; i < Testek.size(); i++) { //Kiirjuk a szomszedos Tektonokat
-				Testek.get(i).getTekton().listaz();
+				System.out.println(Testek.get(i).getTekton().listaz());
 			}
 			
 			System.out.println("Add meg a választott Tektonok id-át: "); //Megvajuk a Tekton id-t
@@ -160,7 +160,7 @@ public class Gombasz extends Jatekos {
     		System.out.println("Lehetséges Tektonok: ");
     		
     		for(int i=0; i < jatek.getJatekter().size(); i++) { //Kiirjuk az osszes Tektont.
-    			jatek.getJatekter().get(i).listaz();
+    			System.out.println(jatek.getJatekter().get(i).listaz());
 			}
     		
     		System.out.println("Add meg a választott Tektonok id-át: "); //Megvarjuk a Tekton id-t
@@ -191,7 +191,7 @@ public class Gombasz extends Jatekos {
 			System.out.println("Lehetséges cél Tektonok: "); 
 			//Kiirjuk, hogy melyikek lehetnek a cel Tektonok, tulajdonkeppen a szomszedok
 			for (Tekton tekt :kezdoTekton.getSzomszedok()) {
-				tekt.listaz();
+				System.out.println(tekt.listaz());
 			}
 			/*Szerintem a fenti jó kéne legyen
 			System.out.println("Lehetséges cél Tektonok: "); 
@@ -204,8 +204,11 @@ public class Gombasz extends Jatekos {
 			System.out.println("Add meg a választott Tektonok id-át: "); //Megvajuk a Tekton id-t
 			valasz2 = scanner.nextInt();
 			//A valasztott lesz a cel Tekton
-			Tekton celTekton = Testek.get(valasz2-1).getTekton();
-			
+			Tekton celTekton = null;
+			for (Tekton te : jatek.getJatekter()) {
+				if (te.getId()==valasz2) 
+					celTekton = te;
+			}
 			fonalIrany(kezdoTekton, celTekton);
     		
 		}
