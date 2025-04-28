@@ -29,6 +29,9 @@ public class Rovarasz extends Jatekos {
     // Rovar eltávolítása a rovarok listájából.
     public void TorolRovar(Rovar r) { Rovarok.remove(r); }
 
+	public List<Rovar> getRovarok() { return Rovarok; }
+	public void setRovarok(List<Rovar> rovarok) { this.Rovarok = rovarok; }
+
     // A rovarász pontjainak frissítése, ha a rovar spórát evett.
     @Override
     public void pontokFrissit() { pontok++; }
