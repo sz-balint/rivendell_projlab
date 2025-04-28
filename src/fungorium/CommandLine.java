@@ -501,6 +501,14 @@ public class CommandLine {
 				case "addJatekos":
 					addJatekos(argumentumok); //Meghívja az addJatekos metódust
 					break;
+
+				case "sporaszoras":
+					if (jatek.getAktivJatekos().getTipus().equals("Gombasz")) {
+						sporaszoras(argumentumok); //Gombász parancs
+					} else {
+						System.out.println("Hiba: Ez a parancs csak Gombászok számára érhető el.");
+					}
+					break;
 				
 				case "help":
 					help();
@@ -611,6 +619,18 @@ public class CommandLine {
 		jatekosokSzama++;
 		System.out.println("Jatekosok" + jatek.getJatekosok());
 		
+	}
+
+	private void sporaszoras(String[] parameterek){
+		//Egyenlore lehet paraméter nélkül is de lehet majd ki kell venni belőle
+		if(parameterek.length == 0){ 
+			jatek.getAktivJatekos().Kor("spraszoras", jatek);
+		}else if(parameterek.length == 1){
+			List<GombaTest> Testek = ((Gombasz)jatek.getAktivJatekos()).getTestek();
+			int id = Integer.parseInt(parameterek[0]);
+			//sporaszorastkezd(Testek.get(id),Testek.get(id).getTekton());
+			Testek.get(id).sporaSzoras();
+		}
 	}
 
 	private void help(){
