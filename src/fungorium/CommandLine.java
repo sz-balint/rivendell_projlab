@@ -50,6 +50,7 @@ public class CommandLine {
 	
 	//Pályafeltoltes
 	//______________________________________
+	/* 
 	public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok ,int gombaszokSzama, int rovaraszokSzama){
 		Random random = new Random();
 		for (int i = 0; i < gombaszokSzama; i++) {
@@ -59,6 +60,74 @@ public class CommandLine {
 				
 			}
         }
+	}*/
+
+	/*public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok) {
+		Random random = new Random();
+		
+		for (Jatekos j : jatekosok) {
+			if (j instanceof Rovarasz) {
+				Rovarasz r = (Rovarasz)j;
+				
+				// Rovar létrehozása
+				Rovar rovar = new Rovar();
+				rovar.setKie(r);
+				
+				// Véletlenszerű elhelyezés
+				Tekton randomTekton = jatekter.get(random.nextInt(jatekter.size()));
+				rovar.lep(randomTekton);
+				
+				// Rovarasz nyilvántartásában is szerepeljen
+				r.UjRovar(rovar);
+			}
+		}
+	}*/
+
+	public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok) {
+		Random random = new Random();
+		
+		for (Jatekos j : jatekosok) {
+			if (j instanceof Rovarasz) {
+				// Rovarász kezdő rovarkezelése
+				Rovarasz r = (Rovarasz)j;
+				Rovar rovar = new Rovar();
+				rovar.setKie(r);
+				Tekton randomTekton = jatekter.get(random.nextInt(jatekter.size()));
+				rovar.lep(randomTekton);
+				r.UjRovar(rovar);
+			}
+			else if (j instanceof Gombasz) {
+				// Gombász kezdő gombatest kezelése
+				Gombasz g = (Gombasz)j;
+				
+				// 1. Választunk egy random tekton-t, ahol nincs még gombatest
+				Tekton randomTekton;
+				int attempts = 0;
+				do {
+					randomTekton = jatekter.get(random.nextInt(jatekter.size()));
+					attempts++;
+					if (attempts > 100) break; // Védjük meg a végtelen ciklust
+				} while (randomTekton.getGombaTest() != null || !randomTekton.vanHely());
+				
+				// 2. Ha találtunk megfelelő tekton-t
+				if (randomTekton.getGombaTest() == null && randomTekton.vanHely()) {
+					
+					// 4. Létrehozzuk és elhelyezzük a gombatestet
+					GombaTest test = new GombaTest(randomTekton, g);
+					g.UjGombaTest(test, randomTekton);
+					
+					// 5. Kezdő fonalak létrehozása szomszédos tektónokra
+					for (Tekton szomszed : randomTekton.getSzomszedok()) {
+						if (szomszed.vanHely()) {
+							GombaFonal fonal = new GombaFonal(randomTekton, szomszed, g);
+							g.UjGombaFonal(fonal);
+							randomTekton.ujFonal(fonal);
+							szomszed.ujFonal(fonal);
+						}
+					}
+				}
+			}
+		}
 	}
 	//______________________________________
 	
@@ -128,16 +197,18 @@ public class CommandLine {
 				
 				//Lepes
 				String tipus = jatek.getAktivJatekos().getTipus();
-				System.out.println("\n"+nev + " parancsai:");
+				System.out.println("\n'"+nev + "' parancsai:");
 				if (tipus != null && tipus.equals("Gombasz")) {
 					System.out.println("Gombász: sporaszoras, ujTest, fonalnoveszt, rovartEszik");
 				} else {
-					System.out.println("Rovarasz: addRovar, vagas, lep, eszik");
+					System.out.println("Rovarasz: vagas, lep, eszik");
 				}
 				System.out.println("Általános: kettetores, allapot, random, save, load, help");
 				System.out.print("Választott parancs: ");
 
 				String valasz = scanner.nextLine();
+
+				System.out.print("\n");
 					
 				if (valasz.equals("kettetores")) { //Barki
 					jatek.tores();
@@ -298,7 +369,7 @@ public class CommandLine {
 					System.out.println("  rovartEszik - Fonál megeszi a rovart");
 					
 					System.out.println("\nRovarasz parancsai:");
-					System.out.println("  addRovar [ID] - Rovart ad a játéktérhez");
+					//System.out.println("  addRovar [ID] - Rovart ad a játéktérhez");
 					System.out.println("  vagas -f [ID] -r [ID] - Gombafonal elvágása");
 					System.out.println("  lep -t [ID] -r [ID] - Rovar léptetése");
 					System.out.println("  eszik [ID] - Spóra evés (Rovar ID)");
