@@ -15,7 +15,10 @@ public class Rovar {
 	public int getId() {
 		return id;
 	}
-    /*
+    
+    //üres konstruktor
+    public Rovar(){}
+
     // Rovar létrehozása megadott állapottal
     public Rovar(Tekton h, Allapot all, Rovarasz kie) {
         hol = h;
@@ -23,7 +26,7 @@ public class Rovar {
         this.kie = kie;
         id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
-    */
+   
     
     // Rovar létrehozása, alapértelmezett állapot: NORMAL
     public Rovar(Tekton h, Rovarasz kie) {
@@ -33,12 +36,6 @@ public class Rovar {
         id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
-    public Rovar(Tekton hol, Allapot allapot, Rovarasz kie) {
-        this.hol = hol;
-        this.allapot = allapot;
-        this.kie = kie;
-        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
-    }
 
     // Visszaadja, hogy hol tartózkodik a rovar
     public Tekton getHol() {
@@ -50,17 +47,8 @@ public class Rovar {
         return kie;
     }
 
-    // Beállítja a rovászt
-    public void setKie(Rovarasz rovarasz) {
-        this.kie = rovarasz;
-    }
 
-    // A rovar megeszik egy spórát
-    public void eszik(Spora s) {
-        s.getHol().sporaElvesz(s); // Spóra eltávolítása a tektonról
-        allapotFrissites(s.getsporaType()); // Állapot frissítése a spóra típusa alapján
-    }
-
+        /* 
     // A rovar átlép egy másik tektonra
     public void lep(Tekton t) {
         if (allapot != Allapot.LASSITOTT) {
@@ -68,7 +56,49 @@ public class Rovar {
             t.ujRovar(this);      // Rovar hozzáadása az új tektonhoz
             hol = t;              // Helyzet frissítése
         }
+    }*/
+    public void lep(Tekton ujHely) {
+        // 1. Állapotellenőrzés - több állapotot is kezel
+        if (allapot == Allapot.LASSITOTT || allapot == Allapot.BENULT) {
+            return; // Ne mozogjon ezekben az állapotokban
+        }
+        
+        // 2. Paraméter ellenőrzés
+        if (ujHely == null) {
+            throw new IllegalArgumentException("Az új hely nem lehet null");
+        }
+        
+        // 3. Régi helyről való eltávolítás (ha van)
+        if (this.hol != null) {
+            this.hol.torolRovar(this);
+        }
+        
+        // 4. Új helyre helyezés
+        this.hol = ujHely;
+        ujHely.ujRovar(this);
+        
+        // 5. Pontozás frissítése
+        if (this.kie != null) {
+            this.kie.pontokFrissit(); // Mozgásért pont jár
+        }
     }
+    
+    public void setKie(Rovarasz tulajdonos) {
+        this.kie = tulajdonos;
+    }
+    /* 
+    // Beállítja a rovászt
+    public void setKie(Rovarasz rovarasz) {
+        this.kie = rovarasz;
+    }*/
+
+    // A rovar megeszik egy spórát
+    public void eszik(Spora s) {
+        s.getHol().sporaElvesz(s); // Spóra eltávolítása a tektonról
+        allapotFrissites(s.getsporaType()); // Állapot frissítése a spóra típusa alapján
+    }
+
+
 
     // A rovar elvág egy gombafonalat
     public void elvag(GombaFonal f) {
