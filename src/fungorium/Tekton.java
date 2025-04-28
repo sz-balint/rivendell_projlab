@@ -62,7 +62,8 @@ public class Tekton {
 		}
 
 	// A tekton kettetorese
-    public Tekton kettetores() {
+    /*
+	public Tekton kettetores() {
 		// Ha volt rajta akkor meghal a gombatest
 		if (gombaTest!=null) gombaTest.elpusztul();
 		//majd a fonalak, a veluk kapcsolt tektonok listajat kiuritjuk
@@ -83,6 +84,27 @@ public class Tekton {
 		ujSzomszed(t);
 		t.ujSzomszed(this);
 		return t;
+		}
+		*/
+
+		public Tekton kettetores() {
+			if (gombaTest != null) gombaTest.elpusztul();
+			
+			// Create a copy of fonalak
+			new ArrayList<>(fonalak).forEach(fonal -> fonal.elpusztul());
+			fonalak.clear();
+			
+			kapcsoltTekton.clear();
+			
+			// Create a copy of sporak
+			new ArrayList<>(sporak).forEach(spora -> spora.eltunik());
+			sporak.clear();
+			
+			sporakSzama = 0;
+			Tekton t = new Tekton(tulajdonsagok, szomszedok);
+			ujSzomszed(t);
+			t.ujSzomszed(this);
+			return t;
 		}
 
     // Egy adott sporat eltavolit a tektonrol
