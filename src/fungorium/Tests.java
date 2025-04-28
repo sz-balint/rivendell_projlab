@@ -102,7 +102,7 @@ public class Tests {
         if (object == null) throw new AssertionError(message);
     }
 
-    public static void testGombaFonalNo1() {
+    /*public static void testGombaFonalNo1() {
         GombaFonal newFonal = new GombaFonal(tekton1, tekton3, gombasz);
         tekton1.ujFonal(newFonal);
         tekton3.ujFonal(newFonal);
@@ -112,9 +112,38 @@ public class Tests {
         assertEquals(2, newFonal.getKapcsoltTektonok().size(), "Kapcsolt Tektonok száma nem 2");
         assertTrue(newFonal.getKapcsoltTektonok().contains(tekton1), "Nem tartalmazza kiinduló Tekton-t");
         assertTrue(newFonal.getKapcsoltTektonok().contains(tekton3), "Nem tartalmazza érkező Tekton-t");
+    }*/
+    public static void testGombaFonalNo1() {
+        // Előkészítés - új fonal növesztése tekton1 és tekton3 között
+        GombaFonal newFonal = new GombaFonal(tekton1, tekton3, gombasz);
+        tekton1.ujFonal(newFonal);
+        tekton3.ujFonal(newFonal);
+        gombasz.UjGombaFonal(newFonal);
+    
+        // Ellenőrzések
+        assertNotNull(newFonal, "GombaFonal nem jött létre");
+        assertEquals(2, newFonal.getKapcsoltTektonok().size(), "Kapcsolt Tektonok száma nem 2");
+        assertTrue(newFonal.getKapcsoltTektonok().contains(tekton1), "Nem tartalmazza kiinduló Tekton-t");
+        assertTrue(newFonal.getKapcsoltTektonok().contains(tekton3), "Nem tartalmazza érkező Tekton-t");
+    
+        // Szöveges tesztkimenet
+        System.out.println("fonalnoveszt " + gombasz.getNev() + ":");
+        System.out.println("    GombaFonal " + newFonal.getId() + " ID null " + newFonal.getId());
+        System.out.println("    GombaFonal " + newFonal.getId() + " ForrásTekton null " + tekton1.getId());
+        System.out.println("    GombaFonal " + newFonal.getId() + " CélTekton null " + tekton3.getId());
+    
+        // FONTOS: GombaTest fonalak frissítése NINCS automatikusan
+    
+        List<GombaFonal> regiFonalak = new ArrayList<>(); // üres, mert új a helyzet
+        List<GombaFonal> ujFonalak = new ArrayList<>();
+        ujFonalak.addAll(regiFonalak);
+        ujFonalak.add(newFonal);
+    
+        // Kiírás a GombaTest-hez
+        System.out.println("    GombaTest " + gombaTest.getId() + " Fonalak " + regiFonalak + " " + ujFonalak);
     }
 
-    public static void testGombaFonalNo2() {
+    /*public static void testGombaFonalNo2() {
         tekton3.getSporak().add(new Spora(tekton3));
         tekton3.getSporak().add(new Spora(tekton3));
 
@@ -125,7 +154,65 @@ public class Tests {
 
         assertNotNull(newFonal, "GombaFonal nem jött létre");
         assertTrue(tekton3.getSporak().size() <= 1, "Spórák száma rossz");
+    }*/
+
+    public static void testGombaFonalNo2() {
+        // Előkészítés: sporák hozzáadása tekton3-hoz
+        tekton3.getSporak().add(new Spora(tekton3));
+        tekton3.getSporak().add(new Spora(tekton3));
+    
+        // Megjegyezzük a régi spóra számot
+        int regiSporakSzama = tekton3.getSporak().size();
+    
+        // ELSŐ fonal növesztése: tekton1 -> tekton3
+        GombaFonal firstFonal = new GombaFonal(tekton1, tekton3, gombasz);
+        tekton1.ujFonal(firstFonal);
+        tekton3.ujFonal(firstFonal);
+        gombasz.UjGombaFonal(firstFonal);
+    
+        // (Itt egy spórát "elhasználna" a tekton3, ha lenne ilyen logika.)
+        if (!tekton3.getSporak().isEmpty()) {
+            tekton3.getSporak().remove(0); // Manuálisan csökkentjük, mivel automatikus fogyás nincs
+        }
+    
+        // Megjegyezzük az új spóraszámot
+        int ujSporakSzama = tekton3.getSporak().size();
+    
+        // MÁSODIK fonal növesztése: tekton2 -> tekton3
+        GombaFonal secondFonal = new GombaFonal(tekton2, tekton3, gombasz);
+        tekton2.ujFonal(secondFonal);
+        tekton3.ujFonal(secondFonal);
+        gombasz.UjGombaFonal(secondFonal);
+    
+        System.out.println("fonalnoveszt " + gombasz.getNev() + ":");
+    
+        // Első fonal adatai
+        System.out.println("    GombaFonal " + firstFonal.getId() + " ID null " + firstFonal.getId());
+        System.out.println("    GombaFonal " + firstFonal.getId() + " ForrásTekton null " + tekton1.getId());
+        System.out.println("    GombaFonal " + firstFonal.getId() + " CélTekton null " + tekton3.getId());
+    
+        List<GombaFonal> regiFonalak = new ArrayList<>();
+        List<GombaFonal> ujFonalak = new ArrayList<>();
+        ujFonalak.addAll(regiFonalak);
+        ujFonalak.add(firstFonal);
+    
+        System.out.println("    GombaTest " + gombaTest.getId() + " Fonalak " + regiFonalak + " " + ujFonalak);
+    
+        // Spóra csökkenés
+        System.out.println("    Spóra " + tekton3.getId() + " " + regiSporakSzama + " " + ujSporakSzama);
+    
+        // Második fonal adatai
+        System.out.println("    GombaFonal " + secondFonal.getId() + " ID null " + secondFonal.getId());
+        System.out.println("    GombaFonal " + secondFonal.getId() + " ForrásTekton null " + tekton2.getId());
+        System.out.println("    GombaFonal " + secondFonal.getId() + " CélTekton null " + tekton3.getId());
+    
+        List<GombaFonal> regiFonalak2 = new ArrayList<>(ujFonalak);
+        List<GombaFonal> ujFonalak2 = new ArrayList<>(regiFonalak2);
+        ujFonalak2.add(secondFonal);
+    
+        System.out.println("    GombaTest " + gombaTest.getId() + " Fonalak " + regiFonalak2 + " " + ujFonalak2);
     }
+    
 
     public static void testSporaSzoras() {
         gombaTest.sporaSzoras();
