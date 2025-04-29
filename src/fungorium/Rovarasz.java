@@ -15,13 +15,13 @@ public class Rovarasz extends Jatekos {
     private List<Rovar> Rovarok= new ArrayList<>();
 
     // Rovart mozgat egyik tektonról a másikra.
-    private void rovarLepes(Rovar r, Tekton t) { r.lep(t); }
+    public void rovarLepes(Rovar r, Tekton t) { r.lep(t); }
 
     // Egy rovar átvág egy gombafonálat.
-    private void fonalVagas(Rovar r, GombaFonal f) { r.elvag(f); }
+    public void fonalVagas(Rovar r, GombaFonal f) { r.elvag(f); }
 
     // Egy rovar spórát eszik a tektonról.
-    private void eves(Rovar r, Spora s) { r.eszik(s); }
+    public void eves(Rovar r, Spora s) { r.eszik(s); }
 
     // Új rovar hozzáadása a rovarok listájához.
     public void UjRovar(Rovar r) { Rovarok.add(r); }

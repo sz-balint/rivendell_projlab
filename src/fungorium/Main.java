@@ -26,10 +26,13 @@ public class Main {
         
         if (valasz.equals("i")) {
             Tests.main(null);
-        } else {
-            JatekLogika ez = new JatekLogika();
-            CommandLine az = new CommandLine(ez);
-            az.jatekKonzolbol();
+        } else if(valasz.equals("n")){
+            //az.jatekKonzolbol();
+            //CommandLine az = new CommandLine () ;
+            //az.cli();
+        }
+        else {
+        	System.out.print("Hibas valasz! ");
         }
     }
 }

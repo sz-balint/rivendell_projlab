@@ -23,7 +23,7 @@ public class Gombasz extends Jatekos {
     	//A Tektonon van-e hely GombaTestre
         if (tekton.vanHely()==false &&
         		//A Tektonon van-e eleg Spora
-        		tekton.getSporakSzama()>5) {
+        		tekton.getSporakSzama()>4) {
         	
         	for (int i = 0; i < 5; i++) {
                 tekton.getSporak().get(i).eltunik(); 
@@ -46,7 +46,7 @@ public class Gombasz extends Jatekos {
     }
 
     // Meghatározza, merre nőjenek a fonalak két tekton között.
-    private void fonalIrany(Tekton indulo, Tekton erkezo) { 
+    public void fonalIrany(Tekton indulo, Tekton erkezo) { 
     	GombaFonal fonal = new GombaFonal(indulo, erkezo, this);
     	indulo.getFonalak().add(fonal);
     	erkezo.getFonalak().add(fonal);

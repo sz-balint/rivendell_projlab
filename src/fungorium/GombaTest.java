@@ -71,6 +71,7 @@ public class GombaTest {
     		Spora sp= new Spora(1,2,sz.get(r));
             //A sporát a tektonra rakja
     		sz.get(r).sporatKap(sp);
+    		System.out.println("Spóra szórva a tektonra. Tekton ID: " + sz.get(r).getId() + ".");
             //A tektont eltávolítja a lehetséges szomszédok közül
             sz.remove(r);
     		}
