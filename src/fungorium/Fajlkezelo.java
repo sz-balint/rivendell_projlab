@@ -1,6 +1,6 @@
 package fungorium;
 
-// A j t k  llapot nak ment s  rt  s bet lt s  rt felel s oszt ly.
+// A játékállapot mentéséért és betöltéséért felelős osztály.
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,15 +12,15 @@ import java.util.List;
 
 public class Fajlkezelo {
 
-    // Elmenti a j t k  llapot t.
-    public void save(JatekLogika jatek) throws IOException { 
+    // Elmenti a játékállapotot.
+    public void save(JatekLogika jatek, String parancsok) throws IOException { 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("mentes.txt"))) {
             bw.write(jatek.toString());
         }
     }
 
-    // Bet lti a j t k  llapot t.
-    public JatekLogika load() throws IOException {
+    // Betölti a játékállapotot.
+    public JatekLogika load(String parancsok) throws IOException {
         JatekLogika jatek = new JatekLogika();
         List<String> lines = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("mentes.txt"))) {
@@ -34,13 +34,11 @@ public class Fajlkezelo {
         jatek.setKorokSzama(Integer.parseInt(parts[0]));
         jatek.setJelenKor(Integer.parseInt(parts[1]));
         String aktivJatekos = parts[2];
-        
-
 
         int sor = 2;
         while(!lines.get(sor).equals("TEKTONOK:")){
             String roviditett = lines.get(sor).replaceAll("}", "");
-            String jatekos[] = roviditett.split("{");
+            String jatekos[] = roviditett.split("\\{");
             String attibutumok[] = jatekos[1].split(",");
             String n = attibutumok[0].split("=")[1];
             String p = attibutumok[1].split("=")[1];

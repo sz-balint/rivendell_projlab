@@ -17,7 +17,7 @@ public class Gombasz extends Jatekos {
     public Gombasz(String nev, int pontok, String tipus){ super(nev, pontok); this.tipus = "Gombasz";}
     
     // Egy megadott gombafon�lb�l �j gombatestet n�veszt.
-    private void testNoveszt(GombaFonal fonal, Tekton tekton) { //melyik fonálból növesztünk, és hova
+    public void testNoveszt(GombaFonal fonal, Tekton tekton) { //melyik fonálból növesztünk, és hova
     	//Ellenorzesek:
     	//A Fonal Tektonjai szomszédok a megadott Tektonnal
     	//A Tektonon van-e hely GombaTestre
@@ -53,7 +53,7 @@ public class Gombasz extends Jatekos {
     }
 
     // Sporaszoras elinditasa a gombasz dontese alapjan.
-    private void sporaszorastkezd(GombaTest test, Tekton tekton) {
+    public void sporaszorastkezd(GombaTest test, Tekton tekton) {
         test.sporaSzoras();
     }
 
@@ -114,7 +114,7 @@ public class Gombasz extends Jatekos {
     }
 
     // Egy gombafonál rovart eszik meg.
-    private void rovartEszik(Rovar r, GombaFonal f) {
+    public void rovartEszik(Rovar r, GombaFonal f) {
         
         // Ellenőrzi, hogy a gombafonál és a rovar létezik-e.
         if (Fonalak.contains(f) && r != null) {
@@ -132,8 +132,8 @@ public class Gombasz extends Jatekos {
 
 
         @Override
-    public void Kor(String parancs, JatekLogika jatek, Scanner scanner) {
-    	
+    public void Kor(String parancs, JatekLogika jatek) {
+        Scanner scanner = new Scanner(System.in);
     	//Gombasz Sporaszoras lepese
     	if (parancs.equals("sporaszoras")) { 
     		System.out.println("Lehetséges Tektonok: "); 
@@ -189,15 +189,7 @@ public class Gombasz extends Jatekos {
 			//Kiirjuk, hogy melyikek lehetnek a cel Tektonok, tulajdonkeppen a szomszedok
 			for (Tekton tekt :kezdoTekton.getSzomszedok()) {
 				System.out.println(tekt.listaz());
-			}
-			/*Szerintem a fenti jó kéne legyen
-			System.out.println("Lehetséges cél Tektonok: "); 
-			//Kiirjuk, hogy melyikek lehetnek a cel Tektonok, tulajdonkeppen a szomszedok
-			for(int i=0; i < Testek.size(); i++) { //Kiirjuk a szomszedos Tektonokat
-				Testek.get(i).getTekton().listaz();
-			}*/
-
-			
+			}			
 			System.out.println("Add meg a választott Tektonok id-át: "); //Megvajuk a Tekton id-t
 			valasz2 = scanner.nextInt();
 			//A valasztott lesz a cel Tekton
@@ -210,6 +202,8 @@ public class Gombasz extends Jatekos {
     		
 		}
     	String valasz = scanner.nextLine();
+    	
+    	scanner.close();
     }
     
     @Override

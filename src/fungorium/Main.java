@@ -27,9 +27,8 @@ public class Main {
         if (valasz.equals("i")) {
             Tests.main(null);
         } else if(valasz.equals("n")){
-            //az.jatekKonzolbol();
-            //CommandLine az = new CommandLine () ;
-            //az.cli();
+            CommandLine az = new CommandLine () ;
+            az.cli();
         }
         else {
         	System.out.print("Hibas valasz! ");

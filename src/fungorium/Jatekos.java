@@ -15,7 +15,7 @@ public abstract class Jatekos {
     public String tipus;
 
    // A játékos lépésének végrehajtása.
-   public abstract void Kor(String parancs, JatekLogika jatek, Scanner scanner);
+   public abstract void Kor(String parancs, JatekLogika jatek);
 
    // A játékos pontjainak frissítése, az eredmények eltárolásához.
    public abstract void pontokFrissit();
