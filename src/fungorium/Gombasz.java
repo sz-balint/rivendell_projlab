@@ -110,9 +110,7 @@ public class Gombasz extends Jatekos {
         // Ellenőrzi, hogy a gombafonál létezik-e a listában.
         if (Fonalak.contains(f)) {
             Fonalak.remove(f); // Ha létezik, eltávolítja a listából.
-        } else {
-            System.out.println("Ez a gombafonál nem található a listában.");
-        }
+        } 
     }
 
     // Egy gombafonál rovart eszik meg.

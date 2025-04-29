@@ -47,16 +47,6 @@ public class Rovar {
         return kie;
     }
 
-
-        /* 
-    // A rovar átlép egy másik tektonra
-    public void lep(Tekton t) {
-        if (allapot != Allapot.LASSITOTT) {
-            hol.torolRovar(this); // Rovar eltávolítása a régi tektonról
-            t.ujRovar(this);      // Rovar hozzáadása az új tektonhoz
-            hol = t;              // Helyzet frissítése
-        }
-    }*/
     public void lep(Tekton ujHely) {
         // 1. Állapotellenőrzés - több állapotot is kezel
         if (allapot == Allapot.LASSITOTT || allapot == Allapot.BENULT) {
@@ -86,11 +76,6 @@ public class Rovar {
     public void setKie(Rovarasz tulajdonos) {
         this.kie = tulajdonos;
     }
-    /* 
-    // Beállítja a rovászt
-    public void setKie(Rovarasz rovarasz) {
-        this.kie = rovarasz;
-    }*/
 
     // A rovar megeszik egy spórát
     public void eszik(Spora s) {

@@ -61,34 +61,7 @@ public class Tekton {
 		kapcsoltTekton = kapcs;
 		}
 
-	// A tekton kettetorese
-    /*
-	public Tekton kettetores() {
-		// Ha volt rajta akkor meghal a gombatest
-		if (gombaTest!=null) gombaTest.elpusztul();
-		//majd a fonalak, a veluk kapcsolt tektonok listajat kiuritjuk
-		for (GombaFonal fonal : fonalak) fonal.elpusztul();
-		// a biztonsag kedvéért kitöröljük a fonalak és kapcsolt tektonok listáját
-		fonalak.clear();
-		kapcsoltTekton.clear();
-		//a sporak is meghalnak
-		for (Spora spora : sporak)spora.eltunik();
-		//majd a sporak listat is kiuritjuk (bár elvileg már üres kéne legyen)
-		sporak.clear();
-		//és lenullázuk a spóraszámot
-		sporakSzama=0;
-		//a rovarok megmaradnak ezen a tektonon
-		//letrehozzuk az uj tektont, az eredeti tulajdonságával és szomszédaival
-		Tekton t=new Tekton (tulajdonsagok, szomszedok);
-		//majd egymas szomszedjai is lesznek
-		ujSzomszed(t);
-		t.ujSzomszed(this);
-		return t;
-		}
-		*/
-
 		public Tekton kettetores() {
-			if (gombaTest != null) gombaTest.elpusztul();
 			
 			// Create a copy of fonalak
 			new ArrayList<>(fonalak).forEach(fonal -> fonal.elpusztul());
@@ -104,6 +77,22 @@ public class Tekton {
 			Tekton t = new Tekton(tulajdonsagok, szomszedok);
 			ujSzomszed(t);
 			t.ujSzomszed(this);
+			
+			//Rovar es Test random elhelyezese
+			Random random = new Random();
+			if(random.nextInt()%2==0) {
+				//Ha paros a random, akkor az uj tekronra kerulnek a Rovarok es a regin marad a Test
+				for(int i=0; i<rovarok.size(); i++) {
+					t.ujRovar(rovarok.get(i));
+				}
+				for(int i=0; i<rovarok.size(); i++) {
+					this.torolRovar(rovarok.get(i));
+				}
+			}
+			else {
+				t.ujTest(gombaTest);
+				this.torolTest();
+			}
 			return t;
 		}
 
@@ -164,16 +153,8 @@ public class Tekton {
 
     // uj gombatest letrehozasa a tektonon
     public void ujTest(GombaTest t) {
-		if  (gombaTest==null) {
-			//hozzáadjuk a tektonhoz
-			gombaTest=t;
-			/*
-			//majd a gombatesthez is
-			t.ujTekton(this);
-			//TODO kell-e, hogy lesz ez?
-			gombaTest=t;*/
-		}
-		}
+    	gombaTest=t;
+	}
 
     // Gombatest eltávolítása a tektonról.
     public void torolTest() {

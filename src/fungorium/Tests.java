@@ -14,7 +14,7 @@ public class Tests {
 
     public static void main(String[] args) {
     	Scanner scanner = new Scanner(System.in); //A beolvasáso
-        setup();
+        
 
         List<Runnable> tests = new ArrayList<>();
 
@@ -40,7 +40,6 @@ public class Tests {
 
         int ok = 0;
         int fail = 0;
-        int count = 0;
 
         //System.out.println("\nEredmény: " + ok + " sikeres, " + fail + " hibás teszt.");
         
@@ -69,7 +68,8 @@ public class Tests {
         
         int valasz = scanner.nextInt();
         
-        while(valasz<21) {
+        while(valasz<20) {
+        	setup();
         	switch (valasz) {
             case 1:
                 try {
@@ -242,20 +242,6 @@ public class Tests {
                     fail++;
                 }
                 break;
-            case 20:
-            	for (Runnable test : tests) {
-            		count++;
-            		System.out.println(count + ". ");
-                    try {
-                        test.run();
-                        ok++;
-                        System.out.print("SIKERES YIPIYIPIYEEEE\n");
-                    } catch (AssertionError e) {
-                        System.out.println("Hiba: " + e.getMessage());
-                        fail++;
-                    }
-                }
-                break;
             default:
                 System.out.println("Érvénytelen válasz.");
                 break;
@@ -375,7 +361,7 @@ public class Tests {
         tekton3.ujFonal(secondFonal);
         gombasz.UjGombaFonal(secondFonal);
     
-        System.out.println("\n" + "fonalnoveszt" + gombasz.getNev() + ":");
+        System.out.println("\n" + "fonalnoveszt " + gombasz.getNev() + ":");
     
         // Első fonal adatai
         System.out.println("    GombaFonal " + firstFonal.getId() + " ID null " + firstFonal.getId());
@@ -429,17 +415,20 @@ public class Tests {
 	public static void testSporaSzoras2tavra() {
 	    gombaTest.kor = 3;
 	    gombaTest.elegOreg = true;
-	
+	    gombaTest.setUtolsoSporaszoras(3);
+	    
 	    int regiSporakSzama1 = tekton1.getSporak().size();
 	    int regiSporakSzama3 = tekton3.getSporak().size();
 	    int regiSporaSzorasokSzama = gombaTest.sporaszorasokSzama;
 	    int regiUtolsoSporaszoras = gombaTest.utolsoSporaszoras;
-	
+	    
+	    System.out.println(regiUtolsoSporaszoras + "\n");
+	    
 	    gombaTest.sporaSzoras();
 	
 	    assertTrue(!tekton1.getSporak().isEmpty() || !tekton3.getSporak().isEmpty(), "Távoli spóra szórás nem történt");
 	
-	    System.out.println("\nsporaszoras2tavra " + gombasz.getNev() + ":");
+	    System.out.println("\nsporaszoras " + gombasz.getNev() + ":");
 	
 	    if (tekton1.getSporak().size() > regiSporakSzama1) {
 	        System.out.println("    Spóra: új spóra szórva. (Spóra ID: [nincs ID], Cél Tekton ID: " + tekton1.getId() + ")");
@@ -475,7 +464,7 @@ public class Tests {
 	}
 	
 	public static void testGombaTestLetrehozasaSikertelen() {
-	    System.out.println("\nujTestsikertelen " + gombasz.getNev() + ":");
+	    System.out.println("\nujTest " + gombasz.getNev() + ":");
 	    try {
 	        GombaTest test = new GombaTest(tekton1, gombasz);
 	        gombasz.UjGombaTest(test, tekton1);
@@ -491,15 +480,15 @@ public class Tests {
 	
 	public static void testGombaTestLetrehozasaFonalbol() {
 		//Előkészítés, legalább 5 spóra kell 
-	    tekton2.getSporak().add(new Spora(tekton2));
+		tekton2.getSporak().add(new Spora(tekton2));
 	    tekton2.getSporak().add(new Spora(tekton2));
 	    tekton2.getSporak().add(new Spora(tekton2));
 	    tekton2.getSporak().add(new Spora(tekton2));
 	    tekton2.getSporak().add(new Spora(tekton2));
 	
 	    //Művelet
-	    System.out.println("\nujTestfonalbol " + gombasz.getNev() + ":");
-	    //gombaFonal.ujTest(tekton2);
+	    System.out.println("\nujTest " + gombasz.getNev() + ":");
+	    gombaFonal.ujTest(tekton2);
 	    
 	    //Ellenőrzés
 	    assertNotNull(tekton2.getGombaTest(), "GombaTest fonalból nem jött létre");
@@ -515,47 +504,68 @@ public class Tests {
 	    assertFalse(gombaFonal.eletbenE(), "Fonal nem halt el");
 	    System.out.println("    Fonal ID: " + gombaFonal.getId() + " eletben-e: igaz -> hamis");
 	}
-	public static void testGombaFonalVagasKetTest() {
-	    GombaTest t2 = new GombaTest(tekton2, gombasz);
-	    tekton2.ujTest(t2);
+	public static void testGombaFonalVagasKetTest() {    //       _           _            _           _ 
+		//Előkészítés: Tektonok létrehozása              //      /T/---------/ /-----|----/ /---------/T/
+		List<Tekton> t4Szomszedok = new ArrayList<>();   //      -           -             -           -
+		t4Szomszedok.add(tekton2);                       //       ^Tekton1   ^Tekton2    ^Tekton4     ^Tekton5
+		Tekton tekton4 = new Tekton("sima", t4Szomszedok);//
+		
+		List<Tekton> t5Szomszedok = new ArrayList<>();
+		t4Szomszedok.add(tekton4);
+		Tekton tekton5 = new Tekton("sima", t5Szomszedok);
+		
+		//Test és fonalak felpakkolása
+		GombaTest test2 = new GombaTest(tekton5, gombasz);
+		
+		GombaFonal fonal24 = new GombaFonal(tekton2, tekton4, gombasz);
+		tekton2.ujFonal(fonal24);
+		tekton4.ujFonal(fonal24);
+		GombaFonal fonal54 = new GombaFonal(tekton4, tekton5, gombasz);
+		tekton4.ujFonal(fonal54);
+		tekton5.ujFonal(fonal54);
+	    tekton5.ujTest(test2);
+	    
+	    //Művelet
+	    fonal24.elpusztul();
+	    
 	    assertTrue(gombaFonal.eletbenE(), "Fonal elhalt, pedig két test kapcsolódik");
 	
-	    System.out.println("\nvagaskettest " + rovarasz.getNev() + ":");
-	    System.out.println("    Fonal ID: " + gombaFonal.getId() + " kapcsoltTestek: [" + gombaTest.getId() + ", " + t2.getId() + "]");
+	    System.out.println("\nvagas " + rovarasz.getNev() + ":");
+	    System.out.println("    Fonal ID: " + gombaFonal.getId() + " kapcsoltTestek: [" + gombaTest.getId() + ", " + test2.getId() + "]");
 	}
 	public static void testElvagottFonalakElpusztulasa() {
 	    gombaFonal.megolik();
 	    assertFalse(gombaFonal.eletbenE(), "Fonal nem pusztult el");
 	
-	    System.out.println("\nElvagottFonalakElpusztulasa " + rovarasz.getNev() + ":");
+	    System.out.println("\nvagas " + rovarasz.getNev() + ":");
 	    System.out.println("    Fonal ID: " + gombaFonal.getId() + " eletben-e: igaz -> hamis");
 	}
 	
 	public static void testBenultRovar() {
 	    System.out.println("\nbenultrovar " + rovarasz.getNev() + ":");
-	    spora.sporaType = 3; // Bénító spóra
+	    spora.sporaType = 1; // Bénuló spóra 
 	    rovar.eszik(spora);
 	
 	    assertFalse(rovar.getAllapot() == Allapot.NORMAL, "Bénult rovar tudott lépni");
 	
 	    System.out.println("    Rovar ID: " + rovar.getId() + " allapot: NORMAL -> BENULT");
-	    //System.out.println("    Spóra ID: " + spora.getId() + " eltűnt");
 	    System.out.println("    Tekton ID: " + rovar.getHol().getId() + " sporak: [előző spórák] -> [csökkentett]");
 	}
 	public static void testGyorsitottRovar() {
-	    System.out.println("\ngyorsitottrovar " + rovarasz.getNev() + ":");
-	    spora.sporaType = 1; // Gyorsító spóra
+	    System.out.println("\nlep " + rovarasz.getNev() + ":");
+	    spora.sporaType = 2; // Gyorsító spóra 
 	    rovar.eszik(spora);
 	
 	    assertTrue(rovar.getAllapot() == Allapot.GYORSITOTT, "Gyorsított rovar nem tudott lépni");
 	
 	    System.out.println("    Rovar ID: " + rovar.getId() + " allapot: NORMAL -> GYORSITOTT");
-	   //System.out.println("    Spóra ID: " + spora.getId() + " eltűnt");
 	}
 	
 	public static void testFonalVagasUtanNemLep() {
-	    System.out.println("\nvagasutannem lep " + rovarasz.getNev() + ":");
+	    System.out.println("\nvagas " + rovarasz.getNev() + ":");
 	    gombaFonal.megolik();
+	    
+	    rovar.lep(tekton1);
 	
 	    assertFalse(rovar.getHol().equals(tekton2), "Rovar átlépett, de nem kellett volna");
 	
@@ -566,8 +576,8 @@ public class Tests {
 	}
 	
 	public static void testLassitottRovar() {
-	    System.out.println("\n lassitott rovar " + rovarasz.getNev() + ":");
-	    spora.sporaType = 2; // Lassító spóra
+	    System.out.println("\neszik " + rovarasz.getNev() + ":");
+	    spora.sporaType = 3; // Lassító spóra
 	    rovar.eszik(spora);
 	
 	    assertTrue(rovar.getAllapot() == Allapot.LASSITOTT, "Lassított rovar tudott lépni");
@@ -577,7 +587,7 @@ public class Tests {
 	}
 	
 	public static void testVagaskeptelenRovar() {
-	    System.out.println("\nvagaskeptelenrovar " + rovarasz.getNev() + ":");
+	    System.out.println("\nlep " + rovarasz.getNev() + ":");
 	    spora.sporaType = 4; // Vágásképtelen spóra
 	    rovar.eszik(spora);
 	
@@ -604,21 +614,23 @@ public class Tests {
 	public static void testTektonKettetores2Fonal1Rovar1Test() {
 	    System.out.println("\nkettetores:");
 	
-	    GombaFonal extraFonal = new GombaFonal(tekton1, tekton2, gombasz);
-	    tekton1.ujFonal(extraFonal);
+	    GombaFonal extraFonal = new GombaFonal(tekton2, tekton3, gombasz);
 	    tekton2.ujFonal(extraFonal);
+	    tekton3.ujFonal(extraFonal);
 	    gombasz.UjGombaFonal(extraFonal);
 	
-	    tekton1.ujRovar(new Rovar(tekton1, rovarasz));
-	    tekton1.ujTest(new GombaTest(tekton1, gombasz));
+	    tekton2.ujRovar(new Rovar(tekton2, rovarasz));
+	    GombaTest test2 =new GombaTest(tekton2, gombasz);
+	    tekton2.ujTest(test2);
+	    gombasz.UjGombaTest(test2);
 	
-	    Tekton ujTekton = tekton1.kettetores();
+	    Tekton ujTekton = tekton2.kettetores();
 	    jatek.addTekton(ujTekton);
 	
 	    assertNotNull(ujTekton, "Kettétörés nem hozott létre új Tekton-t");
 	
-	    boolean vanRovar = !tekton1.getRovarok().isEmpty() || !ujTekton.getRovarok().isEmpty();
-	    boolean vanTest = tekton1.getGombaTest() != null || ujTekton.getGombaTest() != null;
+	    boolean vanRovar = !tekton2.getRovarok().isEmpty() || !ujTekton.getRovarok().isEmpty();
+	    boolean vanTest = tekton2.getGombaTest() != null || ujTekton.getGombaTest() != null;
 	
 	    assertTrue(vanRovar, "Rovar eltűnt töréskor");
 	    assertTrue(vanTest, "GombaTest eltűnt töréskor");
@@ -651,119 +663,4 @@ public class Tests {
 	
 	    System.out.println("    Rovar ID: " + rovar.getId() + " hol: " + tekton2.getId() + " -> " + tekton1.getId());
 	}
-/*
-    public static void testGombaTestLetrehozasa() {
-        tekton2.getSporak().add(new Spora(tekton2));
-        tekton2.getSporak().add(new Spora(tekton2));
-        tekton2.getSporak().add(new Spora(tekton2));
-
-        GombaTest newTest = new GombaTest(tekton2, gombasz);
-        assertNotNull(newTest, "GombaTest nem jött létre");
-    }
-
-    public static void testGombaTestLetrehozasaSikertelen() {
-        try {
-            new GombaTest(tekton1, gombasz);
-            throw new AssertionError("Nem kellett volna létrejönnie");
-        } catch (Exception e) {
-        }
-    }
-
-    public static void testGombaTestLetrehozasaFonalbol() {
-        tekton2.getSporak().add(new Spora(tekton2));
-        tekton2.getSporak().add(new Spora(tekton2));
-        tekton2.getSporak().add(new Spora(tekton2));
-
-        gombaFonal.ujTest(tekton2);
-        assertNotNull(tekton2.getGombaTest(), "GombaTest fonalból nem jött létre");
-    }
-
-    public static void testGombaFonalVagas() {
-        gombaFonal.megolik();
-        assertFalse(gombaFonal.eletbenE(), "Fonal nem halt el");
-    }
-
-    public static void testGombaFonalVagasKetTest() {
-        GombaTest t2 = new GombaTest(tekton2, gombasz);
-        tekton2.ujTest(t2);
-        assertTrue(gombaFonal.eletbenE(), "Fonal elhalt, pedig két test kapcsolódik");
-    }
-
-    public static void testElvagottFonalakElpusztulasa() {
-        gombaFonal.megolik();
-        assertFalse(gombaFonal.eletbenE(), "Fonal nem pusztult el");
-    }
-
-    public static void testBenultRovar() {
-        spora.sporaType = 1;
-        rovar.eszik(spora);
-        assertFalse(rovar.getAllapot() == Allapot.NORMAL, "Benult rovar tudott lépni");
-    }
-
-    public static void testGyorsitottRovar() {
-        spora.sporaType = 2;
-        rovar.eszik(spora);
-        assertTrue(rovar.getAllapot() == Allapot.GYORSITOTT, "Gyorsított rovar nem tudott lépni");
-    }
-
-    public static void testFonalVagasUtanNemLep() {
-        gombaFonal.megolik();
-        assertFalse(rovar.getHol().equals(tekton2), "Rovar átlépett, de nem kellett volna");
-    }
-
-    public static void testLassitottRovar() {
-        spora.sporaType = 3;
-        rovar.eszik(spora);
-        assertTrue(rovar.getAllapot() == Allapot.LASSITOTT, "Lassított rovar tudott lépni");
-    }
-
-    public static void testVagaskeptelenRovar() {
-        spora.sporaType = 4;
-        rovar.eszik(spora);
-        assertFalse(rovar.getAllapot() == Allapot.VAGASKEPTELEN, "Vágásképtelen rovar vágott");
-    }
-
-    public static void testTektonKettetores() {
-        Tekton ujTekton = tekton1.kettetores();
-        jatek.addTekton(ujTekton);
-    
-        assertNotNull(ujTekton, "Új Tekton nem jött létre");
-        assertTrue(tekton1.getSzomszedok().contains(ujTekton), "Régi Tekton nem szomszéd az új Tektonnal");
-        assertTrue(ujTekton.getSzomszedok().contains(tekton1), "Új Tekton nem szomszéd a régivel");
-    }
-    
-    public static void testTektonKettetores2Fonal1Rovar1Test() {
-        GombaFonal extraFonal = new GombaFonal(tekton1, tekton2, gombasz);
-        tekton1.ujFonal(extraFonal);
-        tekton2.ujFonal(extraFonal);
-        gombasz.UjGombaFonal(extraFonal);
-    
-        tekton1.ujRovar(new Rovar(tekton1, rovarasz));
-        tekton1.ujTest(new GombaTest(tekton1, gombasz));
-    
-        Tekton ujTekton = tekton1.kettetores();
-        jatek.addTekton(ujTekton);
-    
-        assertNotNull(ujTekton, "Kettétörés nem hozott létre új Tekton-t");
-        boolean vanRovar = !tekton1.getRovarok().isEmpty() || !ujTekton.getRovarok().isEmpty();
-        boolean vanTest = tekton1.getGombaTest() != null || ujTekton.getGombaTest() != null;
-        assertTrue(vanRovar, "Rovar eltűnt töréskor");
-        assertTrue(vanTest, "GombaTest eltűnt töréskor");
-    }
-    
-    public static void testTektonKettetoresSporakkal() {
-        tekton1.getSporak().add(new Spora(tekton1));
-        tekton1.getSporak().add(new Spora(tekton1));
-    
-        Tekton ujTekton = tekton1.kettetores();
-        jatek.addTekton(ujTekton);
-    
-        assertEquals(0, tekton1.getSporakSzama(), "Spórák maradtak a régi Tektonon");
-        assertEquals(0, ujTekton.getSporakSzama(), "Spórák maradtak az új Tektonon");
-    }
-
-    public static void testRovarLepes() {
-        rovar.lep(tekton1);
-        assertEquals(tekton1, rovar.getHol(), "Rovar nem lépett");
-    }*/
 }

@@ -1,4 +1,5 @@
 package fungorium;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -57,11 +58,12 @@ public class GombaTest {
     public void sporaSzoras() {
 		//Megnezzuk termelt-e eleg sporat
     	if (utolsoSporaszoras<2) return;
-    	List<Tekton> sz;
+    	List<Tekton> sz = new ArrayList<>();
 		//Megnezzuk eleg oreg-e hogy tavolabbra szorjon
-    	if (!elegOreg) sz = hol.getSzomszedok();
-    	else sz= hol.getSzomszedSzomszedok();
+    	if (!elegOreg) sz.addAll(hol.getSzomszedok());  
+    	else sz.addAll(hol.getSzomszedSzomszedok());
 		//A megfelelo tektonok kozul 3ra sporat rak
+    	System.out.println("sz size: " + sz.size());
     	for (int i=0; i<3; i++){
             //Egy random számot generál 0-tól a szomszédok száma-1 ig
             int r=random.nextInt(sz.size()-1);
@@ -104,4 +106,10 @@ public class GombaTest {
         int sporaszorasokSzama = Integer.parseInt(parts[4].split("=")[1].trim());
         return new GombaTest(hol, kor, elegOreg, utolsoSporaszoras, sporaszorasokSzama, (Gombasz)jatek.getJatekosByNev(parts[5].split("=")[1].trim()));
     }
+
+
+	public void setUtolsoSporaszoras(int i) {
+		utolsoSporaszoras = i;
+		
+	}
 }
