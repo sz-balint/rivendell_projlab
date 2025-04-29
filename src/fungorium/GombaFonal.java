@@ -6,9 +6,9 @@ import java.util.Random;
 
 public class GombaFonal {
     private List<Tekton> kapcsoltTektonok; // Azon 2 tekton listaja, amelyeken a fonal no
-    public Gombasz kie;  // A gomb�sz, akihez a fon�l tartozik.
-    private int megel;  // A t�l�l�si id�, am�g a fon�l test n�lk�l �letben maradhat, ebb�l sz�molunk le ha m�r nem �l
-    private boolean el=true; // Jelzi, hogy a fon�l m�g �l-e.
+    public Gombasz kie;  // A gombász, akihez a fonál tartozik.
+    private int megel;  // A túlélési idő, amíg a fonál test nélkül életben maradhat, ebből számolunk le ha már nem él
+    private boolean el=true; // Jelzi, hogy a fonál még él-e.
     private int id; // A fonalak azonosítására szolgál
     
     Random random = new Random();
@@ -18,7 +18,7 @@ public class GombaFonal {
 		return id;
 	}
 	
-    //Gombafonal letrehozasa csak tekton list�val + Gomb�sszal (sz�ks�gess�ge k�rd�ses)
+    //Gombafonal letrehozasa csak tekton listával + Gombásszal (szükségessége kérdéses)
     public GombaFonal(List<Tekton> tekt, Gombasz g) {
 		kapcsoltTektonok=tekt;
         kie=g;
@@ -26,7 +26,7 @@ public class GombaFonal {
         id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
-    //Gombafonal letrehozasa csak 2 tektonnal + Gomb�sszal
+    //Gombafonal letrehozasa csak 2 tektonnal + Gombásszal
     public GombaFonal(Tekton tekt1, Tekton tek2, Gombasz g) {
 		kapcsoltTektonok= new ArrayList<>();
         kapcsoltTektonok.add(tekt1);
@@ -36,7 +36,7 @@ public class GombaFonal {
         id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
-    //Gombafonal letrehozasa pontos adatokkal, tekton list�val 
+    //Gombafonal letrehozasa pontos adatokkal, tekton listával 
     public GombaFonal(List<Tekton> tekt, Gombasz g, int m, boolean e) {
 		kapcsoltTektonok=tekt;
         kie=g;
@@ -56,7 +56,7 @@ public class GombaFonal {
         id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
-    // Megmondja, hogy a fon�l m�g �letben van-e.
+    // Megmondja, hogy a fonál még életben van-e.
     public boolean eletbenE() { return el; }
 
     // A fonal elpusztul, ha megszonik a kapcsolata a gombatestekkel/ elvagjak
@@ -80,8 +80,8 @@ public class GombaFonal {
 	        tek1.elveszKapcsoltTekton(tek0);
 		}
         kie.TorolGombaFonal(this);
-        //megn�zz�k, hogy a 2 kapcsolt tektonon van-e test (erre van fv a tektonn�l)
-        //Ha nincs ott mindenFonalElhal() fon�l fvv megh�v�sa
+        //megnázzák, hogy a 2 kapcsolt tektonon van-e test (erre van fv a tektonnál)
+        //Ha nincs ott mindenFonalElhal() fonál fvv meghávása
         if (tek0.elhal(kie)) mindenFonalElhal(tek0);
         if (tek1.elhal(kie)) mindenFonalElhal(tek1);
         kapcsoltTektonok=null;
@@ -93,14 +93,14 @@ public class GombaFonal {
         //Megnezzuk, hogy van-e hely egy uj gombatestnek
     	//Megnezzuk, hogy van-e eleg spora a tektonon 
         if (t.vanHely()==true && t.getSporakSzama()>5) {
-        	// ha igen elvesszuk a noveshez szukseges sporakat a tektonrol, elpuszt�tjuk �ket
+        	// ha igen elvesszuk a noveshez szukseges sporakat a tektonrol, elpusztítjuk őket
             for (int i = 0; i < 5; i++) {
                 t.getSporak().get(0).eltunik();
             }
             GombaTest test = new GombaTest(t, kie);
             //a tektonhoz is fel kell venni
             t.ujTest(test);
-            //gomb�szhoz is fel kell venni stb
+            //gombászhoz is fel kell venni stb
         	kie.UjGombaTest(test);
         	}
         }
@@ -108,55 +108,55 @@ public class GombaFonal {
         
 		
   
-    // A fon�l megeszi a rovart, �s ha tud, gombatestet n�veszt.
+    // A fonál megeszi a rovart, és ha tud, gombatestet növeszt.
     public void rovarEves(Rovar r) {
-        //Megnezzuk, hogy b�nult- e a rovar
+        //Megnezzuk, hogy bénult- e a rovar
         if (r.getAllapot()!=Allapot.BENULT) return;
-        //Megnezzuk, van-e test a tektonon, ha igen testet n�veszt
+        //Megnezzuk, van-e test a tektonon, ha igen testet náveszt
         if (r.getHol().vanHely()) {
             GombaTest test = new GombaTest(r.getHol(), kie);
             //A testet a tektonhoz is fel kell venni
             r.getHol().ujTest(test);
-            //�s a gomb�szhoz is fel kell venni
+            //ás a gombászhoz is fel kell venni
             kie.UjGombaTest(test);
         }
-        //!!!!!!!!!!!J� pusztul�s kell
+        //!!!!!!!!!!!Jó pusztulás kell
         //elpusztul a rovar
         r.elpusztul();
     }
 
-    // Visszaadja azon Tektonok list�j�t, amelyeken rajta van a fon�l.
+    // Visszaadja azon Tektonok listáját, amelyeken rajta van a fonál.
     public List<Tekton> getKapcsoltTektonok() { return kapcsoltTektonok; }
 
-    // Meg�li a fonalat, az "el" �rt�k�t hamisra �ll�tja.
+    // Megöli a fonalat, az "el" értékét hamisra állítja.
     public void megolik() { this.el = false; }
 
-    // Elind�tja a kapcsol�d� fonalak meg�l�s�t egy Tektonr�l.
+    // Elindítja a kapcsolódó fonalak megölését egy Tektonról.
     private void mindenFonalElhal(Tekton t) {
-        //L�trehozunk 2 list�t a bej�rt illetve a bej�rand� tektonoknak
+        //Látrehozunk 2 listát a bejárt illetve a bejárandó tektonoknak
 		List<Tekton> bejarando = new ArrayList<>();
 		List<Tekton> bejart= new ArrayList<>();
-		//A bej�rand� list�hoz hozz�adjuk a megadott tektont
+		//A bejárandó listához hozzáadjuk a megadott tektont
 		bejarando.add(t);
-		//Am�g a bej�rand� lista nem �res �s nem talalhato benne megfelel� gombatest
+		//Amág a bejárandá lista nem üres és nem talalhato benne megfelelő gombatest
 		while (!bejarando.isEmpty()) {
-			//Vessz�k a k�vetkez� bej�rand� tektont
+			//Vesszük a következő bejárandó tektont
 			Tekton tek = bejarando.get(0);
-			//Megn�zz�k, hogy a tektonon l�v� gomb�szhoz tartoz� fonalak (ha vannak) tektonjai benne vannek-e m�r az egyik list�ban
+			//Megnázzák, hogy a tektonon lévő gombászhoz tartozó fonalak (ha vannak) tektonjai benne vannek-e már az egyik listában
 			if (tek.getGomaszFonalai(kie)!=null){
 				for (GombaFonal fonal : tek.getGomaszFonalai(kie)) {
-                    //Megoljuk a fonalat (megn�zhetn�nk �l-e de igaz�b�l az nem fontos)
+                    //Megoljuk a fonalat (megnézhetnénk él-e de igazábál az nem fontos)
                     fonal.megolik();
-					//Ha a fonal tektonja nem szerepel a bej�rt list�ban �s a bej�rand�ban sem, akkor hozz�adjuk a bej�rand�hoz
+					//Ha a fonal tektonja nem szerepel a bejárt listában ás a bejárandóban sem, akkor hozzáadjuk a bejárandóhoz
 					if (!bejart.contains(fonal.getKapcsoltTektonok().get(0))&&!bejarando.contains(fonal.getKapcsoltTektonok().get(0)))
 					bejarando.add(fonal.getKapcsoltTektonok().get(0));
 					if (!bejart.contains(fonal.getKapcsoltTektonok().get(1))&&!bejarando.contains(fonal.getKapcsoltTektonok().get(1)))
 					bejarando.add(fonal.getKapcsoltTektonok().get(1));
 				}
 			}
-			//Ha a tekton m�r bej�rtuk, akkor elt�vol�tjuk a bej�rand� list�b�l
+			//Ha a tektont már bejártuk, akkor eltávolítjuk a bejárandó listából
 			bejarando.remove(tek);
-            //Hozz�adjuk a bej�rt list�hoz
+            //Hozzáadjuk a bejárt listához
             bejart.add(tek);
 		}
     }

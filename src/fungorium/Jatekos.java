@@ -1,20 +1,20 @@
 package fungorium;
-// Absztrakt osztÃ¡ly, a jÃ¡tÃ©kosok kÃ¶zÃ¶s tulajdonsÃ¡gainak Ã©s viselkedÃ©sÃ©nek biztosÃ¡tÃ¡sÃ¡ra.
+// Absztrakt osztály, a játékosok közös tulajdonságainak és viselkedésének biztosátására.
 public abstract class Jatekos {
 
-    // A jÃ¡tÃ©kos neve.
+    // A játékos neve.
     public String nev;
 
-    // A jÃ¡tÃ©kos Ã¡ltal szerzett pontok.
+    // A játékos által szerzett pontok.
     protected int pontok;
 
-    //A jÃ¡tÃ©kos tÃ­pusa
+    //A játékos típusa
     public String tipus;
 
-   // A jÃ¡tÃ©kos lÃ©pÃ©sÃ©nek vÃ©grehajtÃ¡sa.
+   // A játékos lépésének végrehajtása.
    public abstract void Kor(String parancs, JatekLogika jatek);
 
-   // A jÃ¡tÃ©kos pontjainak frissÃ­tÃ©se, az eredmÃ©nyek eltÃ¡rolÃ¡sÃ¡hoz.
+   // A játékos pontjainak frissítése, az eredmények eltárolásához.
    public abstract void pontokFrissit();
 
     public Jatekos(String nev, int pontok) {

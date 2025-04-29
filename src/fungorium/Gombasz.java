@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// A gomb�sz j�t�kost�pus oszt�lya, aki a gomb�k n�veszt�s�t ir�ny�tja.
+// A gombász játékostípus osztálya, aki a gombák növesztését irányítja.
 public class Gombasz extends Jatekos {
 
-    // A gombaszhoz tartoz� gombatestek list�ja.
+    // A gombaszhoz tartozó gombatestek listája.
     private List<GombaTest> Testek = new ArrayList<>();
 
-    // A gomb�szhoz tartoz� gombafonalak list�ja.
+    // A gombászhoz tartozó gombafonalak listája.
     private List<GombaFonal> Fonalak= new ArrayList<>();
 
     //Konstruktor
     public Gombasz(String nev, int pontok, String tipus){ super(nev, pontok); this.tipus = "Gombasz";}
     
-    // Egy megadott gombafon�lb�l �j gombatestet n�veszt.
-    private void testNoveszt(GombaFonal fonal, Tekton tekton) { //melyik fonálból növesztünk, és hova
+    // Egy megadott gombafonálból új gombatestet növeszt.
+    public void testNoveszt(GombaFonal fonal, Tekton tekton) { //melyik fonálból növesztünk, és hova
     	//Ellenorzesek:
     	//A Fonal Tektonjai szomszédok a megadott Tektonnal
     	//A Tektonon van-e hely GombaTestre
         if (tekton.vanHely()==false &&
         		//A Tektonon van-e eleg Spora
-        		tekton.getSporakSzama()>5) {
+        		tekton.getSporakSzama()>4) {
         	
         	for (int i = 0; i < 5; i++) {
                 tekton.getSporak().get(i).eltunik(); 
@@ -45,8 +45,8 @@ public class Gombasz extends Jatekos {
     	return Fonalak;
     }
 
-    // Meghatározza, merre nőjenek a fonalak két tekton között.
-    private void fonalIrany(Tekton indulo, Tekton erkezo) { 
+    // Meghatározza, merre nőjenek a fonalak két tekton között.
+    public void fonalIrany(Tekton indulo, Tekton erkezo) { 
     	GombaFonal fonal = new GombaFonal(indulo, erkezo, this);
     	indulo.getFonalak().add(fonal);
     	erkezo.getFonalak().add(fonal);
@@ -93,10 +93,10 @@ public class Gombasz extends Jatekos {
         
     }
 
-    // Új gombafonál hozzáadása a listához.
+    // Ãj gombafonál hozzáadása a listához.
     public void UjGombaFonal(GombaFonal f) {
         
-        // Ellenőrzi, hogy a gombafonál már létezik-e a listában.
+        // EllenÅrzi, hogy a gombafonál már létezik-e a listában.
         if (!Fonalak.contains(f)) {
             Fonalak.add(f); // Ha nem létezik, hozzáadja a listához.
         } else {
@@ -107,7 +107,7 @@ public class Gombasz extends Jatekos {
     // Gombafonál eltávolítása a listából.
     public void TorolGombaFonal(GombaFonal f) {
         
-        // Ellenőrzi, hogy a gombafonál létezik-e a listában.
+        // EllenÅrzi, hogy a gombafonál létezik-e a listában.
         if (Fonalak.contains(f)) {
             Fonalak.remove(f); // Ha létezik, eltávolítja a listából.
         } else {
@@ -118,7 +118,7 @@ public class Gombasz extends Jatekos {
     // Egy gombafonál rovart eszik meg.
     private void rovartEszik(Rovar r, GombaFonal f) {
         
-        // Ellenőrzi, hogy a gombafonál és a rovar létezik-e.
+        // EllenÅrzi, hogy a gombafonál és a rovar létezik-e.
         if (Fonalak.contains(f) && r != null) {
             r.elpusztul();
         } else {

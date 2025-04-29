@@ -1,6 +1,6 @@
 package fungorium;
 
-// A j t k  llapot nak ment s  rt  s bet lt s  rt felel s oszt ly.
+// A játék állapotának mentéséért és betöltéséért felelős osztály.
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,18 +12,18 @@ import java.util.List;
 
 public class Fajlkezelo {
 
-    // Elmenti a j t k  llapot t.
-    public void save(JatekLogika jatek) throws IOException { 
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("mentes.txt"))) {
+    // Elmenti a játék állapotát.
+    public void save(JatekLogika jatek, String path) throws IOException { 
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
             bw.write(jatek.toString());
         }
     }
 
-    // Bet lti a j t k  llapot t.
-    public JatekLogika load() throws IOException {
+    // Betölti a játék állapotát.
+    public JatekLogika load(String path) throws IOException {
         JatekLogika jatek = new JatekLogika();
         List<String> lines = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("mentes.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = br.readLine()) != null) {
                 lines.add(line);
@@ -51,7 +51,7 @@ public class Fajlkezelo {
                 j = new Gombasz(n, Integer.parseInt(p), "Gombasz");
             }
             else {
-                throw new IOException("Nem megfelelő fájl!");
+                throw new IOException("Nem megfelelő fájl!");
             }
 
             if (j.nev.equals(aktivJatekos))
@@ -62,7 +62,7 @@ public class Fajlkezelo {
         sor++;
         while (sor < lines.size()) {
             String line = lines.get(sor);
-            if (line.isEmpty()) break; // Üres sor esetén kilépünk
+            if (line.isEmpty()) break; // üres sor esetén kilépünk
             Tekton tekton = new Tekton("testnelkuli");
             jatek.addTekton(tekton.fromString(line));
             sor++;
