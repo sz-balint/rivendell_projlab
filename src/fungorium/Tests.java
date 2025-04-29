@@ -63,8 +63,7 @@ public class Tests {
         		+ "17. testTektonKettetores2Fonal1Rovar1Test\n"
         		+ "18. testTektonKettetoresSporakkal\n"
         		+ "19. testRovarLepes \n"
-        		+ "20. Összes teszt futtatása\n"
-        		+ "21. Kilépés\n");
+        		+ "20. Kilépés\n");
         
         int valasz = scanner.nextInt();
         
@@ -415,7 +414,7 @@ public class Tests {
 	public static void testSporaSzoras2tavra() {
 	    gombaTest.kor = 3;
 	    gombaTest.elegOreg = true;
-	    gombaTest.setUtolsoSporaszoras(3);
+	    //gombaTest.setUtolsoSporaszoras(3);
 	    
 	    int regiSporakSzama1 = tekton1.getSporak().size();
 	    int regiSporakSzama3 = tekton3.getSporak().size();
