@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.Random;
 
 public class GombaFonal {
+<<<<<<< HEAD
     private List<Tekton> kapcsoltTektonok; // Azon két tekton listája, amelyeken a fonál nő
+=======
+    private List<Tekton> kapcsoltTektonok; // Azon 2 tekton listaja, amelyeken a fonal no
+>>>>>>> origin/cli
     public Gombasz kie;  // A gombász, akihez a fonál tartozik.
     private int megel;  // A túlélési idő, amíg a fonál test nélkül életben maradhat, ebből számolunk le ha már nem él
     private boolean el=true; // Jelzi, hogy a fonál még él-e.
@@ -17,7 +21,11 @@ public class GombaFonal {
 		return id;
 	}
 	
+<<<<<<< HEAD
     // Gombafonál létrehozása csak tekton listával + Gombásszal (szükségessége kérdéses)
+=======
+    //Gombafonal letrehozasa csak tekton listával + Gombásszal (szükségessége kérdéses)
+>>>>>>> origin/cli
     public GombaFonal(List<Tekton> tekt, Gombasz g) {
 		kapcsoltTektonok = tekt;
         kie = g;
@@ -25,7 +33,11 @@ public class GombaFonal {
         id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
+<<<<<<< HEAD
     // Gombafonál létrehozása két tektonnal + Gombásszal
+=======
+    //Gombafonal letrehozasa csak 2 tektonnal + Gombásszal
+>>>>>>> origin/cli
     public GombaFonal(Tekton tekt1, Tekton tek2, Gombasz g) {
 		kapcsoltTektonok = new ArrayList<>();
         kapcsoltTektonok.add(tekt1);
@@ -35,7 +47,11 @@ public class GombaFonal {
         id = idCounter++;
     }
 
+<<<<<<< HEAD
     // Gombafonál létrehozása pontos adatokkal, tekton listával 
+=======
+    //Gombafonal letrehozasa pontos adatokkal, tekton listával 
+>>>>>>> origin/cli
     public GombaFonal(List<Tekton> tekt, Gombasz g, int m, boolean e) {
 		kapcsoltTektonok = tekt;
         kie = g;
@@ -79,8 +95,13 @@ public class GombaFonal {
 	        tek1.elveszKapcsoltTekton(tek0);
 		}
         kie.TorolGombaFonal(this);
+<<<<<<< HEAD
         // Megnézzük, hogy a két kapcsolt tektonon van-e test (erre van függvény a tektonnál)
         // Ha nincs, ott mindenFonalElhal() fonál függvény meghívása
+=======
+        //megnázzák, hogy a 2 kapcsolt tektonon van-e test (erre van fv a tektonnál)
+        //Ha nincs ott mindenFonalElhal() fonál fvv meghávása
+>>>>>>> origin/cli
         if (tek0.elhal(kie)) mindenFonalElhal(tek0);
         if (tek1.elhal(kie)) mindenFonalElhal(tek1);
         kapcsoltTektonok = null;
@@ -89,34 +110,64 @@ public class GombaFonal {
 
     // Új gombatest jön létre egy adott tektonon
     public void ujTest(Tekton t) {
+<<<<<<< HEAD
         // Megnézzük, hogy van-e hely egy új gombatestnek
     	// Megnézzük, hogy van-e elég spóra a tektonon 
         if (t.vanHely() && t.getSporakSzama() > 5) {
         	// Ha igen, elvesszük a növekedéshez szükséges spórákat a tektonról, elpusztítjuk őket
+=======
+        //Megnezzuk, hogy van-e hely egy uj gombatestnek
+    	//Megnezzuk, hogy van-e eleg spora a tektonon 
+        if (t.vanHely()==true && t.getSporakSzama()>5) {
+        	// ha igen elvesszuk a noveshez szukseges sporakat a tektonrol, elpusztítjuk őket
+>>>>>>> origin/cli
             for (int i = 0; i < 5; i++) {
                 t.getSporak().get(0).eltunik();
             }
             GombaTest test = new GombaTest(t, kie);
             // A tektonhoz is fel kell venni
             t.ujTest(test);
+<<<<<<< HEAD
             // A gombászhoz is fel kell venni stb.
+=======
+            //gombászhoz is fel kell venni stb
+>>>>>>> origin/cli
         	kie.UjGombaTest(test);
         	}
         }
     	
+<<<<<<< HEAD
     // A fonál megeszi a rovart, és ha tud, gombatestet növeszt.
     public void rovarEves(Rovar r) {
         // Megnézzük, hogy bénult-e a rovar
         if (r.getAllapot() != Allapot.BENULT) return;
         // Megnézzük, van-e test a tektonon, ha igen, testet növeszt
+=======
+        
+		
+  
+    // A fonál megeszi a rovart, és ha tud, gombatestet növeszt.
+    public void rovarEves(Rovar r) {
+        //Megnezzuk, hogy bénult- e a rovar
+        if (r.getAllapot()!=Allapot.BENULT) return;
+        //Megnezzuk, van-e test a tektonon, ha igen testet náveszt
+>>>>>>> origin/cli
         if (r.getHol().vanHely()) {
             GombaTest test = new GombaTest(r.getHol(), kie);
             // A testet a tektonhoz is fel kell venni
             r.getHol().ujTest(test);
+<<<<<<< HEAD
             // És a gombászhoz is fel kell venni
             kie.UjGombaTest(test);
         }
         // Elpusztul a rovar
+=======
+            //ás a gombászhoz is fel kell venni
+            kie.UjGombaTest(test);
+        }
+        //!!!!!!!!!!!Jó pusztulás kell
+        //elpusztul a rovar
+>>>>>>> origin/cli
         r.elpusztul();
     }
 
@@ -128,6 +179,7 @@ public class GombaFonal {
 
     // Elindítja a kapcsolódó fonalak megölését egy Tektonról.
     private void mindenFonalElhal(Tekton t) {
+<<<<<<< HEAD
         // Létrehozunk két listát a bejárt, illetve a bejárandó tektonoknak
 		List<Tekton> bejarando = new ArrayList<>();
 		List<Tekton> bejart = new ArrayList<>();
@@ -152,6 +204,32 @@ public class GombaFonal {
 			// Ha a tekton már be lett járva, eltávolítjuk a bejárandó listából
 			bejarando.remove(tek);
             // Hozzáadjuk a bejárt listához
+=======
+        //Látrehozunk 2 listát a bejárt illetve a bejárandó tektonoknak
+		List<Tekton> bejarando = new ArrayList<>();
+		List<Tekton> bejart= new ArrayList<>();
+		//A bejárandó listához hozzáadjuk a megadott tektont
+		bejarando.add(t);
+		//Amág a bejárandá lista nem üres és nem talalhato benne megfelelő gombatest
+		while (!bejarando.isEmpty()) {
+			//Vesszük a következő bejárandó tektont
+			Tekton tek = bejarando.get(0);
+			//Megnázzák, hogy a tektonon lévő gombászhoz tartozó fonalak (ha vannak) tektonjai benne vannek-e már az egyik listában
+			if (tek.getGomaszFonalai(kie)!=null){
+				for (GombaFonal fonal : tek.getGomaszFonalai(kie)) {
+                    //Megoljuk a fonalat (megnézhetnénk él-e de igazábál az nem fontos)
+                    fonal.megolik();
+					//Ha a fonal tektonja nem szerepel a bejárt listában ás a bejárandóban sem, akkor hozzáadjuk a bejárandóhoz
+					if (!bejart.contains(fonal.getKapcsoltTektonok().get(0))&&!bejarando.contains(fonal.getKapcsoltTektonok().get(0)))
+					bejarando.add(fonal.getKapcsoltTektonok().get(0));
+					if (!bejart.contains(fonal.getKapcsoltTektonok().get(1))&&!bejarando.contains(fonal.getKapcsoltTektonok().get(1)))
+					bejarando.add(fonal.getKapcsoltTektonok().get(1));
+				}
+			}
+			//Ha a tektont már bejártuk, akkor eltávolítjuk a bejárandó listából
+			bejarando.remove(tek);
+            //Hozzáadjuk a bejárt listához
+>>>>>>> origin/cli
             bejart.add(tek);
 		}
     }

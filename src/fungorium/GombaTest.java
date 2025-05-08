@@ -11,22 +11,22 @@ public class GombaTest {
     public int utolsoSporaszoras=0; // Az utolso sporaszoras ota eltelt idÅ‘
     public int sporaszorasokSzama=0; // Az eddigi sporaszorasok szama
     public static int maxSporaszorasok = 4; // Maximalisan vegrehajthato sporaszorasok szama
-    public static Gombasz kie; // A gombÃ¡sz, akihez a test tartozik.
-    private int id; // A testek azonosÃ­tÃ¡sÃ¡ra szolgÃ¡l
+    public static Gombasz kie; // A gombász, akihez a test tartozik.
+    private int id; // A testek azonosítására szolgál
 
     Random random = new Random();
-	private static int idCounter = 0; // OsztÃ¡lyon belÃ¼l nÃ©zi hogy melyik azonosÃ­tÃ³k voltak mÃ¡r hasznÃ¡lva
+	private static int idCounter = 0; // Osztályon belül nézi hogy melyik azonosítók voltak már használva
 
 	public int getId() {
 		return id;
 	}
 
     
-    //Gombatest letrehozasa minimum attribÃºtummal- jÃ¡tÃ©k kÃ¶zbenhez
+    //Gombatest letrehozasa minimum attribÃºtummal- játék közbenhez
     public GombaTest(Tekton h, Gombasz g) {
     	hol=h;
     	kie=g;
-    	id = idCounter++; // BeÃ¡llÃ­tja az egyedi azonosÃ­tÃ³t Ã©s nÃ¶veli a szÃ¡mlÃ¡lÃ³t
+    	id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
     //Gombatest letrehozasa pontos adatokkal- betolteshez
@@ -37,7 +37,7 @@ public class GombaTest {
         utolsoSporaszoras=uS;
         sporaszorasokSzama=sSz;
         kie=g;
-        id = idCounter++; // BeÃ¡llÃ­tja az egyedi azonosÃ­tÃ³t Ã©s nÃ¶veli a szÃ¡mlÃ¡lÃ³t
+        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
     }
 
     //Visszaadja melyik tektonon van
@@ -65,21 +65,27 @@ public class GombaTest {
 		//A megfelelo tektonok kozul 3ra sporat rak
     	System.out.println("sz size: " + sz.size());
     	for (int i=0; i<3; i++){
-            //Egy random szÃ¡mot generÃ¡l 0-tÃ³l a szomszÃ©dok szÃ¡ma-1 ig
+            //Egy random számot generál 0-tól a szomszédok száma-1 ig
             int r=random.nextInt(sz.size()-1);
-            //CsinÃ¡l egy spÃ³rÃ¡t ami a random szomszÃ©d tektonon lesz
+            //Csinál egy spórát ami a random szomszéd tektonon lesz
     		Spora sp= new Spora(1,2,sz.get(r));
-            //A sporÃ¡t a tektonra rakja
+            //A sporát a tektonra rakja
     		sz.get(r).sporatKap(sp);
+<<<<<<< HEAD
     		System.out.println("SpÃ³ra szÃ³rva a tektonra. Tekton ID: " + sz.get(r).getId() + ".");
             //A tektont eltÃ¡volÃ­tja a lehetsÃ©ges szomszÃ©dok kÃ¶zÃ¼l
+=======
+
+			System.out.println("Spóra szórva a tektonra. Tekton ID: " + sz.get(r).getId() + ".");
+            //A tektont eltávolítja a lehetséges szomszédok közül
+>>>>>>> origin/cli
             sz.remove(r);
     		}
-        //TÃ¶rÃ¶ljÃ¼k az sz-et a biztonsÃ¡g kedvÃ©Ã©rt
+        //Töröljük az sz-et a biztonság kedvéért
         sz.clear();
-        //NÃ¶veljÃ¼k a sporaszorasok szÃ¡mÃ¡t
+        //Növeljük a sporaszorasok számát
         sporaszorasokSzama++;
-		//Ha mÃ¡r tul sok spÃ³rÃ¡t szort a test, meghal
+		//Ha már tul sok spórát szort a test, meghal
     	if (sporaszorasokSzama==maxSporaszorasok) elpusztul();  	    	
         }
     

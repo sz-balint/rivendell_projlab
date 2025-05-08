@@ -1,2 +1,9 @@
 /module-info.class
+<<<<<<< HEAD
+=======
+/.classpath
+/.gitignore
+/.project
+/.vs/
+>>>>>>> origin/cli
 /fungorium/
