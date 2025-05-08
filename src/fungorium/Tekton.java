@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Tekton {
     public String tulajdonsagok="sima"; // A tekton sajat tulajdonsagai (pl. fonal novekedesi sebessege)
-    private int id; // A tektonok azonosÌt·s·ra szolg·l
+    private int id; // A tektonok azonos√≠t√°s√°ra szolg√°l
 	private List<Tekton> szomszedok; // A tekton szomszedos tektonjai
     private int sporakSzama=0; // A tektonon levo sporak szama
     private List<Spora> sporak; // A tektonon talalhato sporak listaja
@@ -18,7 +18,7 @@ public class Tekton {
 	private String kapcsoltTektonStr;
 	private String szomszedokStr;
     
-	private static int idCounter = 0; // Oszt·lyon bel¸l nÈzi hogy melyik azonosÌtÛk voltak m·r haszn·lva
+	private static int idCounter = 0; // Oszt√°lyon bel√ºl n√©zi hogy melyik azonos√≠t√≥k voltak m√°r haszn√°lva
 
     Random random = new Random();
     List <String> spectul = new ArrayList<>(List.of("sima","fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal"));
@@ -27,7 +27,7 @@ public class Tekton {
     
     //Tekton letrehozosa tulajdonsaggal
     public Tekton(String tul) {
-		id = idCounter++; // Be·llÌtja az egyedi azonosÌtÛt Ès nˆveli a sz·ml·lÛt
+		id = idCounter++; // Be√°ll√≠tja az egyedi azonos√≠t√≥t √©s n√∂veli a sz√°ml√°l√≥t
 		tulajdonsagok=tul;
 		szomszedok = new ArrayList<>();
 		sporak = new ArrayList<>();
@@ -37,7 +37,7 @@ public class Tekton {
 		kapcsoltTekton = new ArrayList<>();
 		}
 
-	//Tekton letrehozosa fajta Ès a szomszÈdok megad·s·val
+	//Tekton letrehozosa fajta √©s a szomsz√©dok megad√°s√°val
     public Tekton(String tul, List<Tekton> tekt) {
 		id = idCounter++;
 		tulajdonsagok=tul;
@@ -61,7 +61,6 @@ public class Tekton {
 		kapcsoltTekton = kapcs;
 		}
 
-<<<<<<< HEAD
 		public Tekton kettetores() {
 			
 			// Create a copy of fonalak
@@ -95,69 +94,45 @@ public class Tekton {
 				this.torolTest();
 			}
 			return t;
-=======
-	// A tekton kettetorese
-    public Tekton kettetores() {
-		// Ha volt rajta akkor meghal a gombatest
-		if (gombaTest!=null) gombaTest.elpusztul();
-		//majd a fonalak, a veluk kapcsolt tektonok listajat kiuritjuk
-		for (GombaFonal fonal : fonalak) fonal.elpusztul();
-		// a biztonsag kedvÈÈrt kitˆrˆlj¸k a fonalak Ès kapcsolt tektonok list·j·t
-		fonalak.clear();
-		kapcsoltTekton.clear();
-		//a sporak is meghalnak
-		for (Spora spora : sporak)spora.eltunik();
-		//majd a sporak listat is kiuritjuk (b·r elvileg m·r ¸res kÈne legyen)
-		sporak.clear();
-		//Ès lenull·zuk a spÛrasz·mot
-		sporakSzama=0;
-		//a rovarok megmaradnak ezen a tektonon
-		//letrehozzuk az uj tektont, az eredeti tulajdons·g·val Ès szomszÈdaival
-		Tekton t=new Tekton (tulajdonsagok, szomszedok);
-		//majd egymas szomszedjai is lesznek
-		ujSzomszed(t);
-		t.ujSzomszed(this);
-		return t;
->>>>>>> origin/cli
 		}
 
     // Egy adott sporat eltavolit a tektonrol
     public void sporaElvesz(Spora s) {
-		//kiszedj¸k a list·bÛl a spÛr·t
+		//kiszedj√ºk a list√°b√≥l a sp√≥r√°t
 		sporak.remove(s);
-		//majd csˆkkentj¸k a spÛr·k sz·m·t
+		//majd cs√∂kkentj√ºk a sp√≥r√°k sz√°m√°t
 		sporakSzama--;
 		}
 
     // uj szomszed tekton hozzaadasa
     public void ujSzomszed(Tekton t) {
-		//hozz·adjuk a szomszÈd list·hoz a tektont ha mÈg nincs benne
+		//hozz√°adjuk a szomsz√©d list√°hoz a tektont ha m√©g nincs benne
 		if (!szomszedok.contains(t)) {
 			szomszedok.add(t);
 		}
-		//itt lehetne egy else, de elv olyan eset nem is lehetsÈges
+		//itt lehetne egy else, de elv olyan eset nem is lehets√©ges
 	}
 
     // A tekton egy sporat kap
     public void sporatKap(Spora s) {
-		//hozz·adjuk a spor·t a tektonhoz
+		//hozz√°adjuk a spor√°t a tektonhoz
 		if (!sporak.contains(s)) {
 			sporak.add(s);
-			//majd nˆvelj¸k a spor·k sz·m·t
+			//majd n√∂velj√ºk a spor√°k sz√°m√°t
 			sporakSzama++;
 		}
 		}
 
     // uj fonal rogzitese a tektonon
     public void ujFonal(GombaFonal f) {
-		//ha a fonal nem szerepel a tekton fonalai kˆzˆtt, akkor hozz·adjuk
+		//ha a fonal nem szerepel a tekton fonalai k√∂z√∂tt, akkor hozz√°adjuk
 		if (!fonalak.contains(f))
 			fonalak.add(f);
 		}
 
     // Fonal eltavolitasa
     public void torolFonal(GombaFonal f) {
-		//eltavolitjuk a fonalat a tektonrol, ha benne van a list·j·ban
+		//eltavolitjuk a fonalat a tektonrol, ha benne van a list√°j√°ban
 		if (fonalak.contains(f)) {
 			fonalak.remove(f);
 		}		
@@ -172,29 +147,16 @@ public class Tekton {
 
     // Rovar eltavolitasa
     public void torolRovar(Rovar r) {
-		//eltavolitjuk a rovart a tektonrol, ha benne van a list·j·ban
+		//eltavolitjuk a rovart a tektonrol, ha benne van a list√°j√°ban
 		if ( rovarok.contains(r)) rovarok.remove(r);
 	}
 
     // uj gombatest letrehozasa a tektonon
     public void ujTest(GombaTest t) {
-<<<<<<< HEAD
     	gombaTest=t;
 	}
-=======
-		if  (gombaTest==null) {
-			//hozz·adjuk a tektonhoz
-			gombaTest=t;
-			/*
-			//majd a gombatesthez is
-			t.ujTekton(this);
-			//TODO kell-e, hogy lesz ez?
-			gombaTest=t;*/
-		}
-		}
->>>>>>> origin/cli
 
-    // Gombatest elt·volÌt·sa a tektonrÛl.
+    // Gombatest elt√°vol√≠t√°sa a tektonr√≥l.
     public void torolTest() {
     	gombaTest = null;
 	}
@@ -215,12 +177,12 @@ public class Tekton {
 	
     // A szomszedok szomszedainak lekerdezese
     public List<Tekton> getSzomszedSzomszedok() {
-		//LÈtrehozzuk a list·t amit visszaadunk
+		//L√©trehozzuk a list√°t amit visszaadunk
 		List<Tekton> szsz = new ArrayList<>();
-		//Ha a jelenlegi tektonnak vannak szomszÈdai azokon vÈgigmegy¸nk
+		//Ha a jelenlegi tektonnak vannak szomsz√©dai azokon v√©gigmegy√ºnk
 		if (szomszedok != null) {
             for (Tekton szomszed : szomszedok) {
-				//Ha a szomszÈdnak vannak szomszÈdai, akkor azokat belerakjuk a visszaadandÛ list·ba, ha mÈg nincsenek benne
+				//Ha a szomsz√©dnak vannak szomsz√©dai, akkor azokat belerakjuk a visszaadand√≥ list√°ba, ha m√©g nincsenek benne
                 if (szomszed.getSzomszedok() != null) {
                     for (Tekton szomszedSzomszed : szomszed.getSzomszedok()) {
 						if (!szsz.contains(szomszedSzomszed)) szsz.add(szomszedSzomszed);
@@ -228,7 +190,7 @@ public class Tekton {
                 }
             }
         }
-		//Beleker¸lhetet a jelenlegi tekton is, azt kivessz¸k
+		//Beleker√ºlhetet a jelenlegi tekton is, azt kivessz√ºk
 		if (!szsz.contains(this)) szsz.remove(this);
 		return szsz;
 	}
@@ -240,84 +202,84 @@ public class Tekton {
 		else return false;
 	}
 
-    // Visszaadja a fon·llal kapcsolt szomszÈdokat.
+    // Visszaadja a fon√°llal kapcsolt szomsz√©dokat.
     public List<Tekton> getKapcsolSzomszedok() { return kapcsoltTekton; }
 
-    // Visszaadja a spÛr·k list·j·t.
+    // Visszaadja a sp√≥r√°k list√°j√°t.
     public List<Spora> getSporak() { return sporak; }
 
-    // Visszaadja a fonalak list·j·t.
+    // Visszaadja a fonalak list√°j√°t.
     public List<GombaFonal> getFonalak() { return fonalak; }
 
     //uj fonallal kapcsol tektont ad a listahoz
     public void ujKapcsoltTekton(Tekton t) {
-		//hozz·adjuk a tektont a list·hoz, ha mÈg nincs benne
+		//hozz√°adjuk a tektont a list√°hoz, ha m√©g nincs benne
     	if (!kapcsoltTekton.contains(t)) kapcsoltTekton.add(t);
     };
 
     //elvesz egy fonallal kapcsol tektont a listabol
     public void elveszKapcsoltTekton (Tekton t) {
-    	//Elvessz¸k a tektont a list·bÛl, ha benne van
+    	//Elvessz√ºk a tektont a list√°b√≥l, ha benne van
 		if (!kapcsoltTekton.contains(t)) kapcsoltTekton.remove(t);
     };
 
-    // Visszaadja a tektonon lÈv≈ë gombatestet.
+    // Visszaadja a tektonon l√©v≈ë gombatestet.
     public GombaTest getGombaTest() { return gombaTest; }
 
-    // Visszaadja a tekton tulajdons·gait.
+    // Visszaadja a tekton tulajdons√°gait.
     public String getTulajdonsagok() { return tulajdonsagok; }
 
-    // Visszaadja egy gomb·sz fonalait a tektonon.
+    // Visszaadja egy gomb√°sz fonalait a tektonon.
     public List<GombaFonal> getGomaszFonalai(Gombasz g) { 
-		//LÈtrehozzuk a list·t amit visszaadunk
+		//L√©trehozzuk a list√°t amit visszaadunk
 		List<GombaFonal> gf = new ArrayList<>();
-		//Ha a jelenlegi tektonnak vannak fonalai azokon vÈgigmegy¸nk
+		//Ha a jelenlegi tektonnak vannak fonalai azokon v√©gigmegy√ºnk
 		if (fonalak != null) {
             for (GombaFonal fonal : fonalak) {
-				//Ha az adott fon·l a megfelel≈ë gomb·szÈ, akkor hozz·adjuk a list·hoz
+				//Ha az adott fon√°l a megfelel≈ë gomb√°sz√©, akkor hozz√°adjuk a list√°hoz
 				if (fonal.kie==g ) gf.add(fonal);					
             }
         }
 		return gf;
 	}
 
-    // Megvizsg·lja, hogy a gomb·szhoz tartozÛ fonalak elhalnak-e.
+    // Megvizsg√°lja, hogy a gomb√°szhoz tartoz√≥ fonalak elhalnak-e.
     public boolean elhal(Gombasz g) {
-		//LÈtrehozunk 2 list·t a bej·rt illetve a bej·randÛ tektonoknak
+		//L√©trehozunk 2 list√°t a bej√°rt illetve a bej√°rand√≥ tektonoknak
 		List<Tekton> bejarando = new ArrayList<>();
 		List<Tekton> bejart= new ArrayList<>();
-		//A bej·randÛ list·hoz hozz·adjuk a jelenlegi tekton
+		//A bej√°rand√≥ list√°hoz hozz√°adjuk a jelenlegi tekton
 		bejarando.add(this);
-		//AmÌg a bej·randÛ lista nem ¸res Ès nem talalhato benne megfelel≈ë gombatest
+		//Am√≠g a bej√°rand√≥ lista nem √ºres √©s nem talalhato benne megfelel≈ë gombatest
 		while (!bejarando.isEmpty()) {
-			//Vessz¸k a kˆvetkez≈ë bej·randÛ tektont
+			//Vessz√ºk a k√∂vetkez≈ë bej√°rand√≥ tektont
 			Tekton t = bejarando.get(0);
-			//MenÈzz¸k, hogy van-e rajta gombatest
+			//Men√©zz√ºk, hogy van-e rajta gombatest
 			if (!t.vanHely()) {
-				//Ha van, akkor megnÈzz¸k, hogy a gombatest a megfelel≈ë gomb·szhoz tartozik-e
+				//Ha van, akkor megn√©zz√ºk, hogy a gombatest a megfelel≈ë gomb√°szhoz tartozik-e
 				if (t.getGombaTest().kie == g) return false;
 			}
-			//Ha nem, akkor megnÈzz¸k, hogy a tektonon lÈv≈ë gomb·szhoz tartozÛ fonalak tektonjai benne vannek-e m·r az egyik list·ban
+			//Ha nem, akkor megn√©zz√ºk, hogy a tektonon l√©v≈ë gomb√°szhoz tartoz√≥ fonalak tektonjai benne vannek-e m√°r az egyik list√°ban
 			if (t.getGomaszFonalai(g)!=null){
 				for (GombaFonal fonal : t.getGomaszFonalai(g)) {
-					//Ha a fonal tektonja nem szerepel a bej·rt list·ban Ès a bej·randÛban sem, akkor hozz·adjuk a bej·randÛhoz
+					//Ha a fonal tektonja nem szerepel a bej√°rt list√°ban √©s a bej√°rand√≥ban sem, akkor hozz√°adjuk a bej√°rand√≥hoz
 					if (!bejart.contains(fonal.getKapcsoltTektonok().get(0))&&!bejarando.contains(fonal.getKapcsoltTektonok().get(0)))
 					bejarando.add(fonal.getKapcsoltTektonok().get(0));
 					if (!bejart.contains(fonal.getKapcsoltTektonok().get(1))&&!bejarando.contains(fonal.getKapcsoltTektonok().get(1)))
 					bejarando.add(fonal.getKapcsoltTektonok().get(1));
 				}
 			}
-			//Ha a tekton m·r bej·rtuk, akkor elt·volÌtjuk a bej·randÛ list·bÛl
+			//Ha a tekton m√°r bej√°rtuk, akkor elt√°vol√≠tjuk a bej√°rand√≥ list√°b√≥l
 			bejarando.remove(t);
-			//Hozz·adjuk a bej·rt list·hoz
+			//Hozz√°adjuk a bej√°rt list√°hoz
             bejart.add(t);
 		}
-		//Ha a bej·randÛ list·ban nem tal·ltunk megfelel≈ë gombatestet, akkor visszatÈr¸nk igaz ÈrtÈkkel
+		//Ha a bej√°rand√≥ list√°ban nem tal√°ltunk megfelel≈ë gombatestet, akkor visszat√©r√ºnk igaz √©rt√©kkel
 		return true;
 	}
 
-	// Visszaadja a tekton id-j·t abban az esetben ha nincs sz¸ksÈg¸nk a tekton tulajdons·gaira
-	// A #-re azÈrt van sz¸ksÈg hogy kilist·z·skor el tudjuk k¸lˆnÌteni egym·stÛl az id-kat
+	// Visszaadja a tekton id-j√°t abban az esetben ha nincs sz√ºks√©g√ºnk a tekton tulajdons√°gaira
+	// A #-re az√©rt van sz√ºks√©g hogy kilist√°z√°skor el tudjuk k√ºl√∂n√≠teni egym√°st√≥l az id-kat
 	@Override
 	public String toString() {
 		return '#' + String.valueOf(id);  
@@ -340,8 +302,8 @@ public class Tekton {
 
 
 	public  Tekton fromString(String data) {
-		Tekton tekton = new Tekton("sima"); // AlapÈrtelmezett tulajdons·g
-		data = data.replace("Tekton{", "").replace("{", "").replace("}", ""); // Tˆrˆlj¸k a kereteket
+		Tekton tekton = new Tekton("sima"); // Alap√©rtelmezett tulajdons√°g
+		data = data.replace("Tekton{", "").replace("{", "").replace("}", ""); // T√∂r√∂lj√ºk a kereteket
 		String[] parts = data.split(";");
 	
 		for (String part : parts) {
@@ -351,14 +313,14 @@ public class Tekton {
 	
 			switch (attr) {
 				case "id":
-					tekton.id = Integer.parseInt(value.replace("#", "")); // ID be·llÌt·sa
+					tekton.id = Integer.parseInt(value.replace("#", "")); // ID be√°ll√≠t√°sa
 					break;
 				case "tulajdonsagok":
 					tekton.tulajdonsagok = value.replace("'", "");
 					break;
 				case "szomszedok":
-					//Mivel mÈg nem lÈtezik az ˆsszes tekton, ezÈrt mÈg nem tudjuk be·llÌtani a szomszÈdokat
-					//ezÈrt elmentj¸k egy stringbe Ès kÈs≈ëbb be·llÌtjuk
+					//Mivel m√©g nem l√©tezik az √∂sszes tekton, ez√©rt m√©g nem tudjuk be√°ll√≠tani a szomsz√©dokat
+					//ez√©rt elmentj√ºk egy stringbe √©s k√©s≈ëbb be√°ll√≠tjuk
 					szomszedokStr = value;
 					break;
 				case "sporakSzama":
@@ -368,7 +330,7 @@ public class Tekton {
 					String[] egyesSporak = value.split("}");
 					for (String spora : egyesSporak) {
 						if (!spora.trim().isEmpty()) {
-							tekton.sporak.add(Spora.fromString(spora + "}")); // SpÛr·k hozz·ad·sa
+							tekton.sporak.add(Spora.fromString(spora + "}")); // Sp√≥r√°k hozz√°ad√°sa
 						}
 					}
 					break;
@@ -376,7 +338,7 @@ public class Tekton {
 					String[] egyesFonalak = value.split("}");
 					for (String fonal : egyesFonalak) {
 						if (!fonal.trim().isEmpty()) {
-							tekton.fonalak.add(GombaFonal.fromString(fonal + "}")); // Fon·lak hozz·ad·sa
+							tekton.fonalak.add(GombaFonal.fromString(fonal + "}")); // Fon√°lak hozz√°ad√°sa
 						}
 					}
 					break;
@@ -384,7 +346,7 @@ public class Tekton {
 					String[] egyesRovarok = value.split("}");
 					for (String rovar : egyesRovarok) {
 						if (!rovar.trim().isEmpty()) {
-							tekton.rovarok.add(Rovar.fromString(rovar + "}")); // Rovarok hozz·ad·sa
+							tekton.rovarok.add(Rovar.fromString(rovar + "}")); // Rovarok hozz√°ad√°sa
 						}
 					}
 					break;
@@ -392,7 +354,7 @@ public class Tekton {
 					tekton.gombaTest = GombaTest.fromString(value); 
 					break;
 				case "kapcsoltTekton":
-					//Ugyan az a helyzet mint a szomszÈdokkal, ezÈrt elmentj¸k egy stringbe Ès kÈs≈ëbb be·llÌtjuk
+					//Ugyan az a helyzet mint a szomsz√©dokkal, ez√©rt elmentj√ºk egy stringbe √©s k√©s≈ëbb be√°ll√≠tjuk
 					//a kapcsolt tektonokat
 					kapcsoltTektonStr = value.replace("'", "");
 					break;
@@ -408,7 +370,7 @@ public class Tekton {
 	public void addSzomszed(Tekton t) {
 		if (!szomszedok.contains(t)) {
 			szomszedok.add(t);
-			t.ujSzomszed(this); // Kˆlcsˆnˆs kapcsolat lÈtrehoz·sa
+			t.ujSzomszed(this); // K√∂lcs√∂n√∂s kapcsolat l√©trehoz√°sa
 		}
 	}
 
@@ -418,16 +380,16 @@ public class Tekton {
 
 	public void setTest(GombaTest test) { gombaTest = test; }
 
-	//Azokat az attributumokat amiket beolvas·s kˆzben nem lehett megadni azokat ebben adjuk meg
+	//Azokat az attributumokat amiket beolvas√°s k√∂zben nem lehett megadni azokat ebben adjuk meg
 	public void strToAttr() {
 		JatekLogika jatek = new JatekLogika();
-		// SzomszÈdok string konvert·l·sa list·v·
+		// Szomsz√©dok string konvert√°l√°sa list√°v√°
 		String[] szomszedokArray = szomszedokStr.split("#");
 		for (String s : szomszedokArray) {
 			szomszedok.add(jatek.getTektonById(Integer.parseInt(s.trim())));
 		}
 	
-		// Kapcsolt tekton string konvert·l·sa list·v·
+		// Kapcsolt tekton string konvert√°l√°sa list√°v√°
 		String[] kapcsoltTektonArray = kapcsoltTektonStr.split("#");
 		for (String s : kapcsoltTektonArray) {
 			kapcsoltTekton.add(jatek.getTektonById(Integer.parseInt(s.trim())));

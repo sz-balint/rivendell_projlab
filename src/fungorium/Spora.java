@@ -8,7 +8,7 @@ public class Spora {
 
 	 Random random = new Random();
 	 
-     //Spora letrehozasa pontos értékkel (betöltéssel)
+     //Spora letrehozasa pontos ï¿½rtï¿½kkel (betï¿½ltï¿½ssel)
 	public Spora(int sT, int tap, Tekton h) {
 		sporaType=sT;
 		tapertek=tap;

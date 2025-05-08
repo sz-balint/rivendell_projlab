@@ -2,21 +2,21 @@ package fungorium;
 
 import java.util.ArrayList;
 
-// A játék logikáját vezérlő osztály, kezeli a köröket, a játékosok lépéseit és a tektonokat.
+// A j t k logik j t vez rl  oszt ly, kezeli a k r ket, a j t kosok l p seit  s a tektonokat.
 
 import java.util.List;
 import java.util.Random;
 
 public class JatekLogika {
-    public static int korokSzama;   // A játék összes köreinek száma.
-    public static List<Jatekos> Jatekosok;  // A játékban résztvevő játékosok listája.
-    private static int jelenKor;   // Az aktuális kör száma.
-    private static Jatekos aktivJatekos;   // Az a játékos, aki éppen soron van.
-    private static List<Tekton> Jatekter;  // A játék összes tektonját tartalmazó lista.
+    public static int korokSzama;   // A j t k  sszes k reinek sz ma.
+    public static List<Jatekos> Jatekosok;  // A j t kban r sztvev  j t kosok list ja.
+    private static int jelenKor;   // Az aktu lis k r sz ma.
+    private static Jatekos aktivJatekos;   // Az a j t kos, aki  ppen soron van.
+    private static List<Tekton> Jatekter;  // A j t k  sszes tektonj t tartalmaz  lista.
 
     //Konstruktorok:
     
-    //üres állapot generálása
+    //Üres állapot generálása
     public JatekLogika(){
         korokSzama=1;
         Jatekosok = new ArrayList<>();
@@ -58,7 +58,6 @@ public class JatekLogika {
     public List<Tekton> getJatekter() { return Jatekter; }
     public void setJatekter(List<Tekton> t) { this.Jatekter = t; }
     public void addTekton(Tekton t) { 
-<<<<<<< HEAD
      	Jatekter.add(t); 
      	if (Jatekter.size() > 3) {
      		Random rnd = new Random();
@@ -93,50 +92,10 @@ public class JatekLogika {
  		}
      	System.out.print(".");
     }
-=======
-    	Jatekter.add(t); 
-    	if (Jatekter.size() > 3) {
-    		Random rnd = new Random();
-    		List <Integer> szomszedok = new ArrayList<Integer>();
-    		for (int i = rnd.nextInt(2,3);i > 0; i--) {
-    			int tek = rnd.nextInt(Jatekter.size());
-    			boolean volte = false;
-    			for (int szom : szomszedok) {
-    				if (szom == tek) volte = true;
-    			}
-    			if (volte) {
-    				i++;
-    			}
-    			else {
-    				Tekton tekton = Jatekter.get(tek);
-    				t.addSzomszed(tekton);
-    				tekton.addSzomszed(t);
-    				szomszedok.add(tek);
-				}
-    		}
-    		
-    	}
-    	else {
-    		for (Tekton tekton : Jatekter) {
-				t.addSzomszed(tekton);
-				tekton.addSzomszed(t);
-			}
-    	}
-    	System.out.print("Tekton hozzáadva. Szomszédok ID-ja:");
-    	for (Tekton tekton : t.getSzomszedok()) {
-        	System.out.print(" " + tekton.getId());
-		}
-    	System.out.print(".");
-   }
->>>>>>> origin/cli
 
-    // Egy új kör indítása.
+    // Egy  j k r ind t sa.
     // Megnézi hogy vége van-e a játéknak, ha nem akkor növeli az aktuális kör számát 
-<<<<<<< HEAD
     // és továbblép a következő játékosra
-=======
-    // és továbblép a következÅ játékosra
->>>>>>> origin/cli
     public void ujKor() {
         if (jatekVege()) {
             return;
@@ -152,7 +111,7 @@ public class JatekLogika {
         if (jelenKor % Jatekosok.size() == 0) tores();
     }
 
-    // Ellenőrzi, hogy vége van-e a játéknak, és kihirdeti a győztest.
+    // Ellen rzi, hogy v ge van-e a j t knak,  s kihirdeti a gy ztest.
     // Ezt majd ki kell javítani mert így egybeveszi a rovarászokat és a gombászokat.
     // Az alapelv az ugyanaz marad csak találjatok ki egy megoldást a játékos típus
     // elmentésére a Játékos osztályon belül.
@@ -190,27 +149,21 @@ public class JatekLogika {
             }
         }
         gyoztesR = rovarasz.get(idx);
-<<<<<<< HEAD
         System.out.printf("Győztes   Rovarász: ", gyoztesG.getNev(), '\n');
         System.out.printf("Győztes  Gombász: ", gyoztesR.getNev(), '\n');
-=======
-        System.out.printf("GyÅztes Rovarász: ", gyoztesG.getNev(), '\n');
-        System.out.printf("GyÅztes Gombász: ", gyoztesR.getNev(), '\n');
->>>>>>> origin/cli
         
         return true;
     }
 
-    // Frissíti a játék aktuális  llapotát.
+    // Friss ti a j t k aktu lis  llapot t.
     // Itt nem tudom mire gondoltok, mert elég lenne annyi hogy minden függvényhívásnál
-    // a függvényen belülrÅl frissíteni a játék állapotát
+    // a függvényen belülről frissíteni a játék állapotát
     private void JatekallapotFrissit() {
-    	
+
     }
 
     // Szerintem egyszerűbb ha a játékos tud semmit lépni
     public boolean vanValid(Jatekos j, String[] parancsok) {
-<<<<<<< HEAD
  		if (parancsok.length == 1) return true;
          
      	switch (parancsok[0]) {
@@ -320,117 +273,6 @@ public class JatekLogika {
      		
      	}
      	return false;
-=======
-		if (parancsok.length == 1) return true;
-        
-    	switch (parancsok[0]) {
-    	
-    	case "sporaszoras": {
-			List<GombaTest> Testek = ((Gombasz)getAktivJatekos()).getTestek();
-			int id = Integer.parseInt(parancsok[1]);
-			for(int i=0; i < Testek.size(); i++) {
-				if(Testek.get(i).getTekton().getId()==id) {
-					if (Testek.get(i).utolsoSporaszoras < 2) return false;
-					else return true;
-				}
-			}
-			break;
-    	}
-    	case "ujTest": {
-			int id = Integer.parseInt(parancsok[1]);
-			for(int i=0; i < Jatekter.size(); i++) {
-				if(Jatekter.get(i).getId()==id) {
-					if (Jatekter.get(i).getSporakSzama() > 4 && Jatekter.get(i).vanHely())
-						for (GombaFonal fonal : Jatekter.get(i).getFonalak()) {
-							if (fonal.kie == getAktivJatekos()) return true;
-						}
-					return false;
-				}
-			}
-    		break;
-    	}
-    	
-    	case "fonalnoveszt": {
-			int id = Integer.parseInt(parancsok[1]), tid = Integer.parseInt(parancsok[2]), t2id = Integer.parseInt(parancsok[3]);
-			if (t2id == tid) return false;
-			Tekton t1 = null,t2 = null;
-			for (Tekton tekton : getJatekter()) {
-				if (tekton.getId() == tid) t1 = tekton;
-				if (tekton.getId() == t2id) t2 = tekton; 
-			}
-			if (t1 == null || t2 == null) return false;
-			for(int i=0; i < Jatekter.size(); i++) { 
-				if (Jatekter.get(i).getGombaTest() != null)
-					if (Jatekter.get(i).getGombaTest().getId() == id) {
-						Gombasz gombasz = Jatekter.get(i).getGombaTest().kie;
-						if (gombasz == getAktivJatekos()) {
-							for (GombaFonal fonal : gombasz.getFonalak()) {
-								for (Tekton tekton : fonal.getKapcsoltTektonok()) {
-									if (tekton.getId() == tid) return true;
-								}
-							}
-						}
-						return false;
-					}
-			}
-    		break;
-    	}
-    	
-    	case "vagas": {
-    		int fid = Integer.parseInt(parancsok[1]), rid = Integer.parseInt(parancsok[2]);
-    		GombaFonal f = null;
-    		Rovar r = null;
-    		for (Tekton tekton : Jatekter) {
-				for (GombaFonal fonal : tekton.getFonalak()) {
-					if (fonal.getId() == fid) f = fonal;
-				}
-				for (Rovar rovar : tekton.getRovarok()) {
-					if (rovar.getId() == rid) r = rovar;
-				}
-			}
-    		if (f == null || r == null) return false;
-    		if (r.getAllapot() != Allapot.VAGASKEPTELEN)
-    			for (Tekton tekton : f.getKapcsoltTektonok()) {
-					if (r.getHol() == tekton) return true;
-				}
-    		break;
-    	}
-    		
-    	case "lep": {
-    		int tid = Integer.parseInt(parancsok[1]), rid = Integer.parseInt(parancsok[2]);
-    		Tekton t = null;
-    		Rovar r = null;
-    		for (Tekton tekton : Jatekter) {
-    			if (tekton.getId() == tid) t = tekton;
-				for (Rovar rovar : tekton.getRovarok()) {
-					if (rovar.getId() == rid) r = rovar;
-				}
-			}
-    		if (t == null || r == null) return false;
-    		if (r.getAllapot() != Allapot.BENULT && r.getAllapot() != Allapot.LASSITOTT)
-    			for (Tekton tekton : r.getHol().getKapcsolSzomszedok()) {
-					if (tekton == t) return true;
-				}
-    		break;
-    	}
-    	
-    	case "eszik": {
-    		int rid = Integer.parseInt(parancsok[1]);
-    		Rovar r = null;
-    		for (Tekton tekton : Jatekter) {
-				for (Rovar rovar : tekton.getRovarok()) {
-					if (rovar.getId() == rid) r = rovar;
-				}
-			}
-    		if (r.getAllapot() != Allapot.BENULT && r.getHol().getSporakSzama() != 0)
-    			return true;
-    		break;
-    	}
-    	
-    		
-    	}
-    	return false;
->>>>>>> origin/cli
     }
 
     @Override

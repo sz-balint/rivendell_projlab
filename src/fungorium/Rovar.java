@@ -5,115 +5,94 @@ enum Allapot {
 }
 
 public class Rovar {
-    private Tekton hol;        // A rovar jelenlegi tartÛzkod·si helye
-    private Allapot allapot;   // A rovar jelenlegi ·llapota
-    private Rovarasz kie;      // A rovar·szt jelˆli, aki a rovart ir·nyÌtja
-    private int id; // A testek azonosÌt·s·ra szolg·l
+    private Tekton hol;        // A rovar jelenlegi tart√≥zkod√°si helye
+    private Allapot allapot;   // A rovar jelenlegi √°llapota
+    private Rovarasz kie;      // A rovar√°szt jel√∂li, aki a rovart ir√°ny√≠tja
+    private int id; // A testek azonos√≠t√°s√°ra szolg√°l
 
-    private static int idCounter = 0; // Oszt·lyon bel¸l nÈzi hogy melyik azonosÌtÛk voltak m·r haszn·lva
+    private static int idCounter = 0; // Oszt√°lyon bel√ºl n√©zi hogy melyik azonos√≠t√≥k voltak m√°r haszn√°lva
 
 	public int getId() {
 		return id;
 	}
     
-    //¸res konstruktor
+    //√ºres konstruktor
     public Rovar(){}
 
-    // Rovar lÈtrehoz·sa megadott ·llapottal
+    // Rovar l√©trehoz√°sa megadott √°llapottal
     public Rovar(Tekton h, Allapot all, Rovarasz kie) {
         hol = h;
         allapot = all;
         this.kie = kie;
-        id = idCounter++; // Be·llÌtja az egyedi azonosÌtÛt Ès nˆveli a sz·ml·lÛt
+        id = idCounter++; // Be√°ll√≠tja az egyedi azonos√≠t√≥t √©s n√∂veli a sz√°ml√°l√≥t
     }
    
     
-    // Rovar lÈtrehoz·sa, alapÈrtelmezett ·llapot: NORMAL
+    // Rovar l√©trehoz√°sa, alap√©rtelmezett √°llapot: NORMAL
     public Rovar(Tekton h, Rovarasz kie) {
         hol = h;
         allapot = Allapot.NORMAL;
         this.kie = kie;
-        id = idCounter++; // Be·llÌtja az egyedi azonosÌtÛt Ès nˆveli a sz·ml·lÛt
+        id = idCounter++; // Be√°ll√≠tja az egyedi azonos√≠t√≥t √©s n√∂veli a sz√°ml√°l√≥t
     }
 
 
-    // Visszaadja, hogy hol tartÛzkodik a rovar
+    // Visszaadja, hogy hol tart√≥zkodik a rovar
     public Tekton getHol() {
         return hol;
     }
 
-    // Visszaadja a rov·szt
+    // Visszaadja a rov√°szt
     public Rovarasz getKie() {
         return kie;
     }
 
-<<<<<<< HEAD
-=======
-
-        /* 
-    // A rovar ·tlÈp egy m·sik tektonra
-    public void lep(Tekton t) {
-        if (allapot != Allapot.LASSITOTT) {
-            hol.torolRovar(this); // Rovar elt·volÌt·sa a rÈgi tektonrÛl
-            t.ujRovar(this);      // Rovar hozz·ad·sa az ˙j tektonhoz
-            hol = t;              // Helyzet frissÌtÈse
-        }
-    }*/
->>>>>>> origin/cli
     public void lep(Tekton ujHely) {
-        // 1. √Ållapotellen≈ërzÈs - tˆbb ·llapotot is kezel
+        // 1. √Ållapotellen≈ërz√©s - t√∂bb √°llapotot is kezel
         if (allapot == Allapot.LASSITOTT || allapot == Allapot.BENULT) {
-            return; // Ne mozogjon ezekben az ·llapotokban
+            return; // Ne mozogjon ezekben az √°llapotokban
         }
         
-        // 2. ParamÈter ellen≈ërzÈs
+        // 2. Param√©ter ellen≈ërz√©s
         if (ujHely == null) {
-            throw new IllegalArgumentException("Az ˙j hely nem lehet null");
+            throw new IllegalArgumentException("Az √∫j hely nem lehet null");
         }
         
-        // 3. RÈgi helyr≈ël valÛ elt·volÌt·s (ha van)
+        // 3. R√©gi helyr≈ël val√≥ elt√°vol√≠t√°s (ha van)
         if (this.hol != null) {
             this.hol.torolRovar(this);
         }
         
-        // 4. √öj helyre helyezÈs
+        // 4. √öj helyre helyez√©s
         this.hol = ujHely;
         ujHely.ujRovar(this);
         
-        // 5. Pontoz·s frissÌtÈse
+        // 5. Pontoz√°s friss√≠t√©se
         if (this.kie != null) {
-            this.kie.pontokFrissit(); // Mozg·sÈrt pont j·r
+            this.kie.pontokFrissit(); // Mozg√°s√©rt pont j√°r
         }
     }
     
     public void setKie(Rovarasz tulajdonos) {
         this.kie = tulajdonos;
     }
-<<<<<<< HEAD
-=======
-    /* 
-    // Be·llÌtja a rov·szt
-    public void setKie(Rovarasz rovarasz) {
-        this.kie = rovarasz;
-    }*/
->>>>>>> origin/cli
 
-    // A rovar megeszik egy spÛr·t
+    // A rovar megeszik egy sp√≥r√°t
     public void eszik(Spora s) {
-        s.getHol().sporaElvesz(s); // SpÛra elt·volÌt·sa a tektonrÛl
-        allapotFrissites(s.getsporaType()); // √Ållapot frissÌtÈse a spÛra tÌpusa alapj·n
+        s.getHol().sporaElvesz(s); // Sp√≥ra elt√°vol√≠t√°sa a tektonr√≥l
+        allapotFrissites(s.getsporaType()); // √Ållapot friss√≠t√©se a sp√≥ra t√≠pusa alapj√°n
     }
 
 
 
-    // A rovar elv·g egy gombafonalat
+    // A rovar elv√°g egy gombafonalat
     public void elvag(GombaFonal f) {
         if (allapot != Allapot.VAGASKEPTELEN) {
             f.elpusztul();
         }
     }
 
-    // FrissÌti a rovar ·llapot·t egy spÛra tÌpusa alapj·n
+    // Friss√≠ti a rovar √°llapot√°t egy sp√≥ra t√≠pusa alapj√°n
     private void allapotFrissites(int tipus) {
         switch (tipus) {
             case 0:
@@ -132,12 +111,12 @@ public class Rovar {
                 allapot = Allapot.VAGASKEPTELEN;
                 break;
             default:
-                System.out.println("Hiba: Rovar >> allapotFrissites() >> Rossz sporaType ÈrtÈk.");
+                System.out.println("Hiba: Rovar >> allapotFrissites() >> Rossz sporaType √©rt√©k.");
                 break;
         }
     }
 
-    // A rovar megsemmisÌtÈse
+    // A rovar megsemmis√≠t√©se
     public void elpusztul() {
         if (hol != null) {
             hol.torolRovar(this);
@@ -150,7 +129,7 @@ public class Rovar {
         kie = null;
     }
 
-    // A rovar szaporodik, ˙j pÈld·nyt hoz lÈtre
+    // A rovar szaporodik, √∫j p√©ld√°nyt hoz l√©tre
     private void osztodik() {
         Rovar ujRovar = new Rovar(hol, kie);
         ujRovar.kie = this.kie;

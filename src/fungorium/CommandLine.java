@@ -8,16 +8,12 @@ import java.util.Scanner;
 
 public class CommandLine {
 	private int jatekosokSzama; //Játékosok száma
-	private JatekLogika jatek; //A játék kezeléséhez
+	private JatekLogika jatek = new JatekLogika(); //A játék kezeléséhez
 	private int tektonokSzama;
 	
 	//Konstrukor:
 	public CommandLine() {
 		jatekosokSzama = 0;
-<<<<<<< HEAD
-=======
-		jatek = new JatekLogika();
->>>>>>> origin/cli
 		tektonokSzama = 0;
 	}
 	
@@ -32,19 +28,19 @@ public class CommandLine {
 		
         Random random = new Random();
         
-        // 2. Láncba füzzük a Tektonokat, így összefüggő lesz már most.
-        //A Tektonok nagyrészének már így 2 szomszédja lesz, az első és utolsó kivételével: nekik 1.
+        // 2. Láncba füzzük a Tektonokat, így összefüggő lesz már most.
+        //A Tektonok nagyrészének már így 2 szomszédja lesz, az első és utolsó kivételével: nekik 1.
         for (int i = 0; i < tektonokSzama - 1; i++) {
             tektonok.get(i).addSzomszed(tektonok.get(i + 1));
         }
         
         // 3. Véletlen szomszédokat rendelünk
-        int kapcsolatokSzama = tektonokSzama; //Ahány Tekon van, annyiszor szeretnék Ãºj szomszédikapocsolatot létrehozni
+        int kapcsolatokSzama = tektonokSzama; //Ahány Tekon van, annyiszor szeretnék új szomszédikapocsolatot létrehozni
         
         for (int i = 0; i < kapcsolatokSzama; i++) {
             Tekton t1 = tektonok.get(random.nextInt(tektonokSzama)); //Két random Tekton a láncból
             Tekton t2 = tektonok.get(random.nextInt(tektonokSzama));
-            if (t1 != t2 && !t1.getSzomszedok().contains(t2)) { //Ha ők különböznek és még nem szomszédok, akkor most szomszédok lesznek. 
+            if (t1 != t2 && !t1.getSzomszedok().contains(t2)) { //Ha ők különböznek és még nem szomszédok, akkor most szomszédok lesznek. 
                 t1.addSzomszed(t2);
             }
         }
@@ -71,7 +67,7 @@ public class CommandLine {
 				r.UjRovar(rovar);
 			}
 			else if (j instanceof Gombasz) {
-				// Gombász kezdő gombatest kezelése
+				// Gombász kezdő gombatest kezelése
 				Gombasz g = (Gombasz)j;
 				
 				// 1. Választunk egy random tekton-t, ahol nincs még gombatest
@@ -83,18 +79,14 @@ public class CommandLine {
 					if (attempts > 100) break; // Védjük meg a végtelen ciklust
 				} while (randomTekton.getGombaTest() != null || !randomTekton.vanHely());
 				
-				// 2. Ha találtunk megfelelő tekton-t
+				// 2. Ha találtunk megfelelő tekton-t
 				if (randomTekton.getGombaTest() == null && randomTekton.vanHely()) {
-
 					
-<<<<<<< HEAD
 					// 4. Létrehozzuk és elhelyezzük a gombatestet
 					GombaTest test = new GombaTest(randomTekton, g);
 					g.UjGombaTest(test);
-=======
->>>>>>> origin/cli
 					
-					// 5. Kezdő fonalak létrehozása szomszédos tektónokra
+					// 5. Kezdő fonalak létrehozása szomszédos tektónokra
 					for (Tekton szomszed : randomTekton.getSzomszedok()) {
 						if (szomszed.vanHely()) {
 							GombaFonal fonal = new GombaFonal(randomTekton, szomszed, g);
@@ -103,175 +95,10 @@ public class CommandLine {
 							szomszed.ujFonal(fonal);
 						}
 					}
-					
-					randomTekton.sporatKap(new Spora(randomTekton));
-					randomTekton.sporatKap(new Spora(randomTekton));
-					randomTekton.sporatKap(new Spora(randomTekton));
-					randomTekton.sporatKap(new Spora(randomTekton));
-					randomTekton.sporatKap(new Spora(randomTekton));
-					
-					// 4. Létrehozzuk és elhelyezzük a gombatestet
-					GombaTest test = new GombaTest(randomTekton, g);
-					g.testNoveszt(randomTekton.getFonalak().get(0), randomTekton);
 				}
 			}
 		}
-	}
-	
-	public void cli(){
-		Scanner scanner = new Scanner(System.in);
-
-		setup(scanner);
-		palyaGeneralas(jatek.getJatekter());
-		palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
-
-		while (!jatek.jatekVege()) {
-			parancsokKiirasa();
-			System.out.print("Választott parancs: ");
-
-			String bemenet = scanner.nextLine();
-			String[] parancsok = bemenet.split(" ");
-			String parancs = parancsok[0];
-			String[] argumentumok = new String[parancsok.length - 1];
-			System.arraycopy(parancsok, 1, argumentumok, 0, parancsok.length - 1);
-
-			switch (parancs) {
-				case "exit":
-					System.exit(0);
-					break;
-
-				case "addJatekos":
-					addJatekos(argumentumok); //Meghívja az addJatekos metódust
-					break;
-					
-				case "addTekton":
-					addTekton();
-					break;
-
-				case "addRovar":
-					addRovar(argumentumok);
-					break;
-					
-				case "kettetores":
-					for (Tekton tekton : jatek.getJatekter()) {
-						if (tekton.getId() == Integer.parseInt(argumentumok[0])) tekton.kettetores();
-					}
-					break;
-					
-				case "sporaszoras":
-					if (jatek.getAktivJatekos().getTipus().equals("Gombasz") && jatek.vanValid(null, parancsok)) {
-						sporaszoras(argumentumok); //Gombász parancs
-						jatek.ujKor(); //Kör növelése
-					} else {
-						System.out.println("Hiba: Ez a parancs csak Gombászok számára érhető el, vagy ez a test nem tud spórát szórni.");
-					}
-					break;
-					
-				case "ujTest":
-					if (jatek.vanValid(null, parancsok) && jatek.getAktivJatekos().getTipus().equals("Gombasz")) {
-						ujTest(argumentumok);
-						jatek.ujKor(); //Kör növelése
-					}
-					else
-						System.out.println("Hiba: Ez a parancs csak Gombászok számára érhető el, vagy ez a test nem hozható létre.");
-					break;
-				
-				case "fonalnoveszt": {
-					if (jatek.vanValid(null, parancsok) && jatek.getAktivJatekos().getTipus().equals("Gombasz")) {
-						fonalnoveszt(argumentumok);
-						jatek.ujKor(); //Kör növelése
-					}
-					else
-						System.out.println("Hiba: Ez a parancs csak Gombászok számára érhető el, vagy ez a fonal nem hozható létre.");
-					break;
-				}
-				
-				case "vagas": {
-					if (jatek.vanValid(null, parancsok) && jatek.getAktivJatekos().getTipus().equals("Rovarasz")) {
-						vagas(argumentumok);
-						jatek.ujKor(); //Kör növelése
-					}
-					else
-						System.out.println("Hiba: Ez a parancs csak Rovarászok számára érhető el, vagy a fonal nem vágható el a rovarral.");
-					break;
-				}
-
-				case "lep": {
-					if (jatek.vanValid(null, parancsok) && jatek.getAktivJatekos().getTipus().equals("Rovarasz")) {
-						lep(argumentumok);
-						jatek.ujKor(); //Kör növelése
-					}
-					else
-						System.out.println("Hiba: Ez a parancs csak Rovarászok számára érhető el, vagy a rovar nem tud oda lépni.");
-					break;
-				}
-				
-				case "eszik": {
-					if (jatek.vanValid(null, parancsok) && jatek.getAktivJatekos().getTipus().equals("Rovarasz")) {
-						eszik(argumentumok);
-						jatek.ujKor(); //Kör növelése
-					}
-					else
-						System.out.println("Hiba: Ez a parancs csak Rovarászok számára érhető el, vagy a rovar nem tudja a spórát megenni.");
-					break;
-				}
-				
-				case "allapot": {
-					allapot();
-					break;
-				}
-					
-				case "random": {
-					
-					break;
-				}
-				
-				case "passz": {
-					jatek.ujKor(); //Kör növelése
-					break;
-				}
-				
-				case "save": {
-					Fajlkezelo fk = new Fajlkezelo();
-					try {
-						fk.save(jatek, parancsok[1]);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				
-				case "load": {
-					Fajlkezelo fk = new Fajlkezelo();
-					try {
-						jatek = fk.load(parancsok[1]);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				
-				case "help":
-					help();
-					break;
-			
-				default:
-					System.out.println("Ismeretlen parancs: " + parancs);
-					System.out.println("Használj 'help' parancsot a segítséghez.");
-					break;
-			}
-			System.out.println("");
 		}
-	}
-
-	private void setup(Scanner scanner) {
-		System.out.print("Hány Játékos fog játszani? ");
-		String input = scanner.nextLine();
-		while (!input.matches("\\d+")) {
-			System.out.println("Kérlek adj meg egy számot!");
-			input = scanner.nextLine();
-		}
-<<<<<<< HEAD
 	
 	//______________________________________
 	
@@ -429,8 +256,6 @@ public class CommandLine {
 			System.out.println("Kérlek adj meg egy számot!");
 			input = scanner.nextLine();
 		}
-=======
->>>>>>> origin/cli
 		
 		jatekosokSzama = Integer.parseInt(input);
 		
@@ -753,12 +578,5 @@ public class CommandLine {
 					System.out.println("------------------------------------------------------\n");
 					
 	}
-<<<<<<< HEAD
-=======
-
-}
-
-
->>>>>>> origin/cli
 
 }
