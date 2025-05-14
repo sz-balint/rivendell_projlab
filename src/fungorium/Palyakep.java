@@ -87,7 +87,7 @@ public class Palyakep extends JFrame {
     public void moveRovar(Rovar rovar, int newTektonId) {
         Elolenyek eloleny = rovarok.get(rovar.getId());
         Point newPosition = tektonCenters.get(newTektonId);
-        System.out.println("tyuha");
+        System.out.println("tyuha");//Debug üzenet
         
         if (eloleny != null && newPosition != null && tektonVisualData.containsKey(newTektonId)) {
             TektonVisualData tvd = tektonVisualData.get(newTektonId);
