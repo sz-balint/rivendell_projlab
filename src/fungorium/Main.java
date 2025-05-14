@@ -36,9 +36,9 @@ public class Main {
         System.out.println(System.getProperty("user.dir"));
 
         System.out.print("Szeretnél tesztet futtatni? (i = igen, n = CLI játék, g = grafikus játék): ");
-        String valasz = scanner.nextLine().trim().toLowerCase();
+        //String valasz = scanner.nextLine().trim().toLowerCase();
 
-        switch (valasz) {
+        switch ("g") {
             case "i":
                 Tests.main(null);
                 break;
