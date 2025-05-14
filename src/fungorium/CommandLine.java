@@ -293,7 +293,7 @@ public class CommandLine {
 
 	private void setup(Scanner scanner) {
 		System.out.print("Hány Játékos fog játszani? ");
-		String input = scanner.nextLine();
+		String input = "1"; //scanner.nextLine();
 		while (!input.matches("\\d+")) {
 			System.out.println("Kérlek adj meg egy számot!");
 			input = scanner.nextLine();
@@ -315,7 +315,7 @@ public class CommandLine {
 		jatek.setJelenKor(0); //Kezdő kör beállítása
 
 		System.out.println("Hány kör legyen a játékban? ");
-		String korokInput = scanner.nextLine();
+		String korokInput = "3";//scanner.nextLine();
 		while (!korokInput.matches("\\d+")) {
 			System.out.println("Kérlek adj meg egy számot!");
 			korokInput = scanner.nextLine();
@@ -326,11 +326,11 @@ public class CommandLine {
 
 	private void jatekosBeolvaso(String  tipus, Scanner scanner, List<String> existingNames) {
 		System.out.print("Add meg a " + tipus + " nevét: ");
-		String nev = scanner.nextLine();
+		String nev = "asd";//scanner.nextLine();
 		while (existingNames.contains(nev) && !nev.isEmpty()) {
 			System.out.println("Ez a név már foglalt! Válassz másik nevet.");
 			System.out.print("Addj meg egy másik nevet: ");
-			nev = scanner.nextLine();
+			nev = "asdf";//scanner.nextLine();
 		}
 		Jatekos jatekos = null;
 		if (tipus.equals("Gombasz")) {

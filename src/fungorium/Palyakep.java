@@ -27,7 +27,7 @@ public class Palyakep extends JFrame {
     // Game constants - now all size-related constants use WINDOW_SIZE
     private static final int WINDOW_SIZE = 700;//Ablak mérete!
     private static final int MIN_DISTANCE = 50;
-    private static final int MAX_TECTONS = 40;
+    private static final int MAX_TECTONS = 80;
     private static final int TECTON_SIZE = 24;
 
     private static final double MAX_SIDE_RATIO = 1.8;//Tekton oldalarány maximum  
@@ -168,7 +168,7 @@ public class Palyakep extends JFrame {
         setResizable(false);                      // Ne lehessen átméretezni
 
         // Időzítő 500ms-enként: Tekton osztódás vagy rovar mozgatás
-        Timer autoSplitTimer = new Timer(500, e -> {
+        Timer autoSplitTimer = new Timer(50, e -> {
             if (tectons.size() < MAX_TECTONS) {
                 executeSplit(null);  // Új Tekton létrehozása szétválasztással
             } else if (!rovarMarMozgatva && dummy != null) {
@@ -562,16 +562,22 @@ public class Palyakep extends JFrame {
                 totalAttempts++;
 
                 //!! attemptSplit : akkor örülünk, ha ez fut le! Ebben minden check benne van ami kell
-                if (attemptSplit(candidate, tvd, minArea, attempts % 8)) {
+                if (attemptSplit(candidate, tvd, minArea)) {
                     calculateAllAreas();
                     printSortedTectons("State after splitting tekton " + candidate.getId(), totalArea);
 
                     // Ellenőrzés: egyik Tekton se lett túl kicsi?
                     boolean anyTooSmall = tectons.stream()
-                        .anyMatch(t -> {
-                            TektonVisualData tv = tektonVisualData.get(t.getId());
-                            return tv != null && tv.area < absoluteMinArea;
-                        });
+                            .anyMatch(t -> {
+                                TektonVisualData tv = tektonVisualData.get(t.getId());
+                                for (Tekton te: tectons) {
+                                	if (t != te) {
+                                		TektonVisualData td = tektonVisualData.get(te.getId());
+                                		if (Point.distance(td.position.x, td.position.y ,tv.position.x, tv.position.y) < 40) return true;
+                                	}
+                                }
+                                return false;
+                            });
 
                     if (!anyTooSmall) {
                         updateGameState(); // Ha minden rendben, játékfrissítés
@@ -608,7 +614,7 @@ public class Palyakep extends JFrame {
     /**
      * Egy adott Tekton szétválasztása egy új Tekton létrehozásával.
     */
-    private boolean attemptSplit(Tekton original, TektonVisualData originalTvd, double minArea, int attempt) {
+    private boolean attemptSplit(Tekton original, TektonVisualData originalTvd, double minArea) {
         if (originalTvd.area < 2 * minArea) return false; // Túl kicsi a szétválasztáshoz
 
         // Szomszédok elmentése rollbackhez
@@ -621,7 +627,7 @@ public class Palyakep extends JFrame {
             );
         }
 
-        Point splitPoint = calculatePersistentSplitPoint(originalTvd, attempt);
+        Point splitPoint = calculatePersistentSplitPoint(originalTvd);
         if (isOutOfBounds(splitPoint)) return false;
 
         // Új Tekton létrehozása
@@ -861,7 +867,7 @@ public class Palyakep extends JFrame {
                aspectRatio2 <= MAX_SIDE_RATIO;
     }
     
-    private Point calculatePersistentSplitPoint(TektonVisualData tvd, int attempt) {
+    private Point calculatePersistentSplitPoint(TektonVisualData tvd) {
         double minX = Math.max(TECTON_SIZE, tvd.minX);
         double maxX = Math.min(WINDOW_SIZE - TECTON_SIZE, tvd.maxX);
         double minY = Math.max(TECTON_SIZE, tvd.minY);
@@ -878,8 +884,33 @@ public class Palyakep extends JFrame {
         double innerMinY = Math.max(TECTON_SIZE, centerY - innerHeight/2);
         double innerMaxY = Math.min(WINDOW_SIZE - TECTON_SIZE, centerY + innerHeight/2);
         
-        double x = innerMinX + rand.nextDouble() * (innerMaxX - innerMinX);
-        double y = innerMinY + rand.nextDouble() * (innerMaxY - innerMinY);
+        double x = -1, y = -1;
+        
+        int irany = rand.nextInt(1, 4);
+
+        while (x < 0 || x > WINDOW_SIZE || y < 0 || y > WINDOW_SIZE)
+        switch(irany) {
+        	case 1:
+        		x = centerX - (centerX - innerMinX) - rand.nextDouble() * (innerMinX - minX);
+        		y = centerY - (centerY - innerMinY) - rand.nextDouble() * (innerMinY - minY);   
+        	break;
+        	case 2:
+	    		x = centerX + (innerMaxX - centerX) + rand.nextDouble() * (maxX - innerMaxX);
+	    		y = centerY - (centerY - innerMinY) - rand.nextDouble() * (innerMinY - minY);   
+    		break;
+	        case 3:
+        		x = centerX - (centerX - innerMinX) - rand.nextDouble() * (innerMinX - minX);
+        		y = centerY + (innerMaxY - centerY) + rand.nextDouble() * (maxY - innerMinY);   
+        	break;
+	        case 4:
+	    		x = centerX + (innerMaxX - centerX) + rand.nextDouble() * (maxX - innerMaxX);
+        		y = centerY + (innerMaxY - centerY) + rand.nextDouble() * (maxY - innerMinY);   
+        	break;
+        }
+        
+        
+//        double x = innerMinX + rand.nextDouble() * (innerMaxX - innerMinX);
+//        double y = innerMinY + rand.nextDouble() * (innerMaxY - innerMinY);
         
         x = Math.max(TECTON_SIZE, Math.min(WINDOW_SIZE - TECTON_SIZE, x));
         y = Math.max(TECTON_SIZE, Math.min(WINDOW_SIZE - TECTON_SIZE, y));
