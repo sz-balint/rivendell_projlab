@@ -5,7 +5,7 @@ import java.util.Random;
 
 
 public class Tekton {
-    public String tulajdonsagok="sima"; // A tekton sajat tulajdonsagai (pl. fonal novekedesi sebessege)
+    public String tulajdonsagok=""; // A tekton sajat tulajdonsagai (pl. fonal novekedesi sebessege)
     private int id; // A tektonok azonosítására szolgál
 	private List<Tekton> szomszedok; // A tekton szomszedos tektonjai
     private int sporakSzama=0; // A tektonon levo sporak szama
@@ -25,8 +25,38 @@ public class Tekton {
 
 	//TODO
     
+	// Tekton konstruktorok módosítása véletlenszerű típushoz
+	public Tekton() {
+		this(randomTulajdonsag()); // Alapértelmezett konstruktor véletlenszerű típussal
+	}
+
+	public Tekton(String tul) {
+		this(tul, new ArrayList<>());
+	}
+
+	public Tekton(String tul, List<Tekton> tekt) {
+		this(tul, tekt, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>());
+	}
+
+	public Tekton(String tul, List<Tekton> tekt, int ssz, List<Spora> spk, List<GombaFonal> f, List<Rovar> r, GombaTest t, List<Tekton> kapcs) {
+		id = idCounter++;
+		tulajdonsagok = (tul == null || tul.isEmpty()) ? randomTulajdonsag() : tul;
+		szomszedok = tekt != null ? tekt : new ArrayList<>();
+		sporakSzama = ssz;
+		sporak = spk != null ? spk : new ArrayList<>();
+		fonalak = f != null ? f : new ArrayList<>();
+		rovarok = r != null ? r : new ArrayList<>();
+		gombaTest = t;
+		kapcsoltTekton = kapcs != null ? kapcs : new ArrayList<>();
+	}
+
+	// Véletlenszerű tulajdonság generálása
+	private static String randomTulajdonsag() {
+		List<String> tipusok = List.of("sima", "fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal");
+		return tipusok.get(new Random().nextInt(tipusok.size()));
+	}
     //Tekton letrehozosa tulajdonsaggal
-    public Tekton(String tul) {
+    /*public Tekton(String tul) {
 		id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
 		tulajdonsagok=tul;
 		szomszedok = new ArrayList<>();
@@ -35,7 +65,7 @@ public class Tekton {
 		rovarok = new ArrayList<>();
 		gombaTest = null;
 		kapcsoltTekton = new ArrayList<>();
-		}
+	}
 
 	//Tekton letrehozosa fajta és a szomszédok megadásával
     public Tekton(String tul, List<Tekton> tekt) {
@@ -59,7 +89,7 @@ public class Tekton {
 		rovarok = r;
 		gombaTest = t;
 		kapcsoltTekton = kapcs;
-		}
+		}*/
 
 		public Tekton kettetores() {
 			
@@ -74,12 +104,17 @@ public class Tekton {
 			sporak.clear();
 			
 			sporakSzama = 0;
-			Tekton t = new Tekton(tulajdonsagok, szomszedok);
+			//List<String> spectul = new ArrayList<>(List.of("sima","fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal"));
+    		Random random = new Random();
+    		String ujTipus = spectul.get(random.nextInt(spectul.size()));
+    
+    		Tekton t = new Tekton(ujTipus, szomszedok);
+			//Tekton t = new Tekton(tulajdonsagok, szomszedok);
 			ujSzomszed(t);
 			t.ujSzomszed(this);
 			
 			//Rovar es Test random elhelyezese
-			Random random = new Random();
+			Random r = new Random();
 			if(random.nextInt()%2==0) {
 				//Ha paros a random, akkor az uj tekronra kerulnek a Rovarok es a regin marad a Test
 				for(int i=0; i<rovarok.size(); i++) {
@@ -228,6 +263,7 @@ public class Tekton {
 
     // Visszaadja a tekton tulajdonságait.
     public String getTulajdonsagok() { return tulajdonsagok; }
+	public void setTulajdonsagok(String tul) { tulajdonsagok=tul; }
 
     // Visszaadja egy gombász fonalait a tektonon.
     public List<GombaFonal> getGomaszFonalai(Gombasz g) { 
@@ -378,6 +414,9 @@ public class Tekton {
 		return id;
 	}
 
+	public void setId(int id){
+		this.id=id;
+	}
 	public void setTest(GombaTest test) { gombaTest = test; }
 
 	//Azokat az attributumokat amiket beolvasás közben nem lehett megadni azokat ebben adjuk meg
