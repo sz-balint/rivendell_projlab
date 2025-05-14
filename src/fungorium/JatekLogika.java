@@ -1,15 +1,11 @@
 package fungorium;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 // A j t k logik j t vez rl  oszt ly, kezeli a k r ket, a j t kosok l p seit  s a tektonokat.
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class JatekLogika {
     public static int korokSzama;   // A j t k  sszes k reinek sz ma.
@@ -113,10 +109,6 @@ public class JatekLogika {
 
         jelenKor++;
         if (jelenKor % Jatekosok.size() == 0) tores();
-
-
-
-
     }
 
     // Ellen rzi, hogy v ge van-e a j t knak,  s kihirdeti a gy ztest.

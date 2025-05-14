@@ -25,6 +25,8 @@ public abstract class Jatekos {
         this.pontok=pontok;
     }
 
+    public int getpontok() {return pontok;} 
+    
     public String getNev() {return nev;}
     
     public String getTipus() {return tipus;}
