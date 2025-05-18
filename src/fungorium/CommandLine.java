@@ -5,11 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
+import javax.swing.SwingUtilities;
 
 public class CommandLine {
 	private int jatekosokSzama; //Játékosok száma
 	private JatekLogika jatek = new JatekLogika(); //A játék kezeléséhez
 	private int tektonokSzama;
+	
+	public JatekLogika getJatek() {
+	    return jatek;
+		}
 	
 	//Konstrukor:
 	public CommandLine() {
@@ -18,33 +25,29 @@ public class CommandLine {
 	}
 	
 	//Pálya
-	//______________________________________
-	public void palyaGeneralas(List <Tekton> tektonok){
-		tektonokSzama = 2 * jatekosokSzama; 
-		// 1. Létrehozzuk az n darab tekton-t
-        for (int i = 0; i < tektonokSzama; i++) {
-            tektonok.add(new Tekton("sima")); 
-        }
+	public void palyaGeneralas(List<Tekton> tektonok) {
+		tektonokSzama = 2 * jatekosokSzama;
 		
-        Random random = new Random();
-        
-        // 2. Láncba füzzük a Tektonokat, így összefüggő lesz már most.
-        //A Tektonok nagyrészének már így 2 szomszédja lesz, az első és utolsó kivételével: nekik 1.
-        for (int i = 0; i < tektonokSzama - 1; i++) {
-            tektonok.get(i).addSzomszed(tektonok.get(i + 1));
-        }
-        
-        // 3. Véletlen szomszédokat rendelünk
-        int kapcsolatokSzama = tektonokSzama; //Ahány Tekon van, annyiszor szeretnék új szomszédikapocsolatot létrehozni
-        
-        for (int i = 0; i < kapcsolatokSzama; i++) {
-            Tekton t1 = tektonok.get(random.nextInt(tektonokSzama)); //Két random Tekton a láncból
-            Tekton t2 = tektonok.get(random.nextInt(tektonokSzama));
-            if (t1 != t2 && !t1.getSzomszedok().contains(t2)) { //Ha ők különböznek és még nem szomszédok, akkor most szomszédok lesznek. 
-                t1.addSzomszed(t2);
-            }
-        }
-	}  
+
+		for (int i = 0; i < tektonokSzama; i++) {
+			tektonok.add(new Tekton("sima"));
+		}
+		
+		for (int i = 0; i < tektonokSzama - 1; i++) {
+			tektonok.get(i).addSzomszed(tektonok.get(i + 1));
+			tektonok.get(i + 1).addSzomszed(tektonok.get(i)); // Ensure bidirectional
+		}
+		
+		Random random = new Random();
+		for (int i = 0; i < tektonokSzama; i++) {
+			int t1 = random.nextInt(tektonokSzama);
+			int t2 = random.nextInt(tektonokSzama);
+			if (t1 != t2 && !tektonok.get(t1).getSzomszedok().contains(tektonok.get(t2))) {
+				tektonok.get(t1).addSzomszed(tektonok.get(t2));
+				tektonok.get(t2).addSzomszed(tektonok.get(t1)); // Ensure bidirectional
+			}
+		}
+	}
 
 	public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok) {
 		Random random = new Random();
@@ -102,12 +105,24 @@ public class CommandLine {
 	
 	//______________________________________
 	
-	public void cli(){
+	public void cli(boolean graphical){
 		Scanner scanner = new Scanner(System.in);
 
 		setup(scanner);
 		palyaGeneralas(jatek.getJatekter());
-		palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
+		
+		//help
+		List<Tekton> inicializaltTectonok = getJatek().getJatekter();
+         
+    	if(graphical) {
+    		SwingUtilities.invokeLater(() -> {
+                //Palyakep game = new Palyakep(inicializaltTectonok);
+    			Palyakep game = new Palyakep(inicializaltTectonok, jatek);
+                game.setVisible(true);
+            });
+    		//itt adja át a grafikus felületnek a tektonokat
+    		palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
+    	}
 
 		while (!jatek.jatekVege()) {
 			parancsokKiirasa();
@@ -350,7 +365,7 @@ public class CommandLine {
 	private void addTekton() {
 	    List <String> spectul = new ArrayList<>(List.of("sima","fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal"));
 	    Random rnd = new Random();
-		Tekton uj = new Tekton(spectul.get(rnd.nextInt(4)));
+	    Tekton uj = new Tekton(spectul.get(rnd.nextInt(spectul.size())));
 		jatek.addTekton(uj);
 	}
 	
@@ -540,10 +555,22 @@ public class CommandLine {
 		
 		System.out.println("------------------------------------------------------");
 		
-		// Aktív tektonok
-		System.out.println("Aktív tektonok:");
+		///debug
+		// Aktív tektonok + Szomszédok
+		System.out.println("Aktív tektonok és szomszédaik:");
 		for (Tekton t : jatek.getJatekter()) {
-			System.out.println("\t[TEKTON ID] " + t.getId());
+			System.out.print("\t[TEKTON ID] " + t.getId() + " | SZOMSZÉDOK: ");
+			if (t.getSzomszedok().isEmpty()) {
+				System.out.print("nincs");
+			} else {
+				List<Integer> ids = t.getSzomszedok().stream()
+					.map(Tekton::getId)
+					.sorted()
+					.collect(Collectors.toList());
+				System.out.print(ids);
+				System.out.println(t.getTulajdonsagok());
+			}
+			System.out.println();
 		}
 		
 		System.out.println("------------------------------------------------------");
