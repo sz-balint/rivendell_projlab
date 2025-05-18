@@ -168,7 +168,7 @@ public class Palyakep extends JPanel {
         //setResizable(false);                      // Ne lehessen átméretezni
 
         // Időzítő 500ms-enként: Tekton osztódás vagy rovar mozgatás
-        Timer autoSplitTimer = new Timer(50, e -> {
+       /*  Timer autoSplitTimer = new Timer(50, e -> {
             if (tectons.size() < MAX_TECTONS) {
                 executeSplit(null);  // Új Tekton létrehozása szétválasztással
             } else if (!rovarMarMozgatva && dummy != null) {
@@ -186,7 +186,7 @@ public class Palyakep extends JPanel {
             }
         });
 
-        autoSplitTimer.start();  // Timer elindítása
+        autoSplitTimer.start();  // Timer elindítása*/
 
         drawingPanel.setBackground(Color.WHITE);  // Háttér szín
         drawingPanel.setPreferredSize(new Dimension(WINDOW_SIZE, WINDOW_SIZE));

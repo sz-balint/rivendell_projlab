@@ -129,8 +129,7 @@ public class JatekKep extends JFrame {
     void lep(String s) {
         // Léptetés logikája
     }
-
-    void frissul() {
+	void frissul() {
         // Aktuális játékos nevének frissítése
         if (jatek.getAktivJatekos() != null) {
             aktJatekosNev.setText(jatek.getAktivJatekos().getNev());
