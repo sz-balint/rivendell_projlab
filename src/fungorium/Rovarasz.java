@@ -1,5 +1,6 @@
 package fungorium;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -10,6 +11,9 @@ public class Rovarasz extends Jatekos {
 
     //Konstruktor
      public Rovarasz(String nev, int pontok, String tipus){ super(nev, pontok); this.tipus = "Rovarasz";}
+     
+   //Konstruktor
+     public Rovarasz(String nev, int pontok, String tipus, Color sz){ super(nev, pontok, sz); this.tipus = "Rovarasz";}
 
     // A rovarász által irányított rovarok listája.
     private List<Rovar> Rovarok= new ArrayList<>();

@@ -1,5 +1,6 @@
 package fungorium;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +16,9 @@ public class Gombasz extends Jatekos {
 
     //Konstruktor
     public Gombasz(String nev, int pontok, String tipus){ super(nev, pontok); this.tipus = "Gombasz";}
+    
+    //Konstruktor
+    public Gombasz(String nev, int pontok, String tipus, Color szin){ super(nev, pontok, szin); this.tipus = "Gombasz";}
     
     // Egy megadott gombafon�lb�l �j gombatestet n�veszt.
     public void testNoveszt(GombaFonal fonal, Tekton tekton) { //melyik fonálból növesztünk, és hova

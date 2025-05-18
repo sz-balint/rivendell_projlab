@@ -12,6 +12,7 @@ public class JatekosLogin extends JFrame {
     private JTextField nevMezo;
     private JTextArea jatekosLista;
     private ArrayList<String> jatekosok = new ArrayList<>();
+    private ArrayList<Jatekos> jatekoslista= new ArrayList<>();
     private final int MAX_JATEKOS = 8;
     //Szinek
     private Color hatterszin = new Color(245, 235, 200);
@@ -192,9 +193,10 @@ public class JatekosLogin extends JFrame {
                     dispose();
                 }
             } else {
+            	
                 //Jo lista eseten visszaadja a Kezdokepnek
                 KezdoKep kezdoKep = new KezdoKep();
-                kezdoKep.setJatekosok(new ArrayList<>(jatekosok)); 
+                kezdoKep.setJatekosok(new ArrayList<>(jatekoslista)); 
                 kezdoKep.setVisible(true);
                 //Ablak bezarasa
                 dispose();
@@ -248,10 +250,23 @@ public class JatekosLogin extends JFrame {
         }
         
         // Minden jo, hozzaadjuk a listahoz
-        String jatekos = kivalasztottTipus + " - " + nev + " [" + kivalasztottSzin + "]";
-        jatekosok.add(jatekos);
-        frissitLista();
+        String jatekosStr = kivalasztottTipus + " - " + nev + " [" + kivalasztottSzin + "]";
+        jatekosok.add(jatekosStr);
+        Color szin = stringToColor(kivalasztottSzin);
+        Jatekos j;
+        if (kivalasztottTipus.equals("Gombász")) {
+            j = new Gombasz(nev, 0, "Gombasz", szin);
+        } else if (kivalasztottTipus.equals("Rovarász")) {
+            j = new Rovarasz(nev, 0, "Rovarasz", szin);
+        } else {
+            // Hibakezelés (soha nem kéne ide eljutni, de biztos ami biztos)
+            JOptionPane.showMessageDialog(this, "Ismeretlen típus: " + kivalasztottTipus);
+            return;
+        }
+        jatekoslista.add(j);
 
+        frissitLista();
+        
         //Szin beszurkitese
         Color selectedColor = stringToColor(kivalasztottSzin);
         JButton gomb = szinGombMap.get(selectedColor);
@@ -270,6 +285,7 @@ public class JatekosLogin extends JFrame {
         if (!jatekosok.isEmpty()) {
             // Utolso jatekos torlese
             String removedPlayer = jatekosok.remove(jatekosok.size() - 1);
+            jatekoslista.remove(jatekoslista.size() - 1);
 
             // Szin kinyerese
             String colorPart = removedPlayer.substring(removedPlayer.lastIndexOf("[") + 1, removedPlayer.lastIndexOf("]"));
@@ -281,7 +297,7 @@ public class JatekosLogin extends JFrame {
             if (colorButton != null) {
                 colorButton.setEnabled(true);           
                 colorButton.setBackground(removedColor);
-            }
+            }                
 
             //Lista frissitese
             frissitLista();
