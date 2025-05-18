@@ -17,7 +17,12 @@ public class CommandLine {
 	public JatekLogika getJatek() {
 	    return jatek;
 		}
-	
+	public void setJatek(JatekLogika jatek) {
+    this.jatek = jatek;
+}
+public void setJatekosokSzama(int szam) {
+    this.jatekosokSzama = szam;
+}
 	//Konstrukor:
 	public CommandLine() {
 		jatekosokSzama = 0;

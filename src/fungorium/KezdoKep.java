@@ -163,27 +163,44 @@ public class KezdoKep extends JFrame {
 
         // Esemenykezelok hozzaadasa a gombokhoz
         //Jatekkezdese
-        startGameButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (jatekosok.isEmpty()) {
-                    JOptionPane.showMessageDialog(KezdoKep.this, "Nincsenek Játékosok", "Hiba", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(KezdoKep.this, "Játék megkezdése!");
-                    //Jatekkezdes
-                    
-                    
-                }
-            }
-        });
+        startGameButton.addActionListener(e -> {
+    if (jatekosok.isEmpty()) {
+        JOptionPane.showMessageDialog(KezdoKep.this, "Nincsenek játékosok megadva!");
+        return;
+    }
+
+    // Logika és pálya előkészítése
+    JatekLogika logika = new JatekLogika();
+    logika.setJatekosok(jatekosok);
+
+    CommandLine generator = new CommandLine();
+    generator.setJatek(logika);
+    generator.setJatekosokSzama(jatekosok.size());
+
+    generator.palyaGeneralas(logika.getJatekter());
+    generator.palyaFeltoltes(logika.getJatekter(), jatekosok);
+
+    // Palyakep inicializálása a Tekton listával és a JatekLogikával
+    Palyakep palyaKep = new Palyakep(logika.getJatekter(), logika);
+
+    // JatekKep ablak megnyitása (ha kell, átadhatod palyaKep-et is, ha ott használod)
+    JatekKep jatekKep = new JatekKep(logika, palyaKep); // módosítsd ehhez a JatekKep konstruktort is
+    jatekKep.setVisible(true);
+    dispose();
+});
+
+
+        
 
         //Jatekosok megadasa
-        loginButton.addActionListener(new ActionListener() {
+        /*loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             	SwingUtilities.invokeLater(JatekosLogin::new);
+                
             }
-        });
+        });*/
+        loginButton.addActionListener(e -> new JatekosLogin(this));
         
         //Betoltes
         loadButton.addActionListener(new ActionListener() {

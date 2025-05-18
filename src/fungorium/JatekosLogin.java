@@ -6,6 +6,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class JatekosLogin extends JFrame {
+    private KezdoKep kezdoKep;
 	//Jatekosok mentesehez szukseges valtozok
     private String kivalasztottTipus = "";
     private String kivalasztottSzin = "";
@@ -20,8 +21,9 @@ public class JatekosLogin extends JFrame {
     //Szinvalsztashoz
     private java.util.Map<Color, JButton> szinGombMap = new java.util.HashMap<>();
 
-    public JatekosLogin() {
+    public JatekosLogin(KezdoKep kk) {
     	//Ablak beallitasai
+        this.kezdoKep=kk;
         setTitle("Játékos Login GPT");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(735, 450);

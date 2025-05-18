@@ -12,7 +12,7 @@ import javax.swing.Timer;
 
 import fungorium.Palyakep.DrawingPanel;
 
-public class Palyakep extends JFrame {
+public class Palyakep extends JPanel {
     private List<Tekton> tectons; //Tektonok listája a játéktéren
     private JatekLogika jatekLogika;
     private int nextTektonId = 1;
@@ -25,7 +25,7 @@ public class Palyakep extends JFrame {
     private Map<Integer, Set<Integer>> previousNeighbors = new HashMap<>();
 
     // Game constants - now all size-related constants use WINDOW_SIZE
-    private static final int WINDOW_SIZE = 700;//Ablak mérete!
+    private static final int WINDOW_SIZE = 600;//Ablak mérete!
     private static final int MIN_DISTANCE = 50;
     private static final int MAX_TECTONS = 80;
     private static final int TECTON_SIZE = 24;
@@ -162,10 +162,10 @@ public class Palyakep extends JFrame {
     /////////////
 
     private void setupUI() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);  // Ablak bezárása esetén kilép a program
+        //setDefaultCloseOperation(EXIT_ON_CLOSE);  // Ablak bezárása esetén kilép a program
         setLayout(new BorderLayout());            // Alap elrendezés
         setSize(WINDOW_SIZE, WINDOW_SIZE);        // Ablak méretének beállítása
-        setResizable(false);                      // Ne lehessen átméretezni
+        //setResizable(false);                      // Ne lehessen átméretezni
 
         // Időzítő 500ms-enként: Tekton osztódás vagy rovar mozgatás
         Timer autoSplitTimer = new Timer(50, e -> {
