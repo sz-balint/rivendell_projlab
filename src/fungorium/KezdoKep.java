@@ -163,7 +163,7 @@ public class KezdoKep extends JFrame {
 
         // Esemenykezelok hozzaadasa a gombokhoz
         //Jatekkezdese
-        startGameButton.addActionListener(e -> {
+        /*startGameButton.addActionListener(e -> {
             if (jatekosok.isEmpty()) {
                 JOptionPane.showMessageDialog(KezdoKep.this, "Nincsenek játékosok megadva!");
                 return;
@@ -187,7 +187,34 @@ public class KezdoKep extends JFrame {
             JatekKep jatekKep = new JatekKep(logika, palyaKep); // módosítsd ehhez a JatekKep konstruktort is
             jatekKep.setVisible(true);
             dispose();
-        });
+        });*/
+startGameButton.addActionListener(e -> {
+    
+   ArrayList<Jatekos> jatekosok = getJatekosok(); // 
+ // 
+
+    JatekLogika jatek = new JatekLogika();
+    for (Jatekos j : jatekosok) {
+        jatek.addJatekos(j);
+    }
+
+    jatek.setAktivJatekos(jatekosok.get(0));
+    jatek.setKorokSzama(jatekosok.size() * 10);
+    jatek.setJelenKor(0);
+
+    CommandLine helper = new CommandLine(); // csak pálya generáláshoz
+    helper.setJatek(jatek);
+    helper.setJatekosokSzama(jatekosok.size());
+    helper.palyaGeneralas(jatek.getJatekter());
+    helper.palyaFeltoltes(jatek.getJatekter(), jatekosok);
+
+    Palyakep palya = new Palyakep(jatek.getJatekter(), jatek);
+    JatekKep jatekKep = new JatekKep(jatek, palya);
+    jatekKep.setVisible(true);
+
+    dispose(); // KezdoKep vagy JatekosLogin bezárása
+});
+
 
 
         
@@ -200,7 +227,11 @@ public class KezdoKep extends JFrame {
                 
             }
         });*/
-        loginButton.addActionListener(e -> new JatekosLogin(this));
+        loginButton.addActionListener(e -> {
+            JatekosLogin loginAblak = new JatekosLogin(this);
+            loginAblak.setVisible(true);
+        });
+
         
         //Betoltes
         loadButton.addActionListener(new ActionListener() {

@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.awt.event.ActionListener;
+
 
 public class JatekKep extends JFrame {
 
@@ -137,10 +139,13 @@ public class JatekKep extends JFrame {
 
         // Pontszámok frissítése
         List<Jatekos> jatekosok = jatek.getJatekosok();
+		
         for (int i = 0; i < pontLabels.length; i++) {
             if (i < jatekosok.size()) {
                 pontLabels[i].setText((i + 1) + ". " + jatekosok.get(i).getNev() + ": " + jatekosok.get(i).getpontok());
-            } else {
+				System.out.println(jatekosok.get(i).getNev());//debug-sosse hivodik meg
+			} 
+			else {
                 pontLabels[i].setText((i + 1) + ".");
             }
         }
@@ -228,5 +233,59 @@ public class JatekKep extends JFrame {
                 lepesGombok[i].setEnabled(false);
             }
         }
+// Lépés gombok frissítése + eseménykezelés hozzáadása
+for (int i = 0; i < lepesGombok.length; i++) {
+    lepesGombok[i].setEnabled(false);
+    lepesGombok[i].setText("");
+    for (ActionListener al : lepesGombok[i].getActionListeners()) {
+        lepesGombok[i].removeActionListener(al); // Ne duplázódjanak
+    }
+}
+
+for (int i = 0; i < lehetosegek.size(); i++) {
+    String akcio = lehetosegek.get(i);
+    lepesGombok[i].setText(akcio);
+    lepesGombok[i].setEnabled(true);
+
+    lepesGombok[i].addActionListener(e -> {
+        switch (akcio) {
+            case "Spóraszórás":
+                jatek.getAktivJatekos().Kor("sporaszoras", jatek);
+                break;
+
+            case "Új test":
+                jatek.getAktivJatekos().Kor("ujTest", jatek);
+                break;
+
+            case "Fonálnövesztés":
+                jatek.getAktivJatekos().Kor("fonalnoveszt", jatek);
+                break;
+
+            case "Vágás":
+                jatek.getAktivJatekos().Kor("vagas", jatek);
+                break;
+
+            case "Lépés":
+                jatek.getAktivJatekos().Kor("lep", jatek);
+                break;
+
+            case "Evés":
+                jatek.getAktivJatekos().Kor("eszik", jatek);
+                break;
+
+            default:
+                System.out.println("Ismeretlen akció: " + akcio);
+        }
+
+        jatek.ujKor();  // Körváltás
+        frissul();      // GUI frissítés
+    });
+}
+
+
+
+
+
+
     }
 }

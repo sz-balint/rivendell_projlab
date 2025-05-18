@@ -96,7 +96,7 @@ public class JatekLogika {
     // Egy  j k r ind t sa.
     // Megnézi hogy vége van-e a játéknak, ha nem akkor növeli az aktuális kör számát 
     // és továbblép a következő játékosra
-    public void ujKor() {
+    /*public void ujKor() {
         if (jatekVege()) {
             return;
         }
@@ -109,7 +109,23 @@ public class JatekLogika {
 
         jelenKor++;
         if (jelenKor % Jatekosok.size() == 0) tores();
+    }*/
+
+    public void ujKor() {
+        if (jatekVege()) {
+            return;
+        }
+
+        int i = Jatekosok.indexOf(aktivJatekos);
+        i++;
+        if (i >= Jatekosok.size()) {
+            i = 0;
+        }
+
+        aktivJatekos = Jatekosok.get(i);
+        jelenKor++;
     }
+
 
     // Ellen rzi, hogy v ge van-e a j t knak,  s kihirdeti a gy ztest.
     // Ezt majd ki kell javítani mert így egybeveszi a rovarászokat és a gombászokat.

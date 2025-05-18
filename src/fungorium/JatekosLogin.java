@@ -21,6 +21,10 @@ public class JatekosLogin extends JFrame {
     //Szinvalsztashoz
     private java.util.Map<Color, JButton> szinGombMap = new java.util.HashMap<>();
 
+    public ArrayList<Jatekos> getJatekosok() {
+        return jatekoslista;
+    }
+
     public JatekosLogin(KezdoKep kk) {
     	//Ablak beallitasai
         this.kezdoKep=kk;
@@ -197,10 +201,13 @@ public class JatekosLogin extends JFrame {
             } else {
             	
                 //Jo lista eseten visszaadja a Kezdokepnek
-                KezdoKep kezdoKep = new KezdoKep();
-                kezdoKep.setJatekosok(new ArrayList<>(jatekoslista)); 
-                kezdoKep.setVisible(true);
+                 KezdoKep kezdoKep = new KezdoKep();
+               // kezdoKep.setJatekosok(new ArrayList<>(jatekoslista)); 
+                
                 //Ablak bezarasa
+                kezdoKep.setJatekosok(jatekoslista); // ← ez frissíti a KezdoKep példányt
+                kezdoKep.setVisible(true);
+
                 dispose();
             }
         });
