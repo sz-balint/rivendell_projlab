@@ -12,7 +12,7 @@ public class KezdoKep extends JFrame {
 	private Color hatterszin = new Color(245, 235, 200);
     private Color szovegszin = new Color(80, 50, 20);
     //A jatekoslista amit majd atadunk mindenkinek
-    private ArrayList<String> jatekosok = new ArrayList<>();
+    private ArrayList<Jatekos> jatekosok = new ArrayList<>();
 	
     public KezdoKep() {
         // Ablak beállítása
@@ -171,6 +171,8 @@ public class KezdoKep extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(KezdoKep.this, "Játék megkezdése!");
                     //Jatekkezdes
+                    
+                    
                 }
             }
         });
@@ -204,12 +206,12 @@ public class KezdoKep extends JFrame {
     }
     
     //Jatekosok megadasa
-    public void setJatekosok(ArrayList<String> jatekosok) {
+    public void setJatekosok(ArrayList<Jatekos> jatekosok) {
         this.jatekosok = jatekosok;
     }
 
     //Jatekosok lekerese
-    public ArrayList<String> getJatekosok() {
+    public ArrayList<Jatekos> getJatekosok() {
         return jatekosok;
     }
 }

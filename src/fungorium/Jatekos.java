@@ -1,5 +1,6 @@
 package fungorium;
 
+import java.awt.Color;
 import java.util.Scanner;
 
 // Absztrakt osztály, a játékosok közös tulajdonságainak és viselkedésének biztosátására.
@@ -13,6 +14,8 @@ public abstract class Jatekos {
 
     //A játékos típusa
     public String tipus;
+    
+    public Color szin;
 
    // A játékos lépésének végrehajtása.
    public abstract void Kor(String parancs, JatekLogika jatek);
@@ -23,6 +26,13 @@ public abstract class Jatekos {
     public Jatekos(String nev, int pontok) {
         this.nev=nev;
         this.pontok=pontok;
+        this.szin=Color.BLACK;
+    }
+    
+    public Jatekos(String nev, int pontok, Color sz) {
+        this.nev=nev;
+        this.pontok=pontok;
+        this.szin=sz;
     }
 
     public int getpontok() {return pontok;}
