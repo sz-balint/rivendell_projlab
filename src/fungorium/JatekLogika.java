@@ -178,11 +178,14 @@ public class JatekLogika {
 
     }
 
+
     // Szerintem egyszerűbb ha a játékos tud semmit lépni
     public boolean vanValid(Jatekos j, String[] parancsok) {
- 		if (parancsok.length == 1) return true;
+ 		
+        String parancs = parancsok[0].toLowerCase();
+        if (parancsok.length == 1) return true;
          
-     	switch (parancsok[0]) {
+     	switch (parancs) {
      	
      	case "sporaszoras": {
  			List<GombaTest> Testek = ((Gombasz)getAktivJatekos()).getTestek();

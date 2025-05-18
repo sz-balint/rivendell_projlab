@@ -131,161 +131,140 @@ public class JatekKep extends JFrame {
     void lep(String s) {
         // Léptetés logikája
     }
-	void frissul() {
-        // Aktuális játékos nevének frissítése
-        if (jatek.getAktivJatekos() != null) {
-            aktJatekosNev.setText(jatek.getAktivJatekos().getNev());
-        }
+void frissul() {
+    // Aktuális játékos név frissítése
+    if (jatek.getAktivJatekos() != null) {
+        aktJatekosNev.setText(jatek.getAktivJatekos().getNev());
+    }
 
-        // Pontszámok frissítése
-        List<Jatekos> jatekosok = jatek.getJatekosok();
-		
-        for (int i = 0; i < pontLabels.length; i++) {
-            if (i < jatekosok.size()) {
-                pontLabels[i].setText((i + 1) + ". " + jatekosok.get(i).getNev() + ": " + jatekosok.get(i).getpontok());
-				System.out.println(jatekosok.get(i).getNev());//debug-sosse hivodik meg
-			} 
-			else {
-                pontLabels[i].setText((i + 1) + ".");
-            }
+    // Pontszámok frissítése
+    List<Jatekos> jatekosok = jatek.getJatekosok();
+    for (int i = 0; i < pontLabels.length; i++) {
+        if (i < jatekosok.size()) {
+            pontLabels[i].setText((i + 1) + ". " + jatekosok.get(i).getNev() + ": " + jatekosok.get(i).pontok);
+        } else {
+            pontLabels[i].setText((i + 1) + ".");
         }
+    }
 
-        // Lépési lehetőségek frissítése
-        List<String> lehetosegek = new ArrayList<String>();
-        if (jatek.getAktivJatekos() != null) {
-            if (jatek.getAktivJatekos().getTipus().equals("Rovarasz")) {
-                Rovarasz rovarasz = (Rovarasz) jatek.getAktivJatekos();
-                
-                // Vágás
-                for (Rovar rovar : rovarasz.getRovarok()) {
-                    for (GombaFonal fonal : rovar.getHol().getFonalak()) {
-                        if (jatek.vanValid(rovarasz, new String[]{"vagas", String.valueOf(fonal.getId()), String.valueOf(rovar.getId())})) {
-                            lehetosegek.add("Vágás");
-                            break;
-                        }
+    // Lépési lehetőségek meghatározása
+    List<String> lehetosegek = new ArrayList<>();
+    Jatekos aktiv = jatek.getAktivJatekos();
+
+    if (aktiv != null) {
+        if (aktiv.getTipus().equals("Rovarasz")) {
+            Rovarasz r = (Rovarasz) aktiv;
+
+            // Vágás
+            for (Rovar rovar : r.getRovarok()) {
+                for (GombaFonal fonal : rovar.getHol().getFonalak()) {
+                    String[] parancs = {
+                        "vagas",
+                        String.valueOf(fonal.getId()),
+                        String.valueOf(rovar.getId())
+                    };
+                    if (jatek.vanValid(r, parancs) && !lehetosegek.contains("Vágás")) {
+                        lehetosegek.add("Vágás");
                     }
-                    if (!lehetosegek.isEmpty()) break;
-                }
-                
-                // Lépés
-                for (Rovar rovar : rovarasz.getRovarok()) {
-                    for (Tekton szomszed : rovar.getHol().getSzomszedok()) {
-                        if (jatek.vanValid(rovarasz, new String[]{"lep", String.valueOf(szomszed.getId()), String.valueOf(rovar.getId())})) {
-                            lehetosegek.add("Lépés");
-                            break;
-                        }
-                    }
-                    if (lehetosegek.size() > 1) break;
-                }
-                
-                // Evés
-                for (Rovar rovar : rovarasz.getRovarok()) {
-                    if (jatek.vanValid(rovarasz, new String[]{"eszik", String.valueOf(rovar.getId())})) {
-                        lehetosegek.add("Evés");
-                        break;
-                    }
-                }
-            } else { // Gombász
-                Gombasz gombasz = (Gombasz) jatek.getAktivJatekos();
-                
-                // Spóraszórás
-                for (GombaTest test : gombasz.getTestek()) {
-                    if (jatek.vanValid(gombasz, new String[]{"sporaszoras", String.valueOf(test.getId())})) {
-                        lehetosegek.add("Spóraszórás");
-                        break;
-                    }
-                }
-                
-                // Új test
-                for (Tekton tekton : jatek.getJatekter()) {
-                    if (jatek.vanValid(gombasz, new String[]{"ujTest", String.valueOf(tekton.getId()), gombasz.getNev()})) {
-                        lehetosegek.add("Új test");
-                        break;
-                    }
-                }
-                
-                // Fonálnövesztés
-                for (GombaFonal fonal : gombasz.getFonalak()) {
-                    for (Tekton t1 : fonal.getKapcsoltTektonok()) {
-                        for (Tekton t2 : t1.getSzomszedok()) {
-                            if (jatek.vanValid(gombasz, new String[]{"fonalnoveszt", 
-                                String.valueOf(gombasz.getTestek().get(0).getId()), 
-                                String.valueOf(t1.getId()), 
-                                String.valueOf(t2.getId())})) {
-                                lehetosegek.add("Fonálnövesztés");
-                                break;
-                            }
-                        }
-                        if (!lehetosegek.isEmpty() && lehetosegek.size() > 2) break;
-                    }
-                    if (!lehetosegek.isEmpty() && lehetosegek.size() > 2) break;
                 }
             }
-        }
 
-        // Gombok frissítése
-        for (int i = 0; i < lepesGombok.length; i++) {
-            if (i < lehetosegek.size()) {
-                lepesGombok[i].setText(lehetosegek.get(i));
-                lepesGombok[i].setEnabled(true);
-            } else {
-                lepesGombok[i].setText("");
-                lepesGombok[i].setEnabled(false);
+            // Lépés
+            for (Rovar rovar : r.getRovarok()) {
+                for (Tekton szomszed : rovar.getHol().getSzomszedok()) {
+                    String[] parancs = {
+                        "lep",
+                        String.valueOf(szomszed.getId()),
+                        String.valueOf(rovar.getId())
+                    };
+                    if (jatek.vanValid(r, parancs) && !lehetosegek.contains("Lépés")) {
+                        lehetosegek.add("Lépés");
+                    }
+                }
+            }
+
+            // Evés
+            for (Rovar rovar : r.getRovarok()) {
+                String[] parancs = {
+                    "eszik",
+                    String.valueOf(rovar.getId())
+                };
+                if (jatek.vanValid(r, parancs) && !lehetosegek.contains("Evés")) {
+                    lehetosegek.add("Evés");
+                }
+            }
+
+        } else if (aktiv.getTipus().equals("Gombasz")) {
+            Gombasz g = (Gombasz) aktiv;
+
+            // Spóraszórás
+            for (GombaTest test : g.getTestek()) {
+                String[] parancs = {
+                    "sporaszoras",
+                    String.valueOf(test.getId())
+                };
+                if (jatek.vanValid(g, parancs) && !lehetosegek.contains("Spóraszórás")) {
+                    lehetosegek.add("Spóraszórás");
+                }
+            }
+
+            // Új test
+            for (Tekton tekton : jatek.getJatekter()) {
+                String[] parancs = {
+                    "ujTest",
+                    String.valueOf(tekton.getId()),
+                    g.getNev()
+                };
+                if (jatek.vanValid(g, parancs) && !lehetosegek.contains("Új test")) {
+                    lehetosegek.add("Új test");
+                }
+            }
+
+            // Fonálnövesztés
+            for (GombaFonal fonal : g.getFonalak()) {
+                for (Tekton t1 : fonal.getKapcsoltTektonok()) {
+                    for (Tekton t2 : t1.getSzomszedok()) {
+                        String[] parancs = {
+                            "fonalnoveszt",
+                            String.valueOf(g.getTestek().get(0).getId()),
+                            String.valueOf(t1.getId()),
+                            String.valueOf(t2.getId())
+                        };
+                        if (jatek.vanValid(g, parancs) && !lehetosegek.contains("Fonálnövesztés")) {
+                            lehetosegek.add("Fonálnövesztés");
+                        }
+                    }
+                }
             }
         }
-// Lépés gombok frissítése + eseménykezelés hozzáadása
-for (int i = 0; i < lepesGombok.length; i++) {
-    lepesGombok[i].setEnabled(false);
-    lepesGombok[i].setText("");
-    for (ActionListener al : lepesGombok[i].getActionListeners()) {
-        lepesGombok[i].removeActionListener(al); // Ne duplázódjanak
+    }
+
+    // Gombok törlése/frissítése
+    for (int i = 0; i < lepesGombok.length; i++) {
+        lepesGombok[i].setEnabled(false);
+        lepesGombok[i].setText("");
+        for (ActionListener al : lepesGombok[i].getActionListeners()) {
+            lepesGombok[i].removeActionListener(al);
+        }
+    }
+
+    for (int i = 0; i < Math.min(lehetosegek.size(), lepesGombok.length); i++) {
+        String akcio = lehetosegek.get(i);
+        lepesGombok[i].setText(akcio);
+        lepesGombok[i].setEnabled(true);
+
+        lepesGombok[i].addActionListener(e -> {
+            jatek.getAktivJatekos().Kor(akcio.toLowerCase(), jatek);
+            jatek.ujKor();
+            frissul();
+        });
     }
 }
 
-for (int i = 0; i < lehetosegek.size(); i++) {
-    String akcio = lehetosegek.get(i);
-    lepesGombok[i].setText(akcio);
-    lepesGombok[i].setEnabled(true);
-
-    lepesGombok[i].addActionListener(e -> {
-        switch (akcio) {
-            case "Spóraszórás":
-                jatek.getAktivJatekos().Kor("sporaszoras", jatek);
-                break;
-
-            case "Új test":
-                jatek.getAktivJatekos().Kor("ujTest", jatek);
-                break;
-
-            case "Fonálnövesztés":
-                jatek.getAktivJatekos().Kor("fonalnoveszt", jatek);
-                break;
-
-            case "Vágás":
-                jatek.getAktivJatekos().Kor("vagas", jatek);
-                break;
-
-            case "Lépés":
-                jatek.getAktivJatekos().Kor("lep", jatek);
-                break;
-
-            case "Evés":
-                jatek.getAktivJatekos().Kor("eszik", jatek);
-                break;
-
-            default:
-                System.out.println("Ismeretlen akció: " + akcio);
-        }
-
-        jatek.ujKor();  // Körváltás
-        frissul();      // GUI frissítés
-    });
-}
 
 
 
 
 
 
-    }
 }
