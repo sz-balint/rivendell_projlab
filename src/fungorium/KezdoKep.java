@@ -171,6 +171,8 @@ public class KezdoKep extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(KezdoKep.this, "Játék megkezdése!");
                     //Jatekkezdes
+                    
+                    
                 }
             }
         });
