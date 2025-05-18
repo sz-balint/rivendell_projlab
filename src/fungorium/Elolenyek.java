@@ -1,5 +1,3 @@
-
-  
 package fungorium;
 
 import javax.swing.*;

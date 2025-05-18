@@ -15,8 +15,8 @@ public class CommandLine {
 	private int tektonokSzama;
 	
 	public JatekLogika getJatek() {
-    return jatek;
-	}
+	    return jatek;
+		}
 	
 	//Konstrukor:
 	public CommandLine() {
@@ -25,34 +25,6 @@ public class CommandLine {
 	}
 	
 	//Pálya
-	//______________________________________
-	/*public void palyaGeneralas(List <Tekton> tektonok){
-		tektonokSzama = 2 * jatekosokSzama; 
-		// 1. Létrehozzuk az n darab tekton-t
-        for (int i = 0; i < tektonokSzama; i++) {
-            tektonok.add(new Tekton("sima")); 
-        }
-		
-        Random random = new Random();
-        
-        // 2. Láncba füzzük a Tektonokat, így összefüggő lesz már most.
-        //A Tektonok nagyrészének már így 2 szomszédja lesz, az első és utolsó kivételével: nekik 1.
-        for (int i = 0; i < tektonokSzama - 1; i++) {
-            tektonok.get(i).addSzomszed(tektonok.get(i + 1));
-        }
-        
-        // 3. Véletlen szomszédokat rendelünk
-        int kapcsolatokSzama = tektonokSzama; //Ahány Tekon van, annyiszor szeretnék új szomszédikapocsolatot létrehozni
-        
-        for (int i = 0; i < kapcsolatokSzama; i++) {
-            Tekton t1 = tektonok.get(random.nextInt(tektonokSzama)); //Két random Tekton a láncból
-            Tekton t2 = tektonok.get(random.nextInt(tektonokSzama));
-            if (t1 != t2 && !t1.getSzomszedok().contains(t2)) { //Ha ők különböznek és még nem szomszédok, akkor most szomszédok lesznek. 
-                t1.addSzomszed(t2);
-            }
-        }
-	}  */
-
 	public void palyaGeneralas(List<Tekton> tektonok) {
 		tektonokSzama = 2 * jatekosokSzama;
 		
@@ -133,7 +105,7 @@ public class CommandLine {
 	
 	//______________________________________
 	
-	public void cli(){
+	public void cli(boolean graphical){
 		Scanner scanner = new Scanner(System.in);
 
 		setup(scanner);
@@ -142,14 +114,15 @@ public class CommandLine {
 		//help
 		List<Tekton> inicializaltTectonok = getJatek().getJatekter();
          
-    	SwingUtilities.invokeLater(() -> {
-            //Palyakep game = new Palyakep(inicializaltTectonok);
-			Palyakep game = new Palyakep(inicializaltTectonok, jatek);
-            game.setVisible(true);
-        });
-		//itt adja át a grafikus felületnek a tektonokat
-
-		palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
+    	if(graphical) {
+    		SwingUtilities.invokeLater(() -> {
+                //Palyakep game = new Palyakep(inicializaltTectonok);
+    			Palyakep game = new Palyakep(inicializaltTectonok, jatek);
+                game.setVisible(true);
+            });
+    		//itt adja át a grafikus felületnek a tektonokat
+    		palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
+    	}
 
 		while (!jatek.jatekVege()) {
 			parancsokKiirasa();
@@ -293,7 +266,7 @@ public class CommandLine {
 
 	private void setup(Scanner scanner) {
 		System.out.print("Hány Játékos fog játszani? ");
-		String input = "1"; //scanner.nextLine();
+		String input = scanner.nextLine();
 		while (!input.matches("\\d+")) {
 			System.out.println("Kérlek adj meg egy számot!");
 			input = scanner.nextLine();
@@ -315,7 +288,7 @@ public class CommandLine {
 		jatek.setJelenKor(0); //Kezdő kör beállítása
 
 		System.out.println("Hány kör legyen a játékban? ");
-		String korokInput = "3";//scanner.nextLine();
+		String korokInput = scanner.nextLine();
 		while (!korokInput.matches("\\d+")) {
 			System.out.println("Kérlek adj meg egy számot!");
 			korokInput = scanner.nextLine();
@@ -326,11 +299,11 @@ public class CommandLine {
 
 	private void jatekosBeolvaso(String  tipus, Scanner scanner, List<String> existingNames) {
 		System.out.print("Add meg a " + tipus + " nevét: ");
-		String nev = "asd";//scanner.nextLine();
+		String nev = scanner.nextLine();
 		while (existingNames.contains(nev) && !nev.isEmpty()) {
 			System.out.println("Ez a név már foglalt! Válassz másik nevet.");
 			System.out.print("Addj meg egy másik nevet: ");
-			nev = "asdf";//scanner.nextLine();
+			nev = scanner.nextLine();
 		}
 		Jatekos jatekos = null;
 		if (tipus.equals("Gombasz")) {
@@ -392,7 +365,7 @@ public class CommandLine {
 	private void addTekton() {
 	    List <String> spectul = new ArrayList<>(List.of("sima","fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal"));
 	    Random rnd = new Random();
-		Tekton uj = new Tekton(spectul.get(rnd.nextInt(spectul.size())));
+	    Tekton uj = new Tekton(spectul.get(rnd.nextInt(spectul.size())));
 		jatek.addTekton(uj);
 	}
 	
@@ -582,14 +555,6 @@ public class CommandLine {
 		
 		System.out.println("------------------------------------------------------");
 		
-		// Aktív tektonok
-		/*System.out.println("Aktív tektonok:");
-		for (Tekton t : jatek.getJatekter()) {
-			System.out.println("\t[TEKTON ID] " + t.getId());
-		}
-		
-		System.out.println("------------------------------------------------------");*/
-
 		///debug
 		// Aktív tektonok + Szomszédok
 		System.out.println("Aktív tektonok és szomszédaik:");
@@ -607,12 +572,8 @@ public class CommandLine {
 			}
 			System.out.println();
 		}
-
 		
-
-
 		System.out.println("------------------------------------------------------");
-
 	}
 
 	private void help(){

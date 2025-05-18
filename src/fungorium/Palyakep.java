@@ -568,7 +568,7 @@ public class Palyakep extends JFrame {
 
                     // Ellenőrzés: egyik Tekton se lett túl kicsi?
                     boolean anyTooSmall = tectons.stream()
-                            .anyMatch(t -> {
+                    		.anyMatch(t -> {
                                 TektonVisualData tv = tektonVisualData.get(t.getId());
                                 for (Tekton te: tectons) {
                                 	if (t != te) {
@@ -907,10 +907,6 @@ public class Palyakep extends JFrame {
         		y = centerY + (innerMaxY - centerY) + rand.nextDouble() * (maxY - innerMinY);   
         	break;
         }
-        
-        
-//        double x = innerMinX + rand.nextDouble() * (innerMaxX - innerMinX);
-//        double y = innerMinY + rand.nextDouble() * (innerMaxY - innerMinY);
         
         x = Math.max(TECTON_SIZE, Math.min(WINDOW_SIZE - TECTON_SIZE, x));
         y = Math.max(TECTON_SIZE, Math.min(WINDOW_SIZE - TECTON_SIZE, y));

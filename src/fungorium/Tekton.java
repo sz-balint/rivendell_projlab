@@ -55,41 +55,6 @@ public class Tekton {
 		List<String> tipusok = List.of("sima", "fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal");
 		return tipusok.get(new Random().nextInt(tipusok.size()));
 	}
-    //Tekton letrehozosa tulajdonsaggal
-    /*public Tekton(String tul) {
-		id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
-		tulajdonsagok=tul;
-		szomszedok = new ArrayList<>();
-		sporak = new ArrayList<>();
-		fonalak = new ArrayList<>();
-		rovarok = new ArrayList<>();
-		gombaTest = null;
-		kapcsoltTekton = new ArrayList<>();
-	}
-
-	//Tekton letrehozosa fajta és a szomszédok megadásával
-    public Tekton(String tul, List<Tekton> tekt) {
-		id = idCounter++;
-		tulajdonsagok=tul;
-		szomszedok = tekt;
-		sporak = new ArrayList<>();
-		fonalak = new ArrayList<>();
-		rovarok = new ArrayList<>();
-		gombaTest = null;
-		kapcsoltTekton = new ArrayList<>();
-		}
-	//Tekton letrehozosa mindennel 
-    public Tekton(String tul, List<Tekton> tekt, int ssz, List<Spora> spk, List<GombaFonal> f, List<Rovar> r, GombaTest t, List<Tekton> kapcs) {
-		id = idCounter++;
-		tulajdonsagok=tul;
-		szomszedok = tekt;
-		sporakSzama=ssz;
-		sporak = spk;
-		fonalak = f;
-		rovarok = r;
-		gombaTest = t;
-		kapcsoltTekton = kapcs;
-		}*/
 
 		public Tekton kettetores() {
 			

@@ -113,15 +113,20 @@ public class Rovarasz extends Jatekos {
 			
 			Rovar rovar = Rovarok.get(valasz);
     		
-			//Keresunk egy random Sporat
-			Random random = new Random();
-			Spora spora = rovar.getHol().getSporak().get(random.nextInt());
+			if(rovar.getHol().getSporak().size()!=0) {
+				//Keresunk egy random Sporat
+				Random random = new Random();
+				Spora spora = rovar.getHol().getSporak().get(random.nextInt());
+				
+				eves(rovar,spora);
+			} else {
+				System.out.println("Itt nincs Spora.\n "); 
+			}
 			
-			eves(rovar,spora);
 		}
     	String valasz = scanner.nextLine();
     	
-    	scanner.close();
+    	//scanner.close();
     }
     
     @Override

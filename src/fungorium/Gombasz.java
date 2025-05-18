@@ -203,7 +203,7 @@ public class Gombasz extends Jatekos {
 		}
     	String valasz = scanner.nextLine();
     	
-    	scanner.close();
+    	//scanner.close();
     }
     
     @Override

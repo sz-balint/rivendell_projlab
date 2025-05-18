@@ -1,18 +1,3 @@
-/*package fungorium;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-public class Main {
-	static Scanner scanner = new Scanner(System.in); // Scanner letrehozasa
-    public static void main(String[] args) {
-        System.out.println(System.getProperty("user.dir"));
-        JatekLogika ez= new JatekLogika();
-        CommandLine az = new CommandLine (ez) ;
-        az.jatekKonzolbol();}
-}*/
-
-///
 ///-A rendes játékban randomizált szomszédosságokkal inicializálódik a pálya
 ///-A teszteknél nem tudom hogy fog működni: az addszomszéd művelet nyilván nem feltételn kielégítő, 
 /// mivel csak a sarokban lévő tektonoknak lehet két szomszédja, és ha manuálisan adunk meg szomszédosságokat, 
@@ -36,21 +21,29 @@ public class Main {
         System.out.println(System.getProperty("user.dir"));
 
         System.out.print("Szeretnél tesztet futtatni? (i = igen, n = CLI játék, g = grafikus játék): ");
-        //String valasz = scanner.nextLine().trim().toLowerCase();
+        String valasz = scanner.nextLine().trim().toLowerCase();
 
-        switch ("g") {
+        switch (valasz) {
             case "i":
                 Tests.main(null);
                 break;
 
             case "n":
                 CommandLine cli = new CommandLine();
-                cli.cli();
+                cli.cli(false);
                 break;
 
             case "g": {
                 CommandLine cly = new CommandLine();
-                cly.cli();
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                    	KezdoKep frame = new KezdoKep();
+                        frame.setVisible(true);
+                    }
+                });
+
+                cly.cli(true);
 
                 break;
             }
