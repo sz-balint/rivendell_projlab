@@ -39,6 +39,77 @@ public class Rovarasz extends Jatekos {
     // A rovarász pontjainak frissítése, ha a rovar spórát evett.
     @Override
     public void pontokFrissit() { pontok++; }
+   
+    public void Kor(String parancs, JatekLogika jatek, String[] parameterek) {
+        try {
+            switch (parancs.toLowerCase()) {
+                case "vagas":
+                    if (parameterek.length >= 2) {
+                        int fonalId = Integer.parseInt(parameterek[0]);
+                        int rovarId = Integer.parseInt(parameterek[1]);
+                        
+                        Rovar rovar = findRovarById(rovarId);
+                        GombaFonal fonal = findFonalById(rovar.getHol(), fonalId);
+                        
+                        if (rovar != null && fonal != null) {
+                            fonalVagas(rovar, fonal);
+                        }
+                    }
+                    break;
+                    
+                case "lep":
+                    if (parameterek.length >= 2) {
+                        int tektonId = Integer.parseInt(parameterek[0]);
+                        int rovarId = Integer.parseInt(parameterek[1]);
+                        
+                        Rovar rovar = findRovarById(rovarId);
+                        Tekton celTekton = jatek.findTektonById(tektonId);
+                        
+                        if (rovar != null && celTekton != null && 
+                            rovar.getHol().getSzomszedok().contains(celTekton)) {
+                            rovarLepes(rovar, celTekton);
+                        }
+                    }
+                    break;
+                    
+                case "eszik":
+                    if (parameterek.length >= 1) {
+                        int rovarId = Integer.parseInt(parameterek[0]);
+                        Rovar rovar = findRovarById(rovarId);
+                        
+                        if (rovar != null && !rovar.getHol().getSporak().isEmpty()) {
+                            Random random = new Random();
+                            Spora spora = rovar.getHol().getSporak()
+                                .get(random.nextInt(rovar.getHol().getSporak().size()));
+                            eves(rovar, spora);
+                        }
+                    }
+                    break;
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("Hibás paraméter formátum: " + e.getMessage());
+        }
+    }
+
+    private Rovar findRovarById(int id) {
+        for (Rovar rovar : Rovarok) {
+            if (rovar.getId() == id) {
+                return rovar;
+            }
+        }
+        return null;
+    }
+
+	
+
+    private GombaFonal findFonalById(Tekton tekton, int id) {
+        for (GombaFonal fonal : tekton.getFonalak()) {
+            if (fonal.getId() == id) {
+                return fonal;
+            }
+        }
+        return null;
+    }
 
     @Override
     public void Kor(String parancs,JatekLogika jatek) {

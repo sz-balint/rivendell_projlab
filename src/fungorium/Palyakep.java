@@ -10,7 +10,15 @@ import java.util.stream.Collectors;
 import java.awt.event.MouseAdapter;
 import javax.swing.Timer;
 
-//import fungorium.Palyakep.DrawingPanel;
+
+//van egy tektonlista
+    //a rovarok és gombák is a tektonokon keresztül adják hozzá magukat a játéktérhez
+//van egy  játéklogika objektum
+//hashmapek:
+    //rovarok
+    //gombatestek
+    //voronoi pontok(tekton visualdata-ban más is van emellett, pl terület)
+    
 
 public class Palyakep extends JPanel {
     private List<Tekton> tectons; //Tektonok listája a játéktéren
@@ -75,6 +83,49 @@ public class Palyakep extends JPanel {
         }
     }
 
+
+
+    public Object getObjectAt(int x, int y) {
+        // First check for GombaTest
+        for (Elolenyek eloleny : gombatestek.values()) {
+            if (eloleny.getGombaTest() != null) {
+                Point pos = tektonVisualData.get(eloleny.getGombaTest().getTekton().getId()).position;
+                if (Math.abs(x - pos.x) < 20 && Math.abs(y - pos.y) < 20) {
+                    return eloleny.getGombaTest();
+                }
+            }
+        }
+        
+        // Then check for Rovar
+        for (Elolenyek eloleny : rovarok.values()) {
+            if (eloleny.getRovar() != null) {
+                Point pos = tektonVisualData.get(eloleny.getRovar().getHol().getId()).position;
+                if (Math.abs(x - pos.x) < 20 && Math.abs(y - pos.y) < 20) {
+                    return eloleny.getRovar();
+                }
+            }
+        }
+        
+        // Then check for Tekton
+        Tekton clickedTekton = findClickedTekton(x, y);
+        if (clickedTekton != null) {
+            // Check for GombaFonal on this Tekton
+            if (!clickedTekton.getFonalak().isEmpty()) {
+                return clickedTekton.getFonalak().get(0); // Return first fonal
+            }
+            return clickedTekton;
+        }
+        
+        return null;
+    }
+
+
+
+
+
+
+
+    //jó lenne ha ezt az addrovarfv hivna meg és 
     // Rovar hozzáadása egy Tektonhoz
     public void addRovar(Rovar rovar, int tektonId) {
         Point position = tektonCenters.get(tektonId);
@@ -245,16 +296,16 @@ public class Palyakep extends JPanel {
         updateGameState();  // Teljes játéktér frissítése
 
         // Létrehozunk egy "dummy" rovart az első Tektonhoz
-        Tekton alapTekton = tectons.get(0);
+        /*Tekton alapTekton = tectons.get(0);
         dummy = new Rovar(alapTekton, null);
         addRovar(dummy, alapTekton.getId());
         
         Tekton gTekton = tectons.get(1);
         gombaTest = new GombaTest(gTekton, null);
-        addGombaTest(gombaTest, gTekton.getId());
+        addGombaTest(gombaTest, gTekton.getId());*/
         
-        System.out.println(gombaTest.getId());
-        System.out.println(tectons.get(1).getGombaTest());
+        //System.out.println(gombaTest.getId());
+        //System.out.println(tectons.get(1).getGombaTest());
         
         updateGameState();
     }

@@ -329,7 +329,14 @@ public class JatekLogika {
     private void JatekallapotFrissit() {
 
     }
-
+public Tekton findTektonById(int id) {
+        for (Tekton tekton : Jatekter) {
+            if (tekton.getId() == id) {
+                return tekton;
+            }
+        }
+        return null;
+    }
 
     // Szerintem egyszerűbb ha a játékos tud semmit lépni
     public boolean vanValid(Jatekos j, String[] parancsok) {

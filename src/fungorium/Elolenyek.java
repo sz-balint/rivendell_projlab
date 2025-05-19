@@ -195,6 +195,10 @@ public class Elolenyek {
         return rovar;
     }
 
+    public GombaTest getGombaTest() {
+        return gombaTest;
+    }
+
     public void eltuntet() {
         if (animationTimer != null && animationTimer.isRunning()) {
             animationTimer.stop();
