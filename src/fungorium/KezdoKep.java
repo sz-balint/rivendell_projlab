@@ -248,11 +248,14 @@ startGameButton.addActionListener(e -> {
     jatek.setKorokSzama(jatekosok.size() * 10);
     jatek.setJelenKor(0);
 
-    CommandLine helper = new CommandLine(); // csak pálya generáláshoz
-    helper.setJatek(jatek);
-    helper.setJatekosokSzama(jatekosok.size());
-    helper.palyaGeneralas(jatek.getJatekter());
-    helper.palyaFeltoltes(jatek.getJatekter(), jatekosok);
+    //CommandLine helper = new CommandLine();       // csak pálya generáláshoz kellettt de hülyeség volt
+    //helper.setJatek(jatek);                       //nem privat a jatek objektum
+   // helper.setJatekosokSzama(jatekosok.size());    //van jatekosksize() fv
+    //helper.palyaGeneralas(jatek.getJatekter());
+    //helper.palyaFeltoltes(jatek.getJatekter(), jatekosok);
+    
+    jatek.palyaGeneralas(jatekosok.size());
+    jatek.palyaFeltoltes();
 
     Palyakep palya = new Palyakep(jatek.getJatekter(), jatek);
     JatekKep jatekKep = new JatekKep(jatek, palya);
