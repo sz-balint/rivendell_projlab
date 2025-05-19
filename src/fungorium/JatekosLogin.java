@@ -182,7 +182,9 @@ public class JatekosLogin extends JFrame {
                 if (j.startsWith("Rovarász")) rovaraszDb++;
             }
             //Ha nem megfelelo a jatekosok/Gombaszok/Rovaraszok szama szol
-            if (osszJatekos < 4 || gombaszDb < 2 || rovaraszDb < 2) {
+            //MWGCVEREK VALAKIT
+            /*osszJatekos < 4 || gombaszDb < 2 || rovaraszDb < 2*/
+            if ( osszJatekos >6) {
                 int valasz = JOptionPane.showOptionDialog(
                         this,
                         "Nem megfelelő játékoslista.\nElveti az eddigieket?",

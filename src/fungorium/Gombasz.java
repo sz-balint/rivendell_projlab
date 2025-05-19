@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// A gomb�sz j�t�kost�pus oszt�lya, aki a gomb�k n�veszt�s�t ir�ny�tja.
+// A gombász játékos típus osztálya, aki a gombák növesztését irányítja.
 public class Gombasz extends Jatekos {
 
-    // A gombaszhoz tartoz� gombatestek list�ja.
+    // A gombászhoz tartozó gombatestek listája.
     private List<GombaTest> Testek = new ArrayList<>();
 
-    // A gomb�szhoz tartoz� gombafonalak list�ja.
+    // A gombászhoz tartozó gombafonalak listája.
     private List<GombaFonal> Fonalak= new ArrayList<>();
 
     //Konstruktor
@@ -20,7 +20,7 @@ public class Gombasz extends Jatekos {
     //Konstruktor
     public Gombasz(String nev, int pontok, String tipus, Color szin){ super(nev, pontok, szin); this.tipus = "Gombasz";}
     
-    // Egy megadott gombafon�lb�l �j gombatestet n�veszt.
+    // Egy megadott gombafonálból új gombatestet növeszt.
     public void testNoveszt(GombaFonal fonal, Tekton tekton) { //melyik fonálból növesztünk, és hova
     	//Ellenorzesek:
     	//A Fonal Tektonjai szomszédok a megadott Tektonnal

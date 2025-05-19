@@ -21,6 +21,10 @@ public class GombaTest {
 		return id;
 	}
 
+    public Gombasz getKie() {
+        return kie;
+    }
+
     
     //Gombatest letrehozasa minimum attribútummal- játék közbenhez
     public GombaTest(Tekton h, Gombasz g) {

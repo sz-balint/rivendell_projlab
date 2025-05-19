@@ -258,7 +258,7 @@ public void setJatekosokSzama(int szam) {
 				case "help":
 					help();
 					break;
-			
+				
 				default:
 					System.out.println("Ismeretlen parancs: " + parancs);
 					System.out.println("Használj 'help' parancsot a segítséghez.");
@@ -279,7 +279,7 @@ public void setJatekosokSzama(int szam) {
 		
 		jatekosokSzama = Integer.parseInt(input);
 		
-
+		
 		List<String> existingNames = new ArrayList<>();
 		for (int i = 0; i < jatekosokSzama; i++) {
 			if(i < jatekosokSzama / 2) {

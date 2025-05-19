@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.awt.event.MouseAdapter;
 import javax.swing.Timer;
 
-import fungorium.Palyakep.DrawingPanel;
+//import fungorium.Palyakep.DrawingPanel;
 
 public class Palyakep extends JPanel {
     private List<Tekton> tectons; //Tektonok listája a játéktéren
@@ -21,7 +21,7 @@ public class Palyakep extends JPanel {
     private int[][] closestMap; // Legközebbi elemek térképe
     private final Random rand = new Random();
     private final Map<Integer, Color> colorAssignments = new HashMap<>();
-    private final Map<Integer, TektonVisualData> tektonVisualData = new HashMap<>();
+    public static final Map<Integer, TektonVisualData> tektonVisualData = new HashMap<>();
     private Map<Integer, Set<Integer>> previousNeighbors = new HashMap<>();
 
     // Game constants - now all size-related constants use WINDOW_SIZE
@@ -38,6 +38,7 @@ public class Palyakep extends JPanel {
 
     private boolean rovarMarMozgatva = false;
     private Rovar dummy;
+    private GombaTest gombaTest;
 
     private static final Color[] REGION_COLORS = {
         new Color(205, 133, 63),   // sima - peru (világos barna)
@@ -47,15 +48,18 @@ public class Palyakep extends JPanel {
         new Color(101, 67, 33)     // zombifonal - dark coffee (mély barna)
     };
 
-     /////////////
-    ///Rovar/////
-    /////////////
 
     // Rovarok tárolása ID alapján
     private Map<Integer, Elolenyek> rovarok = new HashMap<>();
 
     // Tekton középpontok tárolása
     private Map<Integer, Point> tektonCenters = new HashMap<>();
+
+    // Gombatestek tárolása ID alapján
+    private Map<Integer, Elolenyek> gombatestek = new HashMap<>();
+
+    
+    
 
     // Tekton vizuális középpontok kiszámítása
     private void calculateTektonCenters() {
@@ -108,7 +112,18 @@ public class Palyakep extends JPanel {
             });
             drawingPanel.repaint();
         }
-    }   
+    }
+
+    // Gombatest hozzáadása egy Tektonhoz
+    public void addGombaTest(GombaTest gombaTest, int tektonId) {
+        Point position = tektonCenters.get(tektonId);
+        if (position != null) {
+            Elolenyek eloleny = new Elolenyek(gombaTest, position);
+            gombatestek.put(gombaTest.getId(), eloleny);
+            tectons.get(tektonId).ujTest(gombaTest);//hihi
+        }
+        drawingPanel.repaint();
+    }
 
     /////////////////////////////////////////////
     ///Mouse Interaction / Tekton Detection/////
@@ -206,6 +221,7 @@ public class Palyakep extends JPanel {
     public Palyakep(List<Tekton> existingTectons, JatekLogika jatekLogika) {
         this.jatekLogika = jatekLogika;
         this.tectons = new ArrayList<>(existingTectons);  // Meglévő Tekton lista átvétele
+        Elolenyek.setTektonVisualData(tektonVisualData);  // TektonVisualData referencia beállítása
 
         // Minden Tektonhoz véletlenszerű tulajdonság hozzárendelése
         for (Tekton t : tectons) {
@@ -232,6 +248,15 @@ public class Palyakep extends JPanel {
         Tekton alapTekton = tectons.get(0);
         dummy = new Rovar(alapTekton, null);
         addRovar(dummy, alapTekton.getId());
+        
+        Tekton gTekton = tectons.get(1);
+        gombaTest = new GombaTest(gTekton, null);
+        addGombaTest(gombaTest, gTekton.getId());
+        
+        System.out.println(gombaTest.getId());
+        System.out.println(tectons.get(1).getGombaTest());
+        
+        updateGameState();
     }
 
 
@@ -307,7 +332,7 @@ public class Palyakep extends JPanel {
     *
     * A Voronoi-diagramhoz és egyéb vizualizációkhoz szükséges
     */
-    private static class TektonVisualData {
+    public static class TektonVisualData {
         Point position;
         double minX = Double.MAX_VALUE, maxX = Double.MIN_VALUE;
         double minY = Double.MAX_VALUE, maxY = Double.MIN_VALUE;
@@ -394,6 +419,10 @@ public class Palyakep extends JPanel {
             // Rovarok kirajzolása
             for (Elolenyek rovar : rovarok.values()) {
                 rovar.rajzol(g);
+                
+            }
+            for (Elolenyek gombaTest : gombatestek.values()) {
+                gombaTest.rajzol(g);
             }
         }
 
