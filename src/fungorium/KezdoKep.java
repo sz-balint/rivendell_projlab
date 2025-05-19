@@ -188,9 +188,55 @@ public class KezdoKep extends JFrame {
             jatekKep.setVisible(true);
             dispose();
         });*/
+
+
+//KOMMENT
+        //KEZDOKEP: 
+        //van egy játékos lista ebben az osztályban eltárolva
+        //játékos objektumokat tárol
+
+        //a login button megnyomárára: 
+        //   jatekoslogin osztalyban: 
+            //van egy kezdőkép objektumunk
+            //a jatekoslogik megkapja az eredeti kezdokepet majd 
+            // meghívja ezt a függvényt a kezdőképen: kezdoKep.setJatekosok(jatekoslista);
+            //szóval akezdőképben eltárolt jatekoslista mostmár jó
+
+
+        loginButton.addActionListener(e -> {
+            JatekosLogin loginAblak = new JatekosLogin(this);
+            loginAblak.setVisible(true);
+        });
+
+
+//KOMMENT
+    //a játékoslistát minek másolod le a jatekosokba újra 
+    //létrehozunk egy játéklogika objektumot, ennek kéne ultimate-nek lennie
+
+    //az összes bevitt játékosunkat beadjuk a játéklogikának
+    //setaktivjatekos(0. alistaban)  van növelve? hol kéne legyen növelve?
+    //setkorokszama automatikus    
+    //setjelenkör  van növelve? hol kéne legyen növelve?
+
+    //commandline van meghívva pályageneráláshoz wtf xd
+    //ezt átkéne írni majd!
+    //a commandlineba van beállítva:
+        //setjatek(jateklogika)
+        //setjatekoskszama(jatekosok lista nagysaga)
+        //palyageneralas
+        //palyafeltoltes
+
+            //ezek mit is csinálnak? mit módosítanak?
+            //
+
+    //palyakep objektum inicializálása  a jateklogika jatekter mezejével!
+    //jatekkep inicializalasa a palyakeppel és jateklogikaval
+
+
+
 startGameButton.addActionListener(e -> {
     
-   ArrayList<Jatekos> jatekosok = getJatekosok(); // 
+   //ArrayList<Jatekos> jatekosok = getJatekosok(); // 
  // 
 
     JatekLogika jatek = new JatekLogika();
@@ -202,11 +248,14 @@ startGameButton.addActionListener(e -> {
     jatek.setKorokSzama(jatekosok.size() * 10);
     jatek.setJelenKor(0);
 
-    CommandLine helper = new CommandLine(); // csak pálya generáláshoz
-    helper.setJatek(jatek);
-    helper.setJatekosokSzama(jatekosok.size());
-    helper.palyaGeneralas(jatek.getJatekter());
-    helper.palyaFeltoltes(jatek.getJatekter(), jatekosok);
+    //CommandLine helper = new CommandLine();       // csak pálya generáláshoz kellettt de hülyeség volt
+    //helper.setJatek(jatek);                       //nem privat a jatek objektum
+   // helper.setJatekosokSzama(jatekosok.size());    //van jatekosksize() fv
+    //helper.palyaGeneralas(jatek.getJatekter());
+    //helper.palyaFeltoltes(jatek.getJatekter(), jatekosok);
+    
+    jatek.palyaGeneralas(jatekosok.size());
+    jatek.palyaFeltoltes();
 
     Palyakep palya = new Palyakep(jatek.getJatekter(), jatek);
     JatekKep jatekKep = new JatekKep(jatek, palya);
@@ -227,10 +276,7 @@ startGameButton.addActionListener(e -> {
                 
             }
         });*/
-        loginButton.addActionListener(e -> {
-            JatekosLogin loginAblak = new JatekosLogin(this);
-            loginAblak.setVisible(true);
-        });
+        
 
         
         //Betoltes

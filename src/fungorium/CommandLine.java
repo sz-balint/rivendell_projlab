@@ -10,6 +10,13 @@ import java.util.stream.Collectors;
 import javax.swing.SwingUtilities;
 
 public class CommandLine {
+//Commandline osztalyban van egy jateklogika objektum
+//letudja kerni a jateklogikabol az allapotot és vissza is tudja adni
+//palyageneralas: eg ytekton listat kap  :haszontalan??
+//palyafeltoltes: hát ezt majd át kell írni ha készen vannak az élőlények
+	//tekton listat kap meg jatekos listat(jatekos objektumok)
+
+
 	private int jatekosokSzama; //Játékosok száma
 	private JatekLogika jatek = new JatekLogika(); //A játék kezeléséhez
 	private int tektonokSzama;
@@ -29,92 +36,13 @@ public void setJatekosokSzama(int szam) {
 		tektonokSzama = 0;
 	}
 	
-	//Pálya
-	public void palyaGeneralas(List<Tekton> tektonok) {
-		tektonokSzama = 2 * jatekosokSzama;
-		
-
-		for (int i = 0; i < tektonokSzama; i++) {
-			tektonok.add(new Tekton("sima"));
-		}
-		
-		for (int i = 0; i < tektonokSzama - 1; i++) {
-			tektonok.get(i).addSzomszed(tektonok.get(i + 1));
-			tektonok.get(i + 1).addSzomszed(tektonok.get(i)); // Ensure bidirectional
-		}
-		
-		Random random = new Random();
-		for (int i = 0; i < tektonokSzama; i++) {
-			int t1 = random.nextInt(tektonokSzama);
-			int t2 = random.nextInt(tektonokSzama);
-			if (t1 != t2 && !tektonok.get(t1).getSzomszedok().contains(tektonok.get(t2))) {
-				tektonok.get(t1).addSzomszed(tektonok.get(t2));
-				tektonok.get(t2).addSzomszed(tektonok.get(t1)); // Ensure bidirectional
-			}
-		}
-	}
-
-	public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok) {
-		Random random = new Random();
-
-		for (Jatekos j : jatekosok) {
-			if (j instanceof Rovarasz) {
-				Rovarasz r = (Rovarasz) j;
 	
-				// Null check: ha nincs még lista, inicializáljuk
-				if (r.getRovarok() == null) {
-					r.setRovarok(new ArrayList<>());
-				}
-	
-				Rovar rovar = new Rovar();
-				rovar.setKie(r);
-	
-				Tekton randomTekton = jatekter.get(random.nextInt(jatekter.size()));
-				rovar.lep(randomTekton);
-	
-				r.UjRovar(rovar);
-			}
-			else if (j instanceof Gombasz) {
-				// Gombász kezdő gombatest kezelése
-				Gombasz g = (Gombasz)j;
-				
-				// 1. Választunk egy random tekton-t, ahol nincs még gombatest
-				Tekton randomTekton;
-				int attempts = 0;
-				do {
-					randomTekton = jatekter.get(random.nextInt(jatekter.size()));
-					attempts++;
-					if (attempts > 100) break; // Védjük meg a végtelen ciklust
-				} while (randomTekton.getGombaTest() != null || !randomTekton.vanHely());
-				
-				// 2. Ha találtunk megfelelő tekton-t
-				if (randomTekton.getGombaTest() == null && randomTekton.vanHely()) {
-					
-					// 4. Létrehozzuk és elhelyezzük a gombatestet
-					GombaTest test = new GombaTest(randomTekton, g);
-					g.UjGombaTest(test);
-					
-					// 5. Kezdő fonalak létrehozása szomszédos tektónokra
-					for (Tekton szomszed : randomTekton.getSzomszedok()) {
-						if (szomszed.vanHely()) {
-							GombaFonal fonal = new GombaFonal(randomTekton, szomszed, g);
-							g.UjGombaFonal(fonal);
-							randomTekton.ujFonal(fonal);
-							szomszed.ujFonal(fonal);
-						}
-					}
-				}
-			}
-		}
-		}
-	
-	//______________________________________
 	
 	public void cli(boolean graphical){
 		Scanner scanner = new Scanner(System.in);
 
 		setup(scanner);
-		palyaGeneralas(jatek.getJatekter());
+		/*palyaGeneralas(jatek.getJatekter());
 		
 		//help
 		List<Tekton> inicializaltTectonok = getJatek().getJatekter();
@@ -127,7 +55,24 @@ public void setJatekosokSzama(int szam) {
             });
     		//itt adja át a grafikus felületnek a tektonokat
     		palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
-    	}
+    	}*/
+
+
+      
+        jatek.palyaGeneralas(jatekosokSzama);
+        
+        if(graphical) {
+            SwingUtilities.invokeLater(() -> {
+                Palyakep game = new Palyakep(jatek.getJatekter(), jatek);
+                game.setVisible(true);
+            });
+            
+            jatek.palyaFeltoltes();
+        }
+
+
+
+		
 
 		while (!jatek.jatekVege()) {
 			parancsokKiirasa();
