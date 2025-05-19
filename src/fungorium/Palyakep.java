@@ -8,7 +8,6 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.awt.event.MouseAdapter;
-import javax.swing.Timer;
 
 //import fungorium.Palyakep.DrawingPanel;
 
@@ -38,7 +37,8 @@ public class Palyakep extends JPanel {
 
     private boolean rovarMarMozgatva = false;
     private Rovar dummy;
-    private GombaTest gombaTest;
+    private GombaTest gombaTestDummy;
+    private GombaFonal gombaFonalDummy;
 
     private static final Color[] REGION_COLORS = {
         new Color(205, 133, 63),   // sima - peru (világos barna)
@@ -58,7 +58,7 @@ public class Palyakep extends JPanel {
     // Gombatestek tárolása ID alapján
     private Map<Integer, Elolenyek> gombatestek = new HashMap<>();
 
-    
+    private Map<Integer, Elolenyek> gombaFonal = new HashMap<>();  
     
 
     // Tekton vizuális középpontok kiszámítása
@@ -121,6 +121,16 @@ public class Palyakep extends JPanel {
             Elolenyek eloleny = new Elolenyek(gombaTest, position);
             gombatestek.put(gombaTest.getId(), eloleny);
             tectons.get(tektonId).ujTest(gombaTest);//hihi
+        }
+        drawingPanel.repaint();
+    }
+
+    public void addGombaFonal(GombaFonal gombaFonal, int tektonId, int tektonId2) {
+        Point position = tektonCenters.get(tektonId);
+        Point position2 = tektonCenters.get(tektonId2);
+        if (position != null && position2 != null) {
+            Elolenyek eloleny = new Elolenyek(gombaFonal, position, position2);
+            this.gombaFonal.put(gombaFonal.getId(), eloleny);
         }
         drawingPanel.repaint();
     }
@@ -250,11 +260,14 @@ public class Palyakep extends JPanel {
         addRovar(dummy, alapTekton.getId());
         
         Tekton gTekton = tectons.get(1);
-        gombaTest = new GombaTest(gTekton, null);
-        addGombaTest(gombaTest, gTekton.getId());
+        gombaTestDummy = new GombaTest(gTekton, null);
+        addGombaTest(gombaTestDummy, gTekton.getId());
         
-        System.out.println(gombaTest.getId());
+        System.out.println(gombaTestDummy.getId());
         System.out.println(tectons.get(1).getGombaTest());
+
+        gombaFonalDummy = new GombaFonal(alapTekton, gTekton, null);
+        addGombaFonal(gombaFonalDummy, alapTekton.getId(), gTekton.getId());
         
         updateGameState();
     }
@@ -1097,7 +1110,7 @@ public class Palyakep extends JPanel {
     }
 
     ///DEBUG///
-        private void printSortedTectons(String message, double totalArea) {
+    private void printSortedTectons(String message, double totalArea) {
         tectons.stream()
             .sorted((a, b) -> {
                 TektonVisualData aTvd = tektonVisualData.get(a.getId());
@@ -1112,4 +1125,13 @@ public class Palyakep extends JPanel {
             });
     }
 
-} 
+    public void setTektonCenters() {
+        for (Tekton t : tectons) {
+            TektonVisualData tvd = tektonVisualData.get(t.getId());
+            Point position = (tvd != null ? tvd.position : null);
+            tektonCenters.put(t.getId(), position);
+        }
+    }
+
+}
+

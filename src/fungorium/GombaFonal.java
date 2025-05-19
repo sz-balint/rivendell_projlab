@@ -26,9 +26,9 @@ public class GombaFonal {
     }
 
     // Gombafonál létrehozása két tektonnal + Gombásszal
-    public GombaFonal(Tekton tekt1, Tekton tek2, Gombasz g) {
+    public GombaFonal(Tekton tek1, Tekton tek2, Gombasz g) {
 		kapcsoltTektonok = new ArrayList<>();
-        kapcsoltTektonok.add(tekt1);
+        kapcsoltTektonok.add(tek1);
         kapcsoltTektonok.add(tek2);
         kie = g;
         megel = random.nextInt(5) + 1;
