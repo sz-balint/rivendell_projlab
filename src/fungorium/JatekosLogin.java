@@ -5,6 +5,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+    //van egy kezdőkép objektumunk
+    //a jatekoslogik megkapja az eredeti kezdokepet majd 
+    // meghívja ezt a függvényt a kezdőképen: kezdoKep.setJatekosok(jatekoslista);
+    //zsóval akezdőképben eltárolt jatekoslista mostmár jó
+
 public class JatekosLogin extends JFrame {
     private KezdoKep kezdoKep;
 	//Jatekosok mentesehez szukseges valtozok
@@ -24,6 +29,8 @@ public class JatekosLogin extends JFrame {
     public ArrayList<Jatekos> getJatekosok() {
         return jatekoslista;
     }
+
+
 
     public JatekosLogin(KezdoKep kk) {
     	//Ablak beallitasai
@@ -169,7 +176,7 @@ public class JatekosLogin extends JFrame {
         torles.addActionListener(e -> torolJatekost());
         
         //Vissza
-        JButton vissza = createStyledButton("Vissza");
+        JButton vissza = createStyledButton("Mentés");
         vissza.setBounds(350, 300, 100, 40);
         add(vissza);
         vissza.addActionListener(e -> {
@@ -203,7 +210,7 @@ public class JatekosLogin extends JFrame {
             } else {
             	
                 //Jo lista eseten visszaadja a Kezdokepnek
-                 KezdoKep kezdoKep = new KezdoKep();
+                 //KezdoKep kezdoKep = new KezdoKep();
                // kezdoKep.setJatekosok(new ArrayList<>(jatekoslista)); 
                 
                 //Ablak bezarasa

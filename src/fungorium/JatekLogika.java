@@ -17,7 +17,7 @@ public class JatekLogika {
     //Konstruktorok:
     
     //Üres állapot generálása
-    public JatekLogika(){
+    public JatekLogika(){  
         korokSzama=1;
         Jatekosok = new ArrayList<>();
         jelenKor = 0;
@@ -31,6 +31,158 @@ public class JatekLogika {
         this.jelenKor = jelenKor;
         this.aktivJatekos = aktivJatekos;
         this.Jatekter = Jatekter;
+    }
+
+    //Pálya
+	/*public void palyaGeneralas(List<Tekton> tektonok) {
+		tektonokSzama = 2 * jatekosokSzama;
+		
+
+		for (int i = 0; i < tektonokSzama; i++) {
+			tektonok.add(new Tekton("sima"));
+		}
+		
+		for (int i = 0; i < tektonokSzama - 1; i++) {
+			tektonok.get(i).addSzomszed(tektonok.get(i + 1));
+			tektonok.get(i + 1).addSzomszed(tektonok.get(i)); // Ensure bidirectional
+		}
+		
+		Random random = new Random();
+		for (int i = 0; i < tektonokSzama; i++) {
+			int t1 = random.nextInt(tektonokSzama);
+			int t2 = random.nextInt(tektonokSzama);
+			if (t1 != t2 && !tektonok.get(t1).getSzomszedok().contains(tektonok.get(t2))) {
+				tektonok.get(t1).addSzomszed(tektonok.get(t2));
+				tektonok.get(t2).addSzomszed(tektonok.get(t1)); // Ensure bidirectional
+			}
+		}
+	}
+
+	public void palyaFeltoltes(List<Tekton> jatekter, List<Jatekos> jatekosok) {
+		Random random = new Random();
+
+		for (Jatekos j : jatekosok) {
+			if (j instanceof Rovarasz) {
+				Rovarasz r = (Rovarasz) j;
+	
+				// Null check: ha nincs még lista, inicializáljuk
+				if (r.getRovarok() == null) {
+					r.setRovarok(new ArrayList<>());
+				}
+	
+				Rovar rovar = new Rovar();
+				rovar.setKie(r);
+	
+				Tekton randomTekton = jatekter.get(random.nextInt(jatekter.size()));
+				rovar.lep(randomTekton);
+	
+				r.UjRovar(rovar);
+			}
+			else if (j instanceof Gombasz) {
+				// Gombász kezdő gombatest kezelése
+				Gombasz g = (Gombasz)j;
+				
+				// 1. Választunk egy random tekton-t, ahol nincs még gombatest
+				Tekton randomTekton;
+				int attempts = 0;
+				do {
+					randomTekton = jatekter.get(random.nextInt(jatekter.size()));
+					attempts++;
+					if (attempts > 100) break; // Védjük meg a végtelen ciklust
+				} while (randomTekton.getGombaTest() != null || !randomTekton.vanHely());
+				
+				// 2. Ha találtunk megfelelő tekton-t
+				if (randomTekton.getGombaTest() == null && randomTekton.vanHely()) {
+					
+					// 4. Létrehozzuk és elhelyezzük a gombatestet
+					GombaTest test = new GombaTest(randomTekton, g);
+					g.UjGombaTest(test);
+					
+					// 5. Kezdő fonalak létrehozása szomszédos tektónokra
+					for (Tekton szomszed : randomTekton.getSzomszedok()) {
+						if (szomszed.vanHely()) {
+							GombaFonal fonal = new GombaFonal(randomTekton, szomszed, g);
+							g.UjGombaFonal(fonal);
+							randomTekton.ujFonal(fonal);
+							szomszed.ujFonal(fonal);
+						}
+					}
+				}
+			}
+		}
+		}
+	
+	//______________________________________
+    */
+    public void palyaGeneralas(int jatekosokSzama) {
+        int tektonokSzama = 2 * jatekosokSzama;
+        Jatekter.clear(); // Clear any existing plates
+
+        for (int i = 0; i < tektonokSzama; i++) {
+            Jatekter.add(new Tekton("sima"));
+        }
+        
+        for (int i = 0; i < tektonokSzama - 1; i++) {
+            Jatekter.get(i).addSzomszed(Jatekter.get(i + 1));
+            Jatekter.get(i + 1).addSzomszed(Jatekter.get(i)); // Ensure bidirectional
+        }
+        
+        Random random = new Random();
+        for (int i = 0; i < tektonokSzama; i++) {
+            int t1 = random.nextInt(tektonokSzama);
+            int t2 = random.nextInt(tektonokSzama);
+            if (t1 != t2 && !Jatekter.get(t1).getSzomszedok().contains(Jatekter.get(t2))) {
+                Jatekter.get(t1).addSzomszed(Jatekter.get(t2));
+                Jatekter.get(t2).addSzomszed(Jatekter.get(t1));
+            }
+        }
+    }
+
+    public void palyaFeltoltes() {
+        Random random = new Random();
+
+        for (Jatekos j : Jatekosok) {
+            if (j instanceof Rovarasz) {
+                Rovarasz r = (Rovarasz) j;
+    
+                if (r.getRovarok() == null) {
+                    r.setRovarok(new ArrayList<>());
+                }
+    
+                Rovar rovar = new Rovar();
+                rovar.setKie(r);
+    
+                Tekton randomTekton = Jatekter.get(random.nextInt(Jatekter.size()));
+                rovar.lep(randomTekton);
+    
+                r.UjRovar(rovar);
+            }
+            else if (j instanceof Gombasz) {
+                Gombasz g = (Gombasz)j;
+                Tekton randomTekton;
+                int attempts = 0;
+                
+                do {
+                    randomTekton = Jatekter.get(random.nextInt(Jatekter.size()));
+                    attempts++;
+                    if (attempts > 100) break;
+                } while (randomTekton.getGombaTest() != null || !randomTekton.vanHely());
+                
+                if (randomTekton.getGombaTest() == null && randomTekton.vanHely()) {
+                    GombaTest test = new GombaTest(randomTekton, g);
+                    g.UjGombaTest(test);
+                    
+                    for (Tekton szomszed : randomTekton.getSzomszedok()) {
+                        if (szomszed.vanHely()) {
+                            GombaFonal fonal = new GombaFonal(randomTekton, szomszed, g);
+                            g.UjGombaFonal(fonal);
+                            randomTekton.ujFonal(fonal);
+                            szomszed.ujFonal(fonal);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // Meghívja a Jatekter egy random tektonjára a kettétörés függvényt és az új tektont elmenti
