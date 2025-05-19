@@ -10,6 +10,13 @@ import java.util.stream.Collectors;
 import javax.swing.SwingUtilities;
 
 public class CommandLine {
+//Commandline osztalyban van egy jateklogika objektum
+//letudja kerni a jateklogikabol az allapotot és vissza is tudja adni
+//palyageneralas: eg ytekton listat kap  :haszontalan??
+//palyafeltoltes: hát ezt majd át kell írni ha készen vannak az élőlények
+	//tekton listat kap meg jatekos listat(jatekos objektumok)
+
+	
 	private int jatekosokSzama; //Játékosok száma
 	private JatekLogika jatek = new JatekLogika(); //A játék kezeléséhez
 	private int tektonokSzama;

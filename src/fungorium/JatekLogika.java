@@ -17,7 +17,7 @@ public class JatekLogika {
     //Konstruktorok:
     
     //Üres állapot generálása
-    public JatekLogika(){
+    public JatekLogika(){  
         korokSzama=1;
         Jatekosok = new ArrayList<>();
         jelenKor = 0;
