@@ -183,4 +183,12 @@ public class GombaFonal {
             Boolean.parseBoolean(el)
         );
     }
+
+    public Tekton getTekton1() {
+        return kapcsoltTektonok.get(0);
+    }
+
+    public Tekton getTekton2() {
+        return kapcsoltTektonok.get(1);
+    }
 }

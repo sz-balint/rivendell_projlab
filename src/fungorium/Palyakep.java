@@ -67,7 +67,8 @@ public class Palyakep extends JPanel {
     // Gombatestek tárolása ID alapján
     private Map<Integer, Elolenyek> gombatestek = new HashMap<>();
 
-    private Map<Integer, Elolenyek> gombaFonal = new HashMap<>();  
+    private Map<Integer, Elolenyek> gombaFonal = new HashMap<>(); 
+
     public void inicializalJatekterObjektumokat(JatekLogika jatekLogika) {
         for (Jatekos j : jatekLogika.getJatekosok()) {
             if (j instanceof Rovarasz r) {
@@ -78,7 +79,10 @@ public class Palyakep extends JPanel {
                 for (GombaTest test : g.getTestek()) {
                     addGombaTest(test, test.getTekton().getId());
                 }
-            }
+                for (GombaFonal fonal : g.getFonalak()) {
+                    addGombaFonal(fonal, fonal.getTekton1().getId(), fonal.getTekton2().getId());
+                }
+            } 
         }
     }
 
@@ -99,45 +103,139 @@ public class Palyakep extends JPanel {
 
 
 
-    public Object getObjectAt(int x, int y) {
-        // First check for GombaTest
+    private Elolenyek findClickedEloleny(int x, int y) {
+        // Először a gombatesteket ellenőrizzük (körök)
         for (Elolenyek eloleny : gombatestek.values()) {
             if (eloleny.getGombaTest() != null) {
                 Point pos = tektonVisualData.get(eloleny.getGombaTest().getTekton().getId()).position;
-                if (Math.abs(x - pos.x) < 20 && Math.abs(y - pos.y) < 20) {
-                    return eloleny.getGombaTest();
+                // Kör alakú terület ellenőrzése
+                double distance = Math.hypot(x - pos.x, y - pos.y);
+                if (distance <= 16) { // 32/2 = 16 a sugár
+                    return eloleny;
                 }
             }
         }
-        
-        // Then check for Rovar
+
+        // Majd a rovarokat (háromszögek)
         for (Elolenyek eloleny : rovarok.values()) {
             if (eloleny.getRovar() != null) {
                 Point pos = tektonVisualData.get(eloleny.getRovar().getHol().getId()).position;
-                if (Math.abs(x - pos.x) < 20 && Math.abs(y - pos.y) < 20) {
-                    return eloleny.getRovar();
+                // Háromszög alakú terület ellenőrzése
+                int[] xPoints = {
+                    (int)pos.x,
+                    (int)pos.x - 16,
+                    (int)pos.x + 16
+                };
+                int[] yPoints = {
+                    (int)pos.y - 16,
+                    (int)pos.y + 16,
+                    (int)pos.y + 16
+                };
+                
+                // Háromszög területének kiszámítása
+                double area = 0.5 * Math.abs(
+                    (xPoints[1] - xPoints[0]) * (yPoints[2] - yPoints[0]) -
+                    (xPoints[2] - xPoints[0]) * (yPoints[1] - yPoints[0])
+                );
+                
+                // A kattintás pont három kis háromszögre bontja az eredeti háromszöget
+                double area1 = 0.5 * Math.abs(
+                    (xPoints[0] - x) * (yPoints[1] - y) -
+                    (xPoints[1] - x) * (yPoints[0] - y)
+                );
+                double area2 = 0.5 * Math.abs(
+                    (xPoints[1] - x) * (yPoints[2] - y) -
+                    (xPoints[2] - x) * (yPoints[1] - y)
+                );
+                double area3 = 0.5 * Math.abs(
+                    (xPoints[2] - x) * (yPoints[0] - y) -
+                    (xPoints[0] - x) * (yPoints[2] - y)
+                );
+                
+                // Ha a három kis háromszög területe összesen megegyezik az eredeti háromszög területével,
+                // akkor a pont a háromszögön belül van
+                if (Math.abs(area - (area1 + area2 + area3)) < 0.1) {
+                    return eloleny;
                 }
             }
         }
+
+        // Végül a gombafonalakat (vonalak)
+        for (Elolenyek eloleny : gombaFonal.values()) {
+            if (eloleny.getGombaFonal() != null) {
+                List<Tekton> kapcsoltTektonok = eloleny.getGombaFonal().getKapcsoltTektonok();
+                if (kapcsoltTektonok.size() == 2) {
+                    Point p1 = tektonVisualData.get(kapcsoltTektonok.get(0).getId()).position;
+                    Point p2 = tektonVisualData.get(kapcsoltTektonok.get(1).getId()).position;
+                    
+                    // Középpont és merőleges irányvektor számítása
+                    int centerX = (p1.x + p2.x) / 2;
+                    int centerY = (p1.y + p2.y) / 2;
+                    double dx = p2.x - p1.x;
+                    double dy = p2.y - p1.y;
+                    double length = Math.sqrt(dx * dx + dy * dy);
+                    double perpX = -dy / length * 30;
+                    double perpY = dx / length * 30;
+                    
+                    // Vonal körüli terület ellenőrzése
+                    if (isPointNearLine(x, y, 
+                        centerX - perpX, centerY - perpY,
+                        centerX + perpX, centerY + perpY, 5)) {
+                        return eloleny;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    // Helper method to check if a point is near a line segment
+    private boolean isPointNearLine(int px, int py, double x1, double y1, double x2, double y2, double tolerance) {
+        double lineLength = Math.hypot(x2 - x1, y2 - y1);
+        if (lineLength == 0) return false;
         
-        // Then check for Tekton
+        // Normalize the line vector
+        double nx = (x2 - x1) / lineLength;
+        double ny = (y2 - y1) / lineLength;
+        
+        // Vector from point to line start
+        double vx = px - x1;
+        double vy = py - y1;
+        
+        // Project point onto line
+        double projection = vx * nx + vy * ny;
+        
+        // Clamp projection to line segment
+        projection = Math.max(0, Math.min(lineLength, projection));
+        
+        // Calculate closest point on line
+        double closestX = x1 + nx * projection;
+        double closestY = y1 + ny * projection;
+        
+        // Calculate distance from point to closest point on line
+        double distance = Math.hypot(px - closestX, py - closestY);
+        
+        return distance <= tolerance;
+    }
+
+    public Object getObjectAt(int x, int y) {
+        // Először ellenőrizzük az élőlényeket
+        Elolenyek clickedEloleny = findClickedEloleny(x, y);
+        if (clickedEloleny != null) {
+            if (clickedEloleny.getRovar() != null) return clickedEloleny.getRovar();
+            if (clickedEloleny.getGombaTest() != null) return clickedEloleny.getGombaTest();
+            if (clickedEloleny.getGombaFonal() != null) return clickedEloleny.getGombaFonal();
+        }
+
+        // Ha nem találtunk élőlényt, ellenőrizzük a tektont
         Tekton clickedTekton = findClickedTekton(x, y);
         if (clickedTekton != null) {
-            // Check for GombaFonal on this Tekton
-            if (!clickedTekton.getFonalak().isEmpty()) {
-                return clickedTekton.getFonalak().get(0); // Return first fonal
-            }
             return clickedTekton;
         }
         
         return null;
     }
-
-
-
-
-
-
 
     //jó lenne ha ezt az addrovarfv hivna meg és 
     // Rovar hozzáadása egy Tektonhoz
@@ -331,8 +429,8 @@ public class Palyakep extends JPanel {
         //System.out.println(gombaTestDummy.getId());
         //System.out.println(tectons.get(1).getGombaTest());
 
-        gombaFonalDummy = new GombaFonal(alapTekton, gTekton, null);
-        addGombaFonal(gombaFonalDummy, alapTekton.getId(), alapTekton.getSzomszedok().get(1).getId());
+       //ombaFonalDummy = new GombaFonal(alapTekton, gTekton, null);
+       // addGombaFonal(gombaFonalDummy, alapTekton.getId(), alapTekton.getSzomszedok().get(1).getId());
         
         updateGameState();
     }
@@ -430,6 +528,7 @@ public class Palyakep extends JPanel {
     class DrawingPanel extends JPanel {
         private static final int HOVER_RADIUS = 15;     // A kurzor körüli érzékelési sugár
         private Integer hoveredTektonId = null;         // Az aktuálisan kijelölt (hovered) Tekton ID-ja
+        private Integer hoveredElolenyId = null;
 
         /**
          * Konstruktor: egéresemények figyelése.
@@ -441,6 +540,7 @@ public class Palyakep extends JPanel {
                 @Override
                 public void mouseExited(java.awt.event.MouseEvent e) {
                     hoveredTektonId = null;
+                    hoveredElolenyId = null;
                     repaint(); // Újrarajzolás kijelölés eltüntetéséhez
                 }
             });
@@ -449,7 +549,12 @@ public class Palyakep extends JPanel {
                 @Override
                 public void mouseMoved(java.awt.event.MouseEvent e) {
                     Tekton t = findClickedTekton(e.getX(), e.getY());
-                    hoveredTektonId = (t != null) ? t.getId() : null;
+                    Elolenyek eloleny = findClickedEloleny(e.getX(), e.getY());
+                    hoveredElolenyId = (eloleny != null) ? eloleny.getId() : null;
+                    if (eloleny != null) {
+                        System.out.println(eloleny.getId());
+                    }
+                    hoveredTektonId = (t != null && eloleny == null) ? t.getId() : null;
                     repaint(); // Újrarajzolás kijelölés frissítéséhez
                 }
             });

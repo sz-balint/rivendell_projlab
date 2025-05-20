@@ -242,10 +242,18 @@ public class Elolenyek {
         return gombaTest;
     }
 
+    public GombaFonal getGombaFonal() {
+        return gombaFonal;
+    }
+
     public void eltuntet() {
         if (animationTimer != null && animationTimer.isRunning()) {
             animationTimer.stop();
         }
         this.rovar = null;
+    }
+
+    public int getId() {
+        return rovar != null ? rovar.getHol().getId() : gombaTest != null ? gombaTest.getTekton().getId() : gombaFonal.getTekton1().getId();
     }
 }
