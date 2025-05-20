@@ -68,6 +68,8 @@ public class Palyakep extends JPanel {
     private Map<Integer, Elolenyek> gombatestek = new HashMap<>();
 
     private Map<Integer, Elolenyek> gombaFonal = new HashMap<>();  
+    
+    
     public void inicializalJatekterObjektumokat(JatekLogika jatekLogika) {
         for (Jatekos j : jatekLogika.getJatekosok()) {
             if (j instanceof Rovarasz r) {
@@ -321,18 +323,19 @@ public class Palyakep extends JPanel {
 
         // Létrehozunk egy "dummy" rovart az első Tektonhoz
         /*Tekton alapTekton = tectons.get(0);
+        Tekton gTekton = tectons.get(1);
         dummy = new Rovar(alapTekton, null);
         addRovar(dummy, alapTekton.getId());
         
-        Tekton gTekton = tectons.get(1);
+       
         gombaTestDummy = new GombaTest(gTekton, null);
-        addGombaTest(gombaTestDummy, gTekton.getId());*/
+        addGombaTest(gombaTestDummy, gTekton.getId());
         
         //System.out.println(gombaTestDummy.getId());
         //System.out.println(tectons.get(1).getGombaTest());
 
         gombaFonalDummy = new GombaFonal(alapTekton, gTekton, null);
-        addGombaFonal(gombaFonalDummy, alapTekton.getId(), alapTekton.getSzomszedok().get(1).getId());
+        addGombaFonal(gombaFonalDummy, alapTekton.getId(), alapTekton.getSzomszedok().get(1).getId());*/
         
         updateGameState();
     }

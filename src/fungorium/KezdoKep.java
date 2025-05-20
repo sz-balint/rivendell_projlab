@@ -161,35 +161,6 @@ public class KezdoKep extends JFrame {
         //A gombok az egeszhez adasa
         mainPanel.add(buttonPanel, BorderLayout.CENTER);
 
-        // Esemenykezelok hozzaadasa a gombokhoz
-        //Jatekkezdese
-        /*startGameButton.addActionListener(e -> {
-            if (jatekosok.isEmpty()) {
-                JOptionPane.showMessageDialog(KezdoKep.this, "Nincsenek játékosok megadva!");
-                return;
-            }
-
-            // Logika és pálya előkészítése
-            JatekLogika logika = new JatekLogika();
-            logika.setJatekosok(jatekosok);
-
-            CommandLine generator = new CommandLine();
-            generator.setJatek(logika);
-            generator.setJatekosokSzama(jatekosok.size());
-
-            generator.palyaGeneralas(logika.getJatekter());
-            generator.palyaFeltoltes(logika.getJatekter(), jatekosok);
-
-            // Palyakep inicializálása a Tekton listával és a JatekLogikával
-            Palyakep palyaKep = new Palyakep(logika.getJatekter(), logika);
-
-            // JatekKep ablak megnyitása (ha kell, átadhatod palyaKep-et is, ha ott használod)
-            JatekKep jatekKep = new JatekKep(logika, palyaKep); // módosítsd ehhez a JatekKep konstruktort is
-            jatekKep.setVisible(true);
-            dispose();
-        });*/
-
-
 //KOMMENT
         //KEZDOKEP: 
         //van egy játékos lista ebben az osztályban eltárolva
@@ -236,8 +207,6 @@ public class KezdoKep extends JFrame {
 
 startGameButton.addActionListener(e -> {
     
-   //ArrayList<Jatekos> jatekosok = getJatekosok(); // 
- // 
 
     JatekLogika jatek = new JatekLogika();
     for (Jatekos j : jatekosok) {
@@ -247,12 +216,6 @@ startGameButton.addActionListener(e -> {
     jatek.setAktivJatekos(jatekosok.get(0));
     jatek.setKorokSzama(jatekosok.size() * 10);
     jatek.setJelenKor(0);
-
-    //CommandLine helper = new CommandLine();       // csak pálya generáláshoz kellettt de hülyeség volt
-    //helper.setJatek(jatek);                       //nem privat a jatek objektum
-   // helper.setJatekosokSzama(jatekosok.size());    //van jatekosksize() fv
-    //helper.palyaGeneralas(jatek.getJatekter());
-    //helper.palyaFeltoltes(jatek.getJatekter(), jatekosok);
 
     jatek.palyaGeneralas(jatekosok.size());
     jatek.palyaFeltoltes();
@@ -265,19 +228,6 @@ startGameButton.addActionListener(e -> {
     dispose(); // KezdoKep vagy JatekosLogin bezárása
 });
 
-
-
-        
-
-        //Jatekosok megadasa
-        /*loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	SwingUtilities.invokeLater(JatekosLogin::new);
-                
-            }
-        });*/
-        
 
         
         //Betoltes

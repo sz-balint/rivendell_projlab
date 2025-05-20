@@ -15,8 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.event.ActionListener;
 
-
-
 public class JatekKep extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -129,6 +127,40 @@ public class JatekKep extends JFrame {
         });
         jobbSzal.add(passButton);
 
+        // Save gomb
+        JButton saveButton = new JButton("Mentés");
+        saveButton.setFont(new Font("Serif", Font.PLAIN, 18));
+        saveButton.setForeground(vilagos);
+        saveButton.setBackground(sotet);
+        saveButton.setBorder(BorderFactory.createLineBorder(vilagos, 2));
+        saveButton.setBounds(20, 590, 170, 40);
+        saveButton.addActionListener(e -> {
+            try {
+                Fajlkezelo fajlkezelo = new Fajlkezelo();
+                fajlkezelo.save(jatek, "jatek");
+                JOptionPane.showMessageDialog(this, 
+                    "Játék sikeresen mentve!", 
+                    "Mentés", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, 
+                    "Hiba történt a mentés során: " + ex.getMessage(), 
+                    "Mentési hiba", 
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        jobbSzal.add(saveButton);
+
+        // Kilépés gomb
+        JButton exitButton = new JButton("Kilépés");
+        exitButton.setFont(new Font("Serif", Font.PLAIN, 18));
+        exitButton.setForeground(vilagos);
+        exitButton.setBackground(sotet);
+        exitButton.setBorder(BorderFactory.createLineBorder(vilagos, 2));
+        exitButton.setBounds(200, 590, 170, 40);
+        exitButton.addActionListener(e -> System.exit(0));
+        jobbSzal.add(exitButton);
+
         // Mouse click handler for selecting targets
         palyaKep.addMouseListener(new MouseAdapter() {
             @Override
@@ -150,6 +182,7 @@ public class JatekKep extends JFrame {
         frissul();
     }
 
+    // ... (rest of your existing methods remain unchanged) ...
     private void executeAction(String action, Object target) {
         Jatekos currentPlayer = jatek.getAktivJatekos();
         boolean actionSuccess = false;
@@ -324,5 +357,3 @@ public class JatekKep extends JFrame {
         }
     }
 }
-
-

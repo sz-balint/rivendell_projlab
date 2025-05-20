@@ -37,42 +37,15 @@ public void setJatekosokSzama(int szam) {
 	}
 	
 	
-	
 	public void cli(boolean graphical){
 		Scanner scanner = new Scanner(System.in);
 
 		setup(scanner);
-		/*palyaGeneralas(jatek.getJatekter());
-		
-		//help
-		List<Tekton> inicializaltTectonok = getJatek().getJatekter();
-         
-    	if(graphical) {
-    		SwingUtilities.invokeLater(() -> {
-                //Palyakep game = new Palyakep(inicializaltTectonok);
-    			Palyakep game = new Palyakep(inicializaltTectonok, jatek);
-                game.setVisible(true);
-            });
-    		//itt adja át a grafikus felületnek a tektonokat
-    		palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
-    	}*/
 
-
-      
         jatek.palyaGeneralas(jatekosokSzama);
-        
-        if(graphical) {
-            SwingUtilities.invokeLater(() -> {
-                Palyakep game = new Palyakep(jatek.getJatekter(), jatek);
-                game.setVisible(true);
-            });
-            
-            jatek.palyaFeltoltes();
-        }
 
+		jatek.palyaFeltoltes();
 
-
-		
 
 		while (!jatek.jatekVege()) {
 			parancsokKiirasa();
