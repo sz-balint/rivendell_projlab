@@ -154,22 +154,19 @@ public class Elolenyek {
                     int centerX = (p1.x + p2.x) / 2;
                     int centerY = (p1.y + p2.y) / 2;
                     
-                    // Merőleges irányvektor kiszámítása
-                    double dx = p2.x - p1.x;
-                    double dy = p2.y - p1.y;
-                    double length = Math.sqrt(dx * dx + dy * dy);
                     
-                    // Normalizálás és 90 fokos elforgatás
-                    double perpX = dx / length * 30;  // 10 a vonal hossza
-                    double perpY = dy / length * 30;
                     
                     // Vonal rajzolása
                     g2d.setColor(color);  // A játékos színét használjuk
                     g2d.setStroke(new BasicStroke(5));  // Vastagabb vonal
                     g2d.drawLine(
-                        (int)(centerX - perpX), (int)(centerY - perpY),
-                        (int)(centerX + perpX), (int)(centerY + perpY)
+                        (int)(p1.x), (int)(p1.y),
+                        (int)(p2.x), (int)(p2.y)
                     );
+
+                    g2d.setColor(Color.BLACK);
+                    g2d.setStroke(new BasicStroke(5));
+                    g2d.drawLine(centerX, centerY, centerX, centerY);
                 }
             }
         }

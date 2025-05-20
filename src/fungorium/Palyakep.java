@@ -431,7 +431,7 @@ public class Palyakep extends JPanel {
         //System.out.println(tectons.get(1).getGombaTest());
 
        //ombaFonalDummy = new GombaFonal(alapTekton, gTekton, null);
-       // addGombaFonal(gombaFonalDummy, alapTekton.getId(), alapTekton.getSzomszedok().get(1).getId());
+       // addGombaFonal(gombaFonalDummy, alapTekton.getId(), alapTekton.getSzomszedok().get(1).getId());*/
         
         updateGameState();
     }
@@ -553,7 +553,7 @@ public class Palyakep extends JPanel {
                     Elolenyek eloleny = findClickedEloleny(e.getX(), e.getY());
                     hoveredElolenyId = (eloleny != null) ? eloleny.getId() : null;
                     if (eloleny != null) {
-                        System.out.println(eloleny.getId());
+                        System.out.println(eloleny);
                     }
                     hoveredTektonId = (t != null && eloleny == null) ? t.getId() : null;
                     repaint(); // Újrarajzolás kijelölés frissítéséhez
