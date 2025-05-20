@@ -1,6 +1,9 @@
 package fungorium;
 
 import javax.swing.*;
+
+import org.w3c.dom.events.MouseEvent;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -25,7 +28,7 @@ public class Palyakep extends JPanel {
     private JatekLogika jatekLogika;
     private int nextTektonId = 1;
     private BufferedImage diagramImage;
-    private final JPanel drawingPanel = new DrawingPanel();
+    public final JPanel drawingPanel = new DrawingPanel();
     private int[][] closestMap; // Legközebbi elemek térképe
     private final Random rand = new Random();
     private final Map<Integer, Color> colorAssignments = new HashMap<>();
@@ -56,6 +59,17 @@ public class Palyakep extends JPanel {
         new Color(210, 180, 140),  // testnelkuli - tan (világos homokbarna)
         new Color(101, 67, 33)     // zombifonal - dark coffee (mély barna)
     };
+
+    
+    ///így tudtam megoldani hogy az egérkattintásra átadódjona kattintott élőlény
+    public interface ObjektumKivalasztasListener {
+            void onObjectSelected(Object obj);
+        }
+    private ObjektumKivalasztasListener listener;
+    public void setObjektumKivalasztasListener(ObjektumKivalasztasListener l) {
+            this.listener = l;
+    }
+
 
 
     // Rovarok tárolása ID alapján
@@ -536,7 +550,9 @@ public class Palyakep extends JPanel {
          * - Kilépéskor törli a kijelölt Tekton-t.
          * - Egérmozgáskor frissíti a hovered Tekton azonosítót.
          */
+       
         public DrawingPanel() {
+         
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseExited(java.awt.event.MouseEvent e) {
@@ -558,7 +574,36 @@ public class Palyakep extends JPanel {
                     hoveredTektonId = (t != null && eloleny == null) ? t.getId() : null;
                     repaint(); // Újrarajzolás kijelölés frissítéséhez
                 }
+
             });
+            
+            addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent e) {
+                        Elolenyek eloleny = findClickedEloleny(e.getX(), e.getY());
+                        Tekton tekton = findClickedTekton(e.getX(), e.getY());
+
+                        if (eloleny != null) {
+                            hoveredElolenyId = eloleny.getId();
+                            System.out.println("[KIVÁLASZTVA] " + eloleny);
+                            if (listener != null) {
+                                if (eloleny.getRovar() != null) listener.onObjectSelected(eloleny.getRovar());
+                                else if (eloleny.getGombaTest() != null) listener.onObjectSelected(eloleny.getGombaTest());
+                                else if (eloleny.getGombaFonal() != null) listener.onObjectSelected(eloleny.getGombaFonal());
+                            }
+                        }else if (tekton != null) {
+                            hoveredTektonId = tekton.getId();
+                            System.out.println("[KIVÁLASZTVA] Tekton #" + tekton.getId());
+                        } else {
+                            hoveredElolenyId = null;
+                            hoveredTektonId = null;
+                        }
+
+                        repaint(); // újrarajzolás, ha kiemelést akarsz látni
+                    }
+            });
+
+            
         }
 
         /**
