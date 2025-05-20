@@ -25,7 +25,7 @@ public class Main {
 
         switch (valasz) {
             case "i":
-                Tests.main(null);
+               Tests.main(null);
                 break;
 
             case "n":

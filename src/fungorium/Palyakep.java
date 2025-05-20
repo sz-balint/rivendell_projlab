@@ -60,7 +60,7 @@ public class Palyakep extends JPanel {
         new Color(101, 67, 33)     // zombifonal - dark coffee (mély barna)
     };
 
-    
+
     ///így tudtam megoldani hogy az egérkattintásra átadódjona kattintott élőlény
     public interface ObjektumKivalasztasListener {
             void onObjectSelected(Object obj);
@@ -647,14 +647,17 @@ public class Palyakep extends JPanel {
 
             // Rovarok kirajzolása
             for (Elolenyek rovar : rovarok.values()) {
+                calculateAllNeighbors();
                 rovar.rajzol(g);
                 
             }
             for (Elolenyek gombaTest : gombatestek.values()) {
+                calculateAllNeighbors();
                 gombaTest.rajzol(g);
             }
 
             for (Elolenyek gombaFonal : gombaFonal.values()) {
+                calculateAllNeighbors();
                 gombaFonal.rajzol(g);
             }
         }
@@ -1281,7 +1284,7 @@ public class Palyakep extends JPanel {
         calculateAllNeighbors();
     }
 
-    private void calculateAllNeighbors() {
+    public void calculateAllNeighbors() {
         for (Tekton t : tectons) {
             t.getSzomszedok().clear();
         }
