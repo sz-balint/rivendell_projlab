@@ -30,46 +30,10 @@ public class Main {
 
             case "n":
                 CommandLine cli = new CommandLine();
-                cli.cli(false);
+                cli.cli();
                 break;
 
             case "g": {
-                /*CommandLine cly = new CommandLine();
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                    	KezdoKep frame = new KezdoKep();
-                        frame.setVisible(true);
-                    }
-                });
-
-                cly.cli(true);
-
-                break;*/
-                /*SwingUtilities.invokeLater(() -> {
-                    // KezdoKep helyett rögtön a játék GUI
-                    JatekLogika jatek = new JatekLogika();
-
-                    // Például 2 játékos hozzáadása tesztre:
-                    jatek.addJatekos(new Gombasz("Gombi", 0, "Gombasz"));
-                    jatek.addJatekos(new Rovarasz("Rovi", 0, "Rovarasz"));
-                    jatek.setAktivJatekos(jatek.getJatekosok().get(0));
-                    jatek.setKorokSzama(20);
-                    jatek.setJelenKor(0);
-
-                    // Pálya generálása
-                    CommandLine helper = new CommandLine(); // ideiglenes csak pályageneráláshoz
-                    helper.setJatek(jatek);
-                    helper.setJatekosokSzama(2);
-                    helper.palyaGeneralas(jatek.getJatekter());
-                    helper.palyaFeltoltes(jatek.getJatekter(), jatek.getJatekosok());
-
-                    // GUI megnyitása
-                    Palyakep palya = new Palyakep(jatek.getJatekter(), jatek);
-                    JatekKep gui = new JatekKep(jatek, palya);
-                    gui.setVisible(true);
-                });
-                break;*/
                 SwingUtilities.invokeLater(() -> {
                     KezdoKep frame = new KezdoKep(); // ez nyitja meg a kezdőképernyőt
                     frame.setVisible(true);

@@ -37,7 +37,7 @@ public void setJatekosokSzama(int szam) {
 	}
 	
 	
-	public void cli(boolean graphical){
+	public void cli(){
 		Scanner scanner = new Scanner(System.in);
 
 		setup(scanner);
@@ -161,6 +161,7 @@ public void setJatekosokSzama(int szam) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					break;
 				}
 				
 				case "load": {
@@ -171,6 +172,7 @@ public void setJatekosokSzama(int szam) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					break;
 				}
 				
 				case "help":
@@ -250,7 +252,7 @@ public void setJatekosokSzama(int szam) {
 		} else {
 			System.out.println("Rovarasz: vagas, lep, eszik");
 		}
-		System.out.println("Általános: addJatekos, addTekton, addRovar, kettetores, allapot, random, save, load");
+		System.out.println("Általános: addJatekos, addTekton, addRovar, kettetores, allapot, random, save, load, exit");
 		System.out.println("A parancsokhoz szükséges argumentumokhoz használd a 'help' parancsot.");
 
 	}
@@ -259,7 +261,7 @@ public void setJatekosokSzama(int szam) {
 	private void addJatekos(String[] parameterek){
 		// Megnézi hogy a megfelelő paraméterek vannak-e megadva
 		if(parameterek.length != 3 || !parameterek[1].equals("-n")) {
-			System.out.println("Hiba: Nem megfeleő paraméter!");
+			System.out.println("Hiba: Nem megfeleő paraméter!");
 			System.out.println("Használat: addJatekos -g(:Gombasz)/-r(:Rovarasz)  -n [név]");
 			System.out.println("Példa: addJatekos -g -n Gombasz1");
 			System.out.println("A név ne tartalmazzon szóközt!");
@@ -525,6 +527,7 @@ public void setJatekosokSzama(int szam) {
 					System.out.println("  save [fájlnév] - Játék mentése");
 					System.out.println("  load [fájlnév] - Játék betöltése");
 					System.out.println("  help - Parancsok listázása");
+					System.out.println("  exit");
 					System.out.println("------------------------------------------------------\n");
 					
 	}
