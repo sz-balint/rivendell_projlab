@@ -150,12 +150,6 @@ public class Elolenyek {
                     Point p1 = tvd1.position;
                     Point p2 = tvd2.position;
                     
-                    // Középpont kiszámítása
-                    int centerX = (p1.x + p2.x) / 2;
-                    int centerY = (p1.y + p2.y) / 2;
-                    
-                    
-                    
                     // Vonal rajzolása
                     g2d.setColor(color);  // A játékos színét használjuk
                     g2d.setStroke(new BasicStroke(5));  // Vastagabb vonal
@@ -163,10 +157,6 @@ public class Elolenyek {
                         (int)(p1.x), (int)(p1.y),
                         (int)(p2.x), (int)(p2.y)
                     );
-
-                    g2d.setColor(Color.BLACK);
-                    g2d.setStroke(new BasicStroke(5));
-                    g2d.drawLine(centerX, centerY, centerX, centerY);
                 }
             }
         }
