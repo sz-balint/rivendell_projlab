@@ -553,7 +553,7 @@ public class Palyakep extends JPanel {
                     Elolenyek eloleny = findClickedEloleny(e.getX(), e.getY());
                     hoveredElolenyId = (eloleny != null) ? eloleny.getId() : null;
                     if (eloleny != null) {
-                        System.out.println(eloleny.getId());
+                        System.out.println(eloleny);
                     }
                     hoveredTektonId = (t != null && eloleny == null) ? t.getId() : null;
                     repaint(); // Újrarajzolás kijelölés frissítéséhez
