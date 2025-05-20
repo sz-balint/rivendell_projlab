@@ -159,6 +159,37 @@ public class JatekKep extends JFrame {
             }
         }
     });
+        // === SAVE gomb ===
+    JButton saveButton = new JButton("SAVE");
+    saveButton.setFont(new Font("Serif", Font.PLAIN, 18));
+    saveButton.setForeground(vilagos);
+    saveButton.setBackground(sotet);
+    saveButton.setBorder(BorderFactory.createLineBorder(vilagos, 2));
+    saveButton.setBounds(20, 590, 170, 40);
+    saveButton.addActionListener(e -> {
+        try {
+            Fajlkezelo fajlkezelo = new Fajlkezelo();
+            fajlkezelo.save(jatek, "jatek");
+            JOptionPane.showMessageDialog(this, "Játék sikeresen elmentve!", "Mentés", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Hiba történt a mentés során!", "Mentési hiba", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+    });
+    jobbSzal.add(saveButton);
+
+    // === KILÉPÉS gomb ===
+    JButton kilepesButton = new JButton("KILÉPÉS");
+    kilepesButton.setFont(new Font("Serif", Font.PLAIN, 18));
+    kilepesButton.setForeground(vilagos);
+    kilepesButton.setBackground(sotet);
+    kilepesButton.setBorder(BorderFactory.createLineBorder(vilagos, 2));
+    kilepesButton.setBounds(200, 590, 170, 40);
+    kilepesButton.addActionListener(e -> {
+        System.exit(0);
+    });
+    jobbSzal.add(kilepesButton);
+
 
         frissul();
     }
@@ -212,7 +243,7 @@ private void handleObjectSelection(Object obj) {
         currentStep++;
         promptNextStep(); // következő lépés promptolása
     } else {
-        currentStep++;
+        //currentStep++;
         validateAndExecuteAction(); // utolsó után hajtódik végre
     }
 }
