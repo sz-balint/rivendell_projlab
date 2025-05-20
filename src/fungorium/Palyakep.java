@@ -267,7 +267,7 @@ public class Palyakep extends JPanel {
         System.out.println(tectons.get(1).getGombaTest());
 
         gombaFonalDummy = new GombaFonal(alapTekton, gTekton, null);
-        addGombaFonal(gombaFonalDummy, alapTekton.getId(), gTekton.getId());
+        addGombaFonal(gombaFonalDummy, alapTekton.getId(), alapTekton.getSzomszedok().get(1).getId());
         
         updateGameState();
     }
@@ -436,6 +436,10 @@ public class Palyakep extends JPanel {
             }
             for (Elolenyek gombaTest : gombatestek.values()) {
                 gombaTest.rajzol(g);
+            }
+
+            for (Elolenyek gombaFonal : gombaFonal.values()) {
+                gombaFonal.rajzol(g);
             }
         }
 

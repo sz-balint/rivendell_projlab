@@ -7,11 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import fungorium.Rovar;
-import fungorium.GombaTest;
-import fungorium.GombaFonal;
-import fungorium.Tekton;
-import fungorium.Allapot;
+
 
 public class Elolenyek {
     private static Map<Integer, Palyakep.TektonVisualData> tektonVisualData = new HashMap<>();
@@ -79,6 +75,19 @@ public class Elolenyek {
                 case 3: color = Color.MAGENTA; break;
                 default: color = Color.YELLOW;
             }
+        } else if (gombaFonal != null) {
+            if (gombaFonal.kie == null) {
+                color = Color.YELLOW;
+                return;
+            }
+            int playerId = Math.abs(gombaFonal.kie.getNev().hashCode()) % 4;
+            switch (playerId) {
+                case 0: color = Color.RED; break;
+                case 1: color = Color.BLUE; break;
+                case 2: color = Color.GREEN; break;
+                case 3: color = Color.MAGENTA; break;
+                default: color = Color.YELLOW;
+            }
         }
     }
 
@@ -116,7 +125,7 @@ public class Elolenyek {
             Palyakep.TektonVisualData tvd = tektonVisualData.get(gombaTest.getTekton().getId());
             Point position = (tvd != null ? tvd.position : null);
             int x = (int)position.getX() - meret/2;
-            int y(int)position.getY()- meret/2;
+            int y = (int)position.getY()- meret/2;
 
             // Kör kitöltése játékos színével
             g2d.setColor(color);
@@ -151,12 +160,12 @@ public class Elolenyek {
                     double length = Math.sqrt(dx * dx + dy * dy);
                     
                     // Normalizálás és 90 fokos elforgatás
-                    double perpX = -dy / length * 10;  // 10 a vonal hossza
-                    double perpY = dx / length * 10;
+                    double perpX = dx / length * 30;  // 10 a vonal hossza
+                    double perpY = dy / length * 30;
                     
                     // Vonal rajzolása
                     g2d.setColor(color);  // A játékos színét használjuk
-                    g2d.setStroke(new BasicStroke(2));  // Vastagabb vonal
+                    g2d.setStroke(new BasicStroke(5));  // Vastagabb vonal
                     g2d.drawLine(
                         (int)(centerX - perpX), (int)(centerY - perpY),
                         (int)(centerX + perpX), (int)(centerY + perpY)
