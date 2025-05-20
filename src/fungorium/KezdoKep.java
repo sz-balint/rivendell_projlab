@@ -253,12 +253,13 @@ startGameButton.addActionListener(e -> {
    // helper.setJatekosokSzama(jatekosok.size());    //van jatekosksize() fv
     //helper.palyaGeneralas(jatek.getJatekter());
     //helper.palyaFeltoltes(jatek.getJatekter(), jatekosok);
-    
+
     jatek.palyaGeneralas(jatekosok.size());
     jatek.palyaFeltoltes();
 
     Palyakep palya = new Palyakep(jatek.getJatekter(), jatek);
     JatekKep jatekKep = new JatekKep(jatek, palya);
+    palya.inicializalJatekterObjektumokat(jatek);//idk
     jatekKep.setVisible(true);
 
     dispose(); // KezdoKep vagy JatekosLogin bezárása

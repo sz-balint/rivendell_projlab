@@ -17,7 +17,9 @@ public class Rovar {
 	}
     
     //üres konstruktor
-    public Rovar(){}
+    public Rovar(){
+        this.allapot = Allapot.NORMAL;
+    }
 
     // Rovar létrehozása megadott állapottal
     public Rovar(Tekton h, Allapot all, Rovarasz kie) {

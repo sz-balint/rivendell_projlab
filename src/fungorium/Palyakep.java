@@ -67,7 +67,20 @@ public class Palyakep extends JPanel {
     private Map<Integer, Elolenyek> gombatestek = new HashMap<>();
 
     
-    
+    public void inicializalJatekterObjektumokat(JatekLogika jatekLogika) {
+        for (Jatekos j : jatekLogika.getJatekosok()) {
+            if (j instanceof Rovarasz r) {
+                for (Rovar rovar : r.getRovarok()) {
+                    addRovar(rovar, rovar.getHol().getId());
+                }
+            } else if (j instanceof Gombasz g) {
+                for (GombaTest test : g.getTestek()) {
+                    addGombaTest(test, test.getTekton().getId());
+                }
+            }
+        }
+    }
+
 
     // Tekton vizuális középpontok kiszámítása
     private void calculateTektonCenters() {
