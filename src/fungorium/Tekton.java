@@ -56,45 +56,45 @@ public class Tekton {
 		return tipusok.get(new Random().nextInt(tipusok.size()));
 	}
 
-		public Tekton kettetores() {
-			
-			// Create a copy of fonalak
-			new ArrayList<>(fonalak).forEach(fonal -> fonal.elpusztul());
-			fonalak.clear();
-			
-			kapcsoltTekton.clear();
-			
-			// Create a copy of sporak
-			new ArrayList<>(sporak).forEach(spora -> spora.eltunik());
-			sporak.clear();
-			
-			sporakSzama = 0;
-			//List<String> spectul = new ArrayList<>(List.of("sima","fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal"));
-    		Random random = new Random();
-    		String ujTipus = spectul.get(random.nextInt(spectul.size()));
-    
-    		Tekton t = new Tekton(ujTipus, szomszedok);
-			//Tekton t = new Tekton(tulajdonsagok, szomszedok);
-			ujSzomszed(t);
-			t.ujSzomszed(this);
-			
-			//Rovar es Test random elhelyezese
-			Random r = new Random();
-			if(random.nextInt()%2==0) {
-				//Ha paros a random, akkor az uj tekronra kerulnek a Rovarok es a regin marad a Test
-				for(int i=0; i<rovarok.size(); i++) {
-					t.ujRovar(rovarok.get(i));
-				}
-				for(int i=0; i<rovarok.size(); i++) {
-					this.torolRovar(rovarok.get(i));
-				}
+	public Tekton kettetores() {
+		
+		// Create a copy of fonalak
+		new ArrayList<>(fonalak).forEach(fonal -> fonal.elpusztul());
+		fonalak.clear();
+		
+		kapcsoltTekton.clear();
+		
+		// Create a copy of sporak
+		new ArrayList<>(sporak).forEach(spora -> spora.eltunik());
+		sporak.clear();
+		
+		sporakSzama = 0;
+		//List<String> spectul = new ArrayList<>(List.of("sima","fonalfelszivo", "egyfonalas", "testnelkuli", "zombifonal"));
+		Random random = new Random();
+		String ujTipus = spectul.get(random.nextInt(spectul.size()));
+
+		Tekton t = new Tekton(ujTipus, szomszedok);
+		//Tekton t = new Tekton(tulajdonsagok, szomszedok);
+		ujSzomszed(t);
+		t.ujSzomszed(this);
+		
+		//Rovar es Test random elhelyezese
+		Random r = new Random();
+		if(random.nextInt()%2==0) {
+			//Ha paros a random, akkor az uj tekronra kerulnek a Rovarok es a regin marad a Test
+			for(int i=0; i<rovarok.size(); i++) {
+				t.ujRovar(rovarok.get(i));
 			}
-			else {
-				t.ujTest(gombaTest);
-				this.torolTest();
+			for(int i=0; i<rovarok.size(); i++) {
+				this.torolRovar(rovarok.get(i));
 			}
-			return t;
 		}
+		else {
+			t.ujTest(gombaTest);
+			this.torolTest();
+		}
+		return t;
+	}
 
     // Egy adott sporat eltavolit a tektonrol
     public void sporaElvesz(Spora s) {
@@ -102,7 +102,7 @@ public class Tekton {
 		sporak.remove(s);
 		//majd csökkentjük a spórák számát
 		sporakSzama--;
-		}
+	}
 
     // uj szomszed tekton hozzaadasa
     public void ujSzomszed(Tekton t) {
