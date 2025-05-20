@@ -419,12 +419,13 @@ public class Palyakep extends JPanel {
 
         // Létrehozunk egy "dummy" rovart az első Tektonhoz
         /*Tekton alapTekton = tectons.get(0);
+        Tekton gTekton = tectons.get(1);
         dummy = new Rovar(alapTekton, null);
         addRovar(dummy, alapTekton.getId());
         
-        Tekton gTekton = tectons.get(1);
+       
         gombaTestDummy = new GombaTest(gTekton, null);
-        addGombaTest(gombaTestDummy, gTekton.getId());*/
+        addGombaTest(gombaTestDummy, gTekton.getId());
         
         //System.out.println(gombaTestDummy.getId());
         //System.out.println(tectons.get(1).getGombaTest());
