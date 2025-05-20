@@ -156,7 +156,7 @@ public void setJatekosokSzama(int szam) {
 				case "save": {
 					Fajlkezelo fk = new Fajlkezelo();
 					try {
-						fk.save(jatek, parancsok[1]);
+						fk.save(jatek);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -167,7 +167,7 @@ public void setJatekosokSzama(int szam) {
 				case "load": {
 					Fajlkezelo fk = new Fajlkezelo();
 					try {
-						jatek = fk.load(parancsok[1]);
+						jatek = fk.load();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

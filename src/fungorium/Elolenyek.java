@@ -15,12 +15,14 @@ public class Elolenyek {
     public static void setTektonVisualData(Map<Integer, Palyakep.TektonVisualData> data) {
         tektonVisualData = data;
     }
+
+    private Map<Integer, Integer> tektonNRovarok = new HashMap<>(); //Rovarok száma egy adott tektonon
     
     private Rovar rovar;
     private GombaTest gombaTest;
     private GombaFonal gombaFonal;
 
-    private static int meret = 32; // Rovar mérete
+    private static int meret = 32; // Rovar/Gomba mérete
     private Color color;
     private Point currentPos;
     private Point targetPos;
@@ -101,6 +103,20 @@ public class Elolenyek {
         if (rovar != null) {
             Palyakep.TektonVisualData tvd = tektonVisualData.get(rovar.getHol().getId());
             Point position = (tvd != null ? tvd.position : null);
+
+            Point rPos[] = {
+                new Point(-30, 30), new Point(0, 30), new Point(30, 30),
+                new Point(-30, 0),                      new Point(30, 0),
+                new Point(-30, -30), new Point(0, -30), new Point(30, -30)
+            };
+
+            int n = (int) tektonNRovarok.get(rovar.getHol().getId());
+
+            position = new Point((int)position.getX() + rPos[n].x, (int)position.getY() + rPos[n].y);
+
+            
+
+
             int[] xPoints = {
                 (int)position.getX(),
                 (int)position.getX() - meret/2,
@@ -125,7 +141,7 @@ public class Elolenyek {
             Palyakep.TektonVisualData tvd = tektonVisualData.get(gombaTest.getTekton().getId());
             Point position = (tvd != null ? tvd.position : null);
             int x = (int)position.getX() - meret/2;
-            int y = (int)position.getY()- meret/2;
+            int y = (int)position.getY() - meret/2;
 
             // Kör kitöltése játékos színével
             g2d.setColor(color);

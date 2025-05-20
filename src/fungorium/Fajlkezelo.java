@@ -13,14 +13,14 @@ import java.util.List;
 public class Fajlkezelo {
 
     // Elmenti a játékállapotot.
-    public void save(JatekLogika jatek, String parancsok) throws IOException { 
+    public void save(JatekLogika jatek) throws IOException { 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("mentes.txt"))) {
             bw.write(jatek.toString());
         }
     }
 
     // Betölti a játékállapotot.
-    public JatekLogika load(String parancsok) throws IOException {
+    public JatekLogika load() throws IOException {
         JatekLogika jatek = new JatekLogika();
         List<String> lines = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("mentes.txt"))) {
