@@ -54,6 +54,7 @@ public class Rovarasz extends Jatekos {
                         if (rovar != null && fonal != null) {
                             fonalVagas(rovar, fonal);
                         }
+
                     }
                     break;
                     
@@ -68,7 +69,11 @@ public class Rovarasz extends Jatekos {
                         if (rovar != null && celTekton != null && 
                             rovar.getHol().getSzomszedok().contains(celTekton)) {
                             rovarLepes(rovar, celTekton);
+							System.out.println("rovarlepett ");
+							System.out.println(celTekton.getId());
                         }
+
+					
                     }
                     break;
                     
@@ -100,7 +105,6 @@ public class Rovarasz extends Jatekos {
         return null;
     }
 
-	
 
     private GombaFonal findFonalById(Tekton tekton, int id) {
         for (GombaFonal fonal : tekton.getFonalak()) {
@@ -171,6 +175,8 @@ public class Rovarasz extends Jatekos {
 			Tekton tekton = rovar.getHol().getSzomszedok().get(valasz);
 			
 			rovarLepes(rovar,tekton);
+			System.out.println("rovarlepett ");
+			System.out.println(tekton.getId());
 		}
     	
     	//Gombasz uj Fonalat noveszt

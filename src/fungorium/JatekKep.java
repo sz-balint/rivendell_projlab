@@ -168,6 +168,7 @@ public class JatekKep extends JFrame {
     saveButton.setBounds(20, 590, 170, 40);
     saveButton.addActionListener(e -> {
         try {
+            
             Fajlkezelo fajlkezelo = new Fajlkezelo();
             fajlkezelo.save(jatek);
             JOptionPane.showMessageDialog(this, "Játék sikeresen elmentve!", "Mentés", JOptionPane.INFORMATION_MESSAGE);

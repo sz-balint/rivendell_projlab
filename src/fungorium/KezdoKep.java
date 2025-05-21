@@ -218,9 +218,11 @@ startGameButton.addActionListener(e -> {
     jatek.setJelenKor(0);
 
     jatek.palyaGeneralas(jatekosok.size());
-    jatek.palyaFeltoltes();
+    //jatek.palyaFeltoltes();
 
     Palyakep palya = new Palyakep(jatek.getJatekter(), jatek);
+    palya.calculateAllNeighbors();
+    jatek.palyaFeltoltes();
     JatekKep jatekKep = new JatekKep(jatek, palya);
     palya.inicializalJatekterObjektumokat(jatek);//idk
     jatekKep.setVisible(true);
