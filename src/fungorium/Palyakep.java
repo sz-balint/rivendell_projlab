@@ -762,7 +762,7 @@ private Elolenyek findClickedEloleny(int x, int y) {
                         int offsetY = (int) (Math.random() * 16 - 8);
                         g.setColor(Color.GREEN); // vagy bármilyen szín
                         g.fillOval(pos.x + offsetX - 3, pos.y + offsetY - 3, 6, 6);
-                        System.out.println(spora);
+                        //System.out.println(spora);
                     }
                 }
             }

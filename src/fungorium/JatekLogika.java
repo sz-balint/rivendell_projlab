@@ -288,7 +288,7 @@ public Tekton findTektonById(int id) {
                     return true;
  				}*/
                 if (Testek.get(i).getId() == id) {
-                    System.out.println("igaz");
+                    //System.out.println("igaz");
                     return true;
                 }
 

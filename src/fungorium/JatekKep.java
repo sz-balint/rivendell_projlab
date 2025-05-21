@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 
 
@@ -189,17 +190,29 @@ private void handleObjectSelection(Object obj) {
                      obj instanceof GombaTest ? "Gombatest #" + ((GombaTest)obj).getId() :
                      "Ismeretlen objektum";
 
+    palyaKep.drawingPanel.repaint();
     JOptionPane.showMessageDialog(this,
         objDesc + " kiválasztva.\n" + getNextStepHint(),
         "Kiválasztás",
         JOptionPane.INFORMATION_MESSAGE);
 
-    if (currentStep < actionSteps.length - 1) {
+    /*if (currentStep < actionSteps.length - 1) {
         currentStep++;
         promptNextStep(); // következő lépés promptolása
     } else {
         validateAndExecuteAction(); // utolsó után hajtódik végre
+    }*/
+
+    palyaKep.drawingPanel.repaint();
+    if (currentStep < actionSteps.length - 1) {
+        currentStep++;
+        //SwingUtilities.invokeLater(this::promptNextStep);
+        promptNextStep();
+    } else {
+        //SwingUtilities.invokeLater(this::validateAndExecuteAction);
+        validateAndExecuteAction();
     }
+
 }
 
 private String getNextStepHint() {
@@ -255,7 +268,7 @@ private void setupActionButton(JButton button, String action) {
             actionSteps = new String[]{"Válassz egy rovart", "Válassz egy cél tekton"};
             break;
         case "evés":
-            actionSteps = new String[]{"Válassz egy rovart, amit meg akarsz enni"};
+            actionSteps = new String[]{"Válassz egy rovart, ami szeretne enni"};
             break;
         case "vágás":
             actionSteps = new String[]{"Válassz egy gombafonalat", "Válassz egy rovart a vágáshoz"};
@@ -299,6 +312,7 @@ private void setupActionButton(JButton button, String action) {
             System.out.println("[DEBUG] All steps completed, validating action...");
             validateAndExecuteAction();
         }
+        palyaKep.drawingPanel.repaint();
     }
 
     private String getSelectedObjectsDescription() {
@@ -369,6 +383,23 @@ private void setupActionButton(JButton button, String action) {
                 palyaKep.drawingPanel.repaint();
                 jatek.ujKor();
                 frissul();
+
+
+                            // === Ha "eszik", írjuk ki a rovar új állapotát ===
+               /*  if (command[0].equals("eszik") && currentPlayer instanceof Rovarasz) {
+                    int rovarId = Integer.parseInt(command[1]);
+                    Rovar rovar = ((Rovarasz) currentPlayer).getRovarok()
+                        .stream().filter(r -> r.getId() == rovarId).findFirst().orElse(null);
+
+                    if (rovar != null) {
+                        JOptionPane.showMessageDialog(this,
+                            "A Rovar #" + rovar.getId() + " megevett egy spórát a Tekton #" + rovar.getHol().getId() + "-ról.\n" +
+                            "Új állapota: " + rovar.getAllapot(),
+                            "Evés sikeres",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }*/
+
             } else {
                 System.out.println("[DEBUG] Invalid command or validation failed");
                 JOptionPane.showMessageDialog(this,
@@ -386,6 +417,7 @@ private void setupActionButton(JButton button, String action) {
         } finally {
             resetAction();
         }
+        palyaKep.drawingPanel.repaint();
     }
 
     private String[] buildCommandFromSelection() {
@@ -398,7 +430,7 @@ private void setupActionButton(JButton button, String action) {
 
         try {
             switch (currentAction.toLowerCase()) {
-                case "lépés":
+                /*case "lépés":
                     if (selectedObjects.size() >= 2 && 
                         selectedObjects.get(0) instanceof Rovar && 
                         selectedObjects.get(1) instanceof Tekton) {
@@ -406,7 +438,18 @@ private void setupActionButton(JButton button, String action) {
                         Tekton target = (Tekton)selectedObjects.get(1);
                         return new String[]{"lep", String.valueOf(target.getId()), String.valueOf(rovar.getId())};
                     }
-                    break;
+                    break;*/
+                case "lépés":
+                    if (selectedObjects.size() >= 2 && 
+                        selectedObjects.get(0) instanceof Rovar && 
+                        selectedObjects.get(1) instanceof Tekton) {
+                        
+                        Rovar rovar = (Rovar) selectedObjects.get(0);
+                        Tekton target = (Tekton) selectedObjects.get(1);
+
+                        return new String[]{"lep", String.valueOf(target.getId()), String.valueOf(rovar.getId())};
+                    }
+                break;
                     
                 case "evés":
                     if (selectedObjects.get(0) instanceof Rovar) {
@@ -431,13 +474,13 @@ private void setupActionButton(JButton button, String action) {
                        System.out.println("[DEBUG] Spóraszórás indítása GombaTest ID: " + test.getId());
                         
                         sporak = test.sporaSzoras();
-                        if (sporak != null) {
+                        /*if (sporak != null) {
                             for (Spora spora : sporak) {
-                                System.out.println("[DEBUG] Spóra hozzáadva: " + spora.getHol().getId());
+                                //System.out.println("[DEBUG] Spóra hozzáadva: " + spora.getHol().getId());
                             }
-                        }
+                        }*/
 
-                        repaint(); 
+                       // repaint(); 
                         return new String[]{"sporaszoras", String.valueOf(test.getId())};
                     } 
                     break;
