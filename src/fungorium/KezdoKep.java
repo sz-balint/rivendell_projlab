@@ -19,12 +19,13 @@ public class KezdoKep extends JFrame {
         setTitle("FUNGORIUM Rivendell");	//Cim
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         setSize(550, 350);	//Meret
-        setLocationRelativeTo(null); // Ablak kozepre igazitasa        
+        setLocationRelativeTo(null); // Ablak kozepre igazitasa   
+        /*
         jatekosok.add(new Gombasz("Játékos1", 0, "Gombasz",Color.RED)); // Gombasz
         jatekosok.add(new Rovarasz("Játékos2", 0, "Rovarasz",Color.BLUE)); // Rovarasz
         jatekosok.add(new Gombasz("Játékos3", 0, "Gombasz",Color.GREEN)); // Gombasz
         jatekosok.add(new Rovarasz("Játékos4", 0, "Rovarasz",Color.YELLOW)); // Rovarasz
-
+         */
         // Fo panel letrehozasa
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -210,7 +211,15 @@ public class KezdoKep extends JFrame {
 
 
 startGameButton.addActionListener(e -> {
-    
+	if (jatekosok.isEmpty()) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Nincs játékos bejelentkezve! Kérlek adj hozzá legalább egy játékost.",
+            "Hiányzó játékosok",
+            JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
 
     JatekLogika jatek = new JatekLogika();
     for (Jatekos j : jatekosok) {

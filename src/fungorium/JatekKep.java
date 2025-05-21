@@ -51,6 +51,7 @@ public class JatekKep extends JFrame {
         setSize(szelesseg, magassag);
         setLayout(null);
         setResizable(false);
+        setLocationRelativeTo(null); // Ablak kozepre igazitasa 
 
         getContentPane().setBackground(sotet);
 
