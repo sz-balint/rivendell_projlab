@@ -13,7 +13,7 @@ import java.util.List;
 public class Fajlkezelo {
 
     // Elmenti a játékállapotot.
-    public void save(JatekLogika jatek, String parancsok) throws IOException { 
+    public void save(JatekLogika jatek) throws IOException { 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("mentes.txt"))) {
             bw.write(jatek.toString());
         }

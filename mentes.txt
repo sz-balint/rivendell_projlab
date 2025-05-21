@@ -1,0 +1,9 @@
+20;0;1
+JATEKOSOK:
+Gombasz{nev=1,pontok=0}
+Rovarasz{nev=2,pontok=1}
+TEKTONOK:
+Tekton{id:0;tulajdonsagok:'fonalfelszivo';szomszedok:[#1, #3];sporakSzama:0;sporak:[];fonalak:[GombaFonal{kapcsoltTektonok=[#1, #0],kie=Gombasz{nev=1,pontok=0},megel=4,el=true}];rovarok:[];gombaTest:null;kapcsoltTekton:[]}
+Tekton{id:1;tulajdonsagok:'zombifonal';szomszedok:[#0, #2, #3];sporakSzama:0;sporak:[];fonalak:[GombaFonal{kapcsoltTektonok=[#1, #0],kie=Gombasz{nev=1,pontok=0},megel=4,el=true}, GombaFonal{kapcsoltTektonok=[#1, #2],kie=Gombasz{nev=1,pontok=0},megel=2,el=true}];rovarok:[Rovar{hol='#1,allapot=NORMAL,kie=Rovarasz{nev=2,pontok=1}}];gombaTest:GombaTest{hol=#1,kor=0,elegOreg=false,utolsoSporaszoras=0,sporaszorasokSzama=0,kie=Gombasz{nev=1,pontok=0}};kapcsoltTekton:[]}
+Tekton{id:2;tulajdonsagok:'zombifonal';szomszedok:[#1, #3];sporakSzama:0;sporak:[];fonalak:[GombaFonal{kapcsoltTektonok=[#1, #2],kie=Gombasz{nev=1,pontok=0},megel=2,el=true}];rovarok:[];gombaTest:null;kapcsoltTekton:[]}
+Tekton{id:3;tulajdonsagok:'zombifonal';szomszedok:[#0, #1, #2];sporakSzama:0;sporak:[];fonalak:[];rovarok:[];gombaTest:null;kapcsoltTekton:[]}
