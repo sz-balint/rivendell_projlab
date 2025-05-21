@@ -169,7 +169,7 @@ public class JatekKep extends JFrame {
     saveButton.addActionListener(e -> {
         try {
             Fajlkezelo fajlkezelo = new Fajlkezelo();
-            fajlkezelo.save(jatek, "jatek");
+            fajlkezelo.save(jatek);
             JOptionPane.showMessageDialog(this, "Játék sikeresen elmentve!", "Mentés", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Hiba történt a mentés során!", "Mentési hiba", JOptionPane.ERROR_MESSAGE);

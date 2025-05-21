@@ -16,7 +16,7 @@ public class Elolenyek {
         tektonVisualData = data;
     }
 
-    private Map<Integer, Integer> tektonNRovarok = new HashMap<>(); //Rovarok száma egy adott tektonon
+    private static Map<Integer, Integer> tektonNRovarok = new HashMap<>(); //Rovarok száma egy adott tektonon
     
     private Rovar rovar;
     private GombaTest gombaTest;
@@ -33,6 +33,10 @@ public class Elolenyek {
         this.rovar = rovar;
         this.currentPos = new Point(initialPos);
         this.targetPos = new Point(initialPos);
+        int i = 0;
+        if(tektonNRovarok.get(rovar.getHol().getId()) != null)
+            i = tektonNRovarok.get(rovar.getHol().getId());
+        tektonNRovarok.put(rovar.getHol().getId(), i+1);
         setColorBasedOnPlayer();
     }
 
@@ -105,17 +109,16 @@ public class Elolenyek {
             Point position = (tvd != null ? tvd.position : null);
 
             Point rPos[] = {
-                new Point(-30, 30), new Point(0, 30), new Point(30, 30),
-                new Point(-30, 0),                      new Point(30, 0),
-                new Point(-30, -30), new Point(0, -30), new Point(30, -30)
+                new Point(-20, 20), new Point(0, 20), new Point(20, 20),
+                new Point(-20, 0),                      new Point(20, 0),
+                new Point(-20, -20), new Point(0, -20), new Point(20, -20)
             };
 
-            int n = (int) tektonNRovarok.get(rovar.getHol().getId());
+            int n = 0;
+            if(tektonNRovarok.get(rovar.getHol().getId()) != null)
+                n = (int) tektonNRovarok.get(rovar.getHol().getId());
 
-            position = new Point((int)position.getX() + rPos[n].x, (int)position.getY() + rPos[n].y);
-
-            
-
+            position = new Point((int)position.getX() + rPos[n+1].x, (int)position.getY() + rPos[n+1].y);
 
             int[] xPoints = {
                 (int)position.getX(),
@@ -135,6 +138,9 @@ public class Elolenyek {
             // Keret rajzolása (állapottól függően)
             g2d.setColor(getStateColor());
             g2d.drawPolygon(xPoints, yPoints, 3);
+
+            int i = tektonNRovarok.get(rovar.getHol().getId());
+            tektonNRovarok.put(rovar.getHol().getId(),i+1);
         } 
         
          if (gombaTest != null) {
