@@ -277,13 +277,21 @@ public Tekton findTektonById(int id) {
      	switch (parancs) {
      	
      	case "sporaszoras": {
+            System.out.println("lefut??");
  			List<GombaTest> Testek = ((Gombasz)getAktivJatekos()).getTestek();
  			int id = Integer.parseInt(parancsok[1]);
  			for(int i=0; i < Testek.size(); i++) {
- 				if(Testek.get(i).getTekton().getId()==id) {
- 					if (Testek.get(i).utolsoSporaszoras < 2) return false;
- 					else return true;
- 				}
+ 				/*if(Testek.get(i).getTekton().getId()==id) {
+ 					//if (Testek.get(i).utolsoSporaszoras < 2) return false;
+ 					//else return true;
+                    System.out.println("igaz");
+                    return true;
+ 				}*/
+                if (Testek.get(i).getId() == id) {
+                    System.out.println("igaz");
+                    return true;
+                }
+
  			}
  			break;
      	}

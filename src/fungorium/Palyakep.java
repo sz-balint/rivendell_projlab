@@ -117,7 +117,44 @@ public class Palyakep extends JPanel {
 
 
 
-    private Elolenyek findClickedEloleny(int x, int y) {
+Elolenyek findClickedEloleny(int x, int y) {
+    // Először rovarok – 8 pontból álló elrendezés alapján
+    for (Elolenyek eloleny : rovarok.values()) {
+        if (eloleny.getRovar() != null) {
+            Point center = tektonVisualData.get(eloleny.getRovar().getHol().getId()).position;
+
+            Point[] offsets = {
+                new Point(-20, 20), new Point(0, 20), new Point(20, 20),
+                new Point(-20, 0),                   new Point(20, 0),
+                new Point(-20, -20), new Point(0, -20), new Point(20, -20)
+            };
+
+            for (Point offset : offsets) {
+                int px = center.x + offset.x;
+                int py = center.y + offset.y;
+                if (Math.hypot(x - px, y - py) <= 10) { // körcikk sugarú érzékelés
+                    return eloleny;
+                }
+            }
+        }
+    }
+
+    // Gombatestek közepe alapján (ahogy eddig is)
+    for (Elolenyek eloleny : gombatestek.values()) {
+        if (eloleny.getGombaTest() != null) {
+            Point pos = tektonVisualData.get(eloleny.getGombaTest().getTekton().getId()).position;
+            double distance = Math.hypot(x - pos.x, y - pos.y);
+            if (distance <= 16) {
+                return eloleny;
+            }
+        }
+    }
+
+    return null;
+}
+
+/* 
+private Elolenyek findClickedEloleny(int x, int y) {
         // Először a gombatesteket ellenőrizzük (körök)
         for (Elolenyek eloleny : gombatestek.values()) {
             if (eloleny.getGombaTest() != null) {
@@ -202,7 +239,7 @@ public class Palyakep extends JPanel {
         }
 
         return null;
-    }
+}*/
 
     // Helper method to check if a point is near a line segment
     private boolean isPointNearLine(int px, int py, double x1, double y1, double x2, double y2, double tolerance) {
@@ -712,6 +749,22 @@ public class Palyakep extends JPanel {
             for (Elolenyek gombaFonal : gombaFonal.values()) {
                 calculateAllNeighbors();
                 gombaFonal.rajzol(g);
+            }
+
+
+
+            for (Tekton tekton : jatekLogika.getJatekter()) {
+                List<Spora> sporaLista = tekton.getSporak(); // vagy getSporakSzama(), ha nincs külön lista
+                for (Spora spora : sporaLista) {
+                    Point pos = tektonVisualData.get(tekton.getId()).position;
+                    if (pos != null) {
+                        int offsetX = (int) (Math.random() * 16 - 8); // kis eltolás, hogy ne egymáson legyenek
+                        int offsetY = (int) (Math.random() * 16 - 8);
+                        g.setColor(Color.GREEN); // vagy bármilyen szín
+                        g.fillOval(pos.x + offsetX - 3, pos.y + offsetY - 3, 6, 6);
+                        System.out.println(spora);
+                    }
+                }
             }
         }
 

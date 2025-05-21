@@ -34,6 +34,7 @@ public class JatekKep extends JFrame {
     private String currentAction = null;
     private int currentStep = 0;
     private String[] actionSteps = null;
+    private List<Spora> sporak = new ArrayList<>();
 
     public JatekKep(JatekLogika jat, Palyakep palyaKep) {
         super("Játék");
@@ -171,33 +172,13 @@ public class JatekKep extends JFrame {
     }
 
 
-private void executeAction(String action) {
-    currentAction = action;
-    selectedObjects.clear();
-    
-    // Show instruction based on the action
-    String instruction = getActionInstruction(action);
-    JOptionPane.showMessageDialog(this, instruction, "Művelet végrehajtása", JOptionPane.INFORMATION_MESSAGE);
-}
 
-private String getActionInstruction(String action) {
-    switch (action.toLowerCase()) {
-        case "lépés":
-            return "Válassz ki egy rovart, majd a cél tekton!";
-        case "evés":
-            return "Válassz ki egy rovart, amit meg akarsz enni!";
-        case "vágás":
-            return "Válassz ki egy gombafonalat, majd a rovart ami végrehajtja!";
-        case "spóraszórás":
-            return "Válassz ki egy gombatestet!";
-        case "új test":
-            return "Válassz ki egy tektonon, ahol új testet szeretnél létrehozni!";
-        case "fonálnövesztés":
-            return "Válassz ki egy kezdő és egy vég tektonon!";
-        default:
-            return "Válassz ki a célpontokat a művelethez!";
-    }
-}
+
+
+
+
+
+
 private void handleObjectSelection(Object obj) {
         selectedObjects.add(obj);
 
@@ -233,6 +214,7 @@ private String getNextStepHint() {
             return selectedObjects.size() == 1 ? "Most válassz cél Tekton-t!" : "";
         case "új test":
         case "spóraszórás":
+            //return  selectedObjects.size() == 1 ? "Most válassz GombaTestet!" : "";
         case "evés":
             return "Már kiválasztottad a szükséges objektumot.";
         default:
@@ -241,6 +223,404 @@ private String getNextStepHint() {
 }
 
 
+
+
+
+
+private void setupActionButton(JButton button, String action) {
+        button.setText(action);
+        button.setEnabled(true);
+        button.setBackground(sotet);
+        
+        // Remove old action listeners
+        for (ActionListener al : button.getActionListeners()) {
+            button.removeActionListener(al);
+        }
+        
+        button.addActionListener(e -> {
+            System.out.println("[DEBUG] Action button pressed: " + action);
+            startActionSequence(action);
+        });
+    }
+
+    private void startActionSequence(String action) {
+    System.out.println("[DEBUG] Starting action sequence for: " + action);
+    currentAction = action;
+    currentStep = 0;
+    selectedObjects.clear();
+    
+    // Define the steps needed for each action
+    switch (action.toLowerCase()) {
+        case "lépés":
+            actionSteps = new String[]{"Válassz egy rovart", "Válassz egy cél tekton"};
+            break;
+        case "evés":
+            actionSteps = new String[]{"Válassz egy rovart, amit meg akarsz enni"};
+            break;
+        case "vágás":
+            actionSteps = new String[]{"Válassz egy gombafonalat", "Válassz egy rovart a vágáshoz"};
+            break;
+        case "spóraszórás":
+            actionSteps = new String[]{"Válassz egy gombatestet"};
+            break;
+        case "új test":
+            actionSteps = new String[]{"Válassz egy tekton, ahol új testet szeretnél"};
+            break;
+        case "fonálnövesztés":
+            actionSteps = new String[]{"Válassz egy kezdő tekton", "Válassz egy cél tekton"};
+            break;
+        default:
+            actionSteps = new String[]{};
+    }
+    
+    // Highlight the active button
+    for (JButton btn : lepesGombok) {
+        btn.setBackground(sotet);
+        if (btn.getText().equals(action)) {
+            btn.setBackground(Color.YELLOW);
+        }
+    }
+    
+    promptNextStep(); // Azonnal promptoljuk az első lépést
+}
+
+    private void promptNextStep() {
+        if (currentStep < actionSteps.length) {
+            String message = actionSteps[currentStep] + 
+                             "\n(Eddig kiválasztva: " + getSelectedObjectsDescription() + ")";
+            
+            System.out.println("[DEBUG] Prompting step " + (currentStep+1) + ": " + message);
+            
+            JOptionPane.showMessageDialog(this, 
+                message, 
+                currentAction + " - " + (currentStep+1) + ". lépés", 
+                JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            System.out.println("[DEBUG] All steps completed, validating action...");
+            validateAndExecuteAction();
+        }
+    }
+
+    private String getSelectedObjectsDescription() {
+        if (selectedObjects.isEmpty()) return "nincs";
+        
+        StringBuilder sb = new StringBuilder();
+        for (Object obj : selectedObjects) {
+            if (sb.length() > 0) sb.append(", ");
+            
+            if (obj instanceof Rovar) {
+                sb.append("Rovar#").append(((Rovar)obj).getId());
+            } else if (obj instanceof Tekton) {
+                sb.append("Tekton#").append(((Tekton)obj).getId());
+            } else if (obj instanceof GombaFonal) {
+                sb.append("GombaFonal#").append(((GombaFonal)obj).getId());
+            } else if (obj instanceof GombaTest) {
+                sb.append("GombaTest#").append(((GombaTest)obj).getId());
+            } else {
+                sb.append("Ismeretlen objektum");
+            }
+        }
+        return sb.toString();
+    }
+
+
+
+    private void validateAndExecuteAction() {
+        System.out.println("[DEBUG] Validating action with objects: " + getSelectedObjectsDescription());
+        
+        Jatekos currentPlayer = jatek.getAktivJatekos();
+        if (currentPlayer == null) {
+            System.out.println("[DEBUG] No active player, aborting");
+            resetAction();
+            return;
+        }
+
+        try {
+            String[] command = buildCommandFromSelection();
+
+
+        // DEBUG: parancs kiírása
+        if (command != null) {
+            System.out.println("[DEBUG] Command built: " + String.join(" ", command));
+        } else {
+            System.out.println("[DEBUG] Command is null.");
+        }
+
+        boolean ervenyes = command != null && jatek.vanValid(currentPlayer, command);
+
+        // DEBUG: érvényesség kiírása
+        System.out.println("[DEBUG] vanValid returned: " + ervenyes);
+
+
+
+
+
+
+
+            if (command != null && jatek.vanValid(currentPlayer, command)) {
+                System.out.println("[DEBUG] Executing command: " + String.join(" ", command));
+                Object newItem = currentPlayer.Kor(command, jatek);
+                if (newItem != null) {
+                    palyaKep.insertItem(newItem);
+                }
+                else{
+                    System.out.println("kacsa");
+                }
+                palyaKep.drawingPanel.repaint();
+                jatek.ujKor();
+                frissul();
+            } else {
+                System.out.println("[DEBUG] Invalid command or validation failed");
+                JOptionPane.showMessageDialog(this,
+                    "A művelet végrehajtása sikertelen vagy nem érvényes!",
+                    "Hiba",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            System.out.println("[DEBUG] Error during execution: " + ex.getMessage());
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                "Hiba történt a művelet közben: " + ex.getMessage(),
+                "Hiba",
+                JOptionPane.ERROR_MESSAGE);
+        } finally {
+            resetAction();
+        }
+    }
+
+    private String[] buildCommandFromSelection() {
+        if (currentAction == null || selectedObjects.isEmpty()) {
+            return null;
+        }
+
+        Jatekos currentPlayer = jatek.getAktivJatekos();
+        if (currentPlayer == null) return null;
+
+        try {
+            switch (currentAction.toLowerCase()) {
+                case "lépés":
+                    if (selectedObjects.size() >= 2 && 
+                        selectedObjects.get(0) instanceof Rovar && 
+                        selectedObjects.get(1) instanceof Tekton) {
+                        Rovar rovar = (Rovar)selectedObjects.get(0);
+                        Tekton target = (Tekton)selectedObjects.get(1);
+                        return new String[]{"lep", String.valueOf(target.getId()), String.valueOf(rovar.getId())};
+                    }
+                    break;
+                    
+                case "evés":
+                    if (selectedObjects.get(0) instanceof Rovar) {
+                        Rovar rovar = (Rovar)selectedObjects.get(0);
+                        return new String[]{"eszik", String.valueOf(rovar.getId())};
+                    }
+                    break;
+                    
+                case "vágás":
+                    if (selectedObjects.size() >= 2 && 
+                        selectedObjects.get(0) instanceof GombaFonal && 
+                        selectedObjects.get(1) instanceof Rovar) {
+                        GombaFonal fonal = (GombaFonal)selectedObjects.get(0);
+                        Rovar rovar = (Rovar)selectedObjects.get(1);
+                        return new String[]{"vagas", String.valueOf(fonal.getId()), String.valueOf(rovar.getId())};
+                    }
+                    break;
+                    
+                case "spóraszórás":
+                    if (selectedObjects.size() == 1 && selectedObjects.get(0) instanceof GombaTest) {
+                        GombaTest test = (GombaTest) selectedObjects.get(0);
+                       System.out.println("[DEBUG] Spóraszórás indítása GombaTest ID: " + test.getId());
+                        
+                        sporak = test.sporaSzoras();
+                        if (sporak != null) {
+                            for (Spora spora : sporak) {
+                                System.out.println("[DEBUG] Spóra hozzáadva: " + spora.getHol().getId());
+                            }
+                        }
+
+                        repaint(); 
+                        return new String[]{"sporaszoras", String.valueOf(test.getId())};
+                    } 
+                    break;
+                    
+                case "új test":
+                    if (selectedObjects.get(0) instanceof Tekton) {
+                        Tekton tekton = (Tekton)selectedObjects.get(0);
+                        return new String[]{"ujTest", String.valueOf(tekton.getId()), currentPlayer.getNev()};
+                    }
+                    break;
+                    
+                case "fonálnövesztés":
+                    if (selectedObjects.size() >= 2 && 
+                        selectedObjects.get(0) instanceof Tekton && 
+                        selectedObjects.get(1) instanceof Tekton &&
+                        currentPlayer instanceof Gombasz) {
+                        
+                        Tekton start = (Tekton)selectedObjects.get(0);
+                        Tekton end = (Tekton)selectedObjects.get(1);
+                        
+                        // Find a valid GombaTest for this player
+                        for (GombaTest test : ((Gombasz)currentPlayer).getTestek()) {
+                            String[] testCmd = new String[]{
+                                "fonalnoveszt", 
+                                String.valueOf(test.getId()), 
+                                String.valueOf(start.getId()), 
+                                String.valueOf(end.getId())
+                            };
+                            if (jatek.vanValid(currentPlayer, testCmd)) {
+                                return testCmd;
+                            }
+                        }
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("[DEBUG] Error building command: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+
+    private void resetAction() {
+        System.out.println("[DEBUG] Resetting action");
+        currentAction = null;
+        currentStep = 0;
+        actionSteps = null;
+        selectedObjects.clear();
+        
+        // Reset button highlights
+        for (JButton btn : lepesGombok) {
+            btn.setBackground(sotet);
+        }
+    }
+
+   void frissul() {
+    // Aktuális játékos név frissítése
+    if (jatek.getAktivJatekos() != null) {
+        aktJatekosNev.setText(jatek.getAktivJatekos().getNev());
+    } else {
+        aktJatekosNev.setText("-");
+        return; // Ha nincs aktív játékos, ne frissítsünk tovább
+    }
+
+    // Pontszámok frissítése
+    List<Jatekos> jatekosok = jatek.getJatekosok();
+    for (int i = 0; i < pontLabels.length; i++) {
+        if (i < jatekosok.size() && jatekosok.get(i) != null) {
+            pontLabels[i].setText((i + 1) + ". " + jatekosok.get(i).getNev() + ": " + jatekosok.get(i).pontok);
+        } else {
+            pontLabels[i].setText("");
+        }
+    }
+
+    // Lépési lehetőségek meghatározása
+    List<String> lehetosegek = new ArrayList<>();
+    Jatekos aktiv = jatek.getAktivJatekos();
+
+    if (aktiv != null) {
+        if (aktiv.getTipus().equals("Rovarasz")) {
+            lehetosegek.add("Vágás");
+            lehetosegek.add("Lépés");
+            lehetosegek.add("Evés");
+        } else if (aktiv.getTipus().equals("Gombasz")) {
+            lehetosegek.add("Új test");
+            lehetosegek.add("Spóraszórás");
+            lehetosegek.add("Fonálnövesztés");
+        }
+    }
+
+    // Gombok nullázása
+    for (int i = 0; i < lepesGombok.length; i++) {
+        lepesGombok[i].setText("");
+        lepesGombok[i].setEnabled(false);
+        lepesGombok[i].setBackground(sotet);
+
+        // Régi ActionListenerek eltávolítása
+        for (ActionListener al : lepesGombok[i].getActionListeners()) {
+            lepesGombok[i].removeActionListener(al);
+        }
+    }
+
+    // Helyes gomblogika beállítása
+    for (int i = 0; i < Math.min(lehetosegek.size(), lepesGombok.length); i++) {
+        String akcio = lehetosegek.get(i);
+        setupActionButton(lepesGombok[i], akcio); // <- itt történik a jó viselkedés beállítása
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+private void executeAction(String action) {
+    currentAction = action;
+    selectedObjects.clear();
+    
+    // Show instruction based on the action
+    String instruction = getActionInstruction(action);
+    JOptionPane.showMessageDialog(this, instruction, "Művelet végrehajtása", JOptionPane.INFORMATION_MESSAGE);
+}
+
+private String getActionInstruction(String action) {
+    switch (action.toLowerCase()) {
+        case "lépés":
+            return "Válassz ki egy rovart, majd a cél tekton!";
+        case "evés":
+            return "Válassz ki egy rovart, amit meg akarsz enni!";
+        case "vágás":
+            return "Válassz ki egy gombafonalat, majd a rovart ami végrehajtja!";
+        case "spóraszórás":
+            return "Válassz ki egy gombatestet!";
+        case "új test":
+            return "Válassz ki egy tektonon, ahol új testet szeretnél létrehozni!";
+        case "fonálnövesztés":
+            return "Válassz ki egy kezdő és egy vég tektonon!";
+        default:
+            return "Válassz ki a célpontokat a művelethez!";
+    }
+}
 private boolean hasEnoughObjectsForAction() {
     if (currentAction == null) return false;
     
@@ -351,6 +731,9 @@ private boolean validateSelectedObjects() {
 
 
 
+
+
+
 private void performAction() {
     Jatekos currentPlayer = jatek.getAktivJatekos();
     if (currentPlayer == null) {
@@ -436,109 +819,6 @@ private void performAction() {
     }
 }
 
-
-
-
-
-private void setupActionButton(JButton button, String action) {
-        button.setText(action);
-        button.setEnabled(true);
-        button.setBackground(sotet);
-        
-        // Remove old action listeners
-        for (ActionListener al : button.getActionListeners()) {
-            button.removeActionListener(al);
-        }
-        
-        button.addActionListener(e -> {
-            System.out.println("[DEBUG] Action button pressed: " + action);
-            startActionSequence(action);
-        });
-    }
-
-    private void startActionSequence(String action) {
-    System.out.println("[DEBUG] Starting action sequence for: " + action);
-    currentAction = action;
-    currentStep = 0;
-    selectedObjects.clear();
-    
-    // Define the steps needed for each action
-    switch (action.toLowerCase()) {
-        case "lépés":
-            actionSteps = new String[]{"Válassz egy rovart", "Válassz egy cél tekton"};
-            break;
-        case "evés":
-            actionSteps = new String[]{"Válassz egy rovart, amit meg akarsz enni"};
-            break;
-        case "vágás":
-            actionSteps = new String[]{"Válassz egy gombafonalat", "Válassz egy rovart a vágáshoz"};
-            break;
-        case "spóraszórás":
-            actionSteps = new String[]{"Válassz egy gombatestet"};
-            break;
-        case "új test":
-            actionSteps = new String[]{"Válassz egy tekton, ahol új testet szeretnél"};
-            break;
-        case "fonálnövesztés":
-            actionSteps = new String[]{"Válassz egy kezdő tekton", "Válassz egy cél tekton"};
-            break;
-        default:
-            actionSteps = new String[]{};
-    }
-    
-    // Highlight the active button
-    for (JButton btn : lepesGombok) {
-        btn.setBackground(sotet);
-        if (btn.getText().equals(action)) {
-            btn.setBackground(Color.YELLOW);
-        }
-    }
-    
-    promptNextStep(); // Azonnal promptoljuk az első lépést
-}
-
-    private void promptNextStep() {
-        if (currentStep < actionSteps.length) {
-            String message = actionSteps[currentStep] + 
-                             "\n(Eddig kiválasztva: " + getSelectedObjectsDescription() + ")";
-            
-            System.out.println("[DEBUG] Prompting step " + (currentStep+1) + ": " + message);
-            
-            JOptionPane.showMessageDialog(this, 
-                message, 
-                currentAction + " - " + (currentStep+1) + ". lépés", 
-                JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            System.out.println("[DEBUG] All steps completed, validating action...");
-            validateAndExecuteAction();
-        }
-    }
-
-    private String getSelectedObjectsDescription() {
-        if (selectedObjects.isEmpty()) return "nincs";
-        
-        StringBuilder sb = new StringBuilder();
-        for (Object obj : selectedObjects) {
-            if (sb.length() > 0) sb.append(", ");
-            
-            if (obj instanceof Rovar) {
-                sb.append("Rovar#").append(((Rovar)obj).getId());
-            } else if (obj instanceof Tekton) {
-                sb.append("Tekton#").append(((Tekton)obj).getId());
-            } else if (obj instanceof GombaFonal) {
-                sb.append("GombaFonal#").append(((GombaFonal)obj).getId());
-            } else if (obj instanceof GombaTest) {
-                sb.append("GombaTest#").append(((GombaTest)obj).getId());
-            } else {
-                sb.append("Ismeretlen objektum");
-            }
-        }
-        return sb.toString();
-    }
-
-    // Modified mouse click handler
-
-
     private String getObjectDescription(Object obj) {
         if (obj instanceof Rovar) {
             return "Rovar #" + ((Rovar)obj).getId();
@@ -558,197 +838,6 @@ private void setupActionButton(JButton button, String action) {
         }
         return "Következő lépés: " + actionSteps[currentStep];
     }
-
-    private void validateAndExecuteAction() {
-        System.out.println("[DEBUG] Validating action with objects: " + getSelectedObjectsDescription());
-        
-        Jatekos currentPlayer = jatek.getAktivJatekos();
-        if (currentPlayer == null) {
-            System.out.println("[DEBUG] No active player, aborting");
-            resetAction();
-            return;
-        }
-
-        try {
-            String[] command = buildCommandFromSelection();
-            
-            if (command != null && jatek.vanValid(currentPlayer, command)) {
-                System.out.println("[DEBUG] Executing command: " + String.join(" ", command));
-                Object newItem = currentPlayer.Kor(command, jatek);
-                if (newItem != null) {
-                    palyaKep.insertItem(newItem);
-                }
-                palyaKep.drawingPanel.repaint();
-                jatek.ujKor();
-                frissul();
-            } else {
-                System.out.println("[DEBUG] Invalid command or validation failed");
-                JOptionPane.showMessageDialog(this,
-                    "A művelet végrehajtása sikertelen vagy nem érvényes!",
-                    "Hiba",
-                    JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (Exception ex) {
-            System.out.println("[DEBUG] Error during execution: " + ex.getMessage());
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this,
-                "Hiba történt a művelet közben: " + ex.getMessage(),
-                "Hiba",
-                JOptionPane.ERROR_MESSAGE);
-        } finally {
-            resetAction();
-        }
-    }
-
-    private String[] buildCommandFromSelection() {
-        if (currentAction == null || selectedObjects.isEmpty()) {
-            return null;
-        }
-
-        Jatekos currentPlayer = jatek.getAktivJatekos();
-        if (currentPlayer == null) return null;
-
-        try {
-            switch (currentAction.toLowerCase()) {
-                case "lépés":
-                    if (selectedObjects.size() >= 2 && 
-                        selectedObjects.get(0) instanceof Rovar && 
-                        selectedObjects.get(1) instanceof Tekton) {
-                        Rovar rovar = (Rovar)selectedObjects.get(0);
-                        Tekton target = (Tekton)selectedObjects.get(1);
-                        return new String[]{"lep", String.valueOf(target.getId()), String.valueOf(rovar.getId())};
-                    }
-                    break;
-                    
-                case "evés":
-                    if (selectedObjects.get(0) instanceof Rovar) {
-                        Rovar rovar = (Rovar)selectedObjects.get(0);
-                        return new String[]{"eszik", String.valueOf(rovar.getId())};
-                    }
-                    break;
-                    
-                case "vágás":
-                    if (selectedObjects.size() >= 2 && 
-                        selectedObjects.get(0) instanceof GombaFonal && 
-                        selectedObjects.get(1) instanceof Rovar) {
-                        GombaFonal fonal = (GombaFonal)selectedObjects.get(0);
-                        Rovar rovar = (Rovar)selectedObjects.get(1);
-                        return new String[]{"vagas", String.valueOf(fonal.getId()), String.valueOf(rovar.getId())};
-                    }
-                    break;
-                    
-                case "spóraszórás":
-                    if (selectedObjects.get(0) instanceof GombaTest) {
-                        GombaTest test = (GombaTest)selectedObjects.get(0);
-                        return new String[]{"sporaszoras", String.valueOf(test.getId())};
-                    }
-                    break;
-                    
-                case "új test":
-                    if (selectedObjects.get(0) instanceof Tekton) {
-                        Tekton tekton = (Tekton)selectedObjects.get(0);
-                        return new String[]{"ujTest", String.valueOf(tekton.getId()), currentPlayer.getNev()};
-                    }
-                    break;
-                    
-                case "fonálnövesztés":
-                    if (selectedObjects.size() >= 2 && 
-                        selectedObjects.get(0) instanceof Tekton && 
-                        selectedObjects.get(1) instanceof Tekton &&
-                        currentPlayer instanceof Gombasz) {
-                        
-                        Tekton start = (Tekton)selectedObjects.get(0);
-                        Tekton end = (Tekton)selectedObjects.get(1);
-                        
-                        // Find a valid GombaTest for this player
-                        for (GombaTest test : ((Gombasz)currentPlayer).getTestek()) {
-                            String[] testCmd = new String[]{
-                                "fonalnoveszt", 
-                                String.valueOf(test.getId()), 
-                                String.valueOf(start.getId()), 
-                                String.valueOf(end.getId())
-                            };
-                            if (jatek.vanValid(currentPlayer, testCmd)) {
-                                return testCmd;
-                            }
-                        }
-                    }
-                    break;
-            }
-        } catch (Exception e) {
-            System.out.println("[DEBUG] Error building command: " + e.getMessage());
-            e.printStackTrace();
-        }
-        
-        return null;
-    }
-
-    private void resetAction() {
-        System.out.println("[DEBUG] Resetting action");
-        currentAction = null;
-        currentStep = 0;
-        actionSteps = null;
-        selectedObjects.clear();
-        
-        // Reset button highlights
-        for (JButton btn : lepesGombok) {
-            btn.setBackground(sotet);
-        }
-    }
-
-   void frissul() {
-    // Aktuális játékos név frissítése
-    if (jatek.getAktivJatekos() != null) {
-        aktJatekosNev.setText(jatek.getAktivJatekos().getNev());
-    } else {
-        aktJatekosNev.setText("-");
-        return; // Ha nincs aktív játékos, ne frissítsünk tovább
-    }
-
-    // Pontszámok frissítése
-    List<Jatekos> jatekosok = jatek.getJatekosok();
-    for (int i = 0; i < pontLabels.length; i++) {
-        if (i < jatekosok.size() && jatekosok.get(i) != null) {
-            pontLabels[i].setText((i + 1) + ". " + jatekosok.get(i).getNev() + ": " + jatekosok.get(i).pontok);
-        } else {
-            pontLabels[i].setText("");
-        }
-    }
-
-    // Lépési lehetőségek meghatározása
-    List<String> lehetosegek = new ArrayList<>();
-    Jatekos aktiv = jatek.getAktivJatekos();
-
-    if (aktiv != null) {
-        if (aktiv.getTipus().equals("Rovarasz")) {
-            lehetosegek.add("Vágás");
-            lehetosegek.add("Lépés");
-            lehetosegek.add("Evés");
-        } else if (aktiv.getTipus().equals("Gombasz")) {
-            lehetosegek.add("Új test");
-            lehetosegek.add("Spóraszórás");
-            lehetosegek.add("Fonálnövesztés");
-        }
-    }
-
-    // Gombok nullázása
-    for (int i = 0; i < lepesGombok.length; i++) {
-        lepesGombok[i].setText("");
-        lepesGombok[i].setEnabled(false);
-        lepesGombok[i].setBackground(sotet);
-
-        // Régi ActionListenerek eltávolítása
-        for (ActionListener al : lepesGombok[i].getActionListeners()) {
-            lepesGombok[i].removeActionListener(al);
-        }
-    }
-
-    // Helyes gomblogika beállítása
-    for (int i = 0; i < Math.min(lehetosegek.size(), lepesGombok.length); i++) {
-        String akcio = lehetosegek.get(i);
-        setupActionButton(lepesGombok[i], akcio); // <- itt történik a jó viselkedés beállítása
-    }
-}
 
 }
 

@@ -151,7 +151,8 @@ public class Gombasz extends Jatekos {
 			int valasz = scanner.nextInt();
 			
 			for(int i=0; i < Testek.size(); i++) { //Megkeressuk es ratesszuk a sporat
-				if(Testek.get(i).getTekton().getId()==valasz) {
+				//if(Testek.get(i).getTekton().getId()==valasz) {
+                if (Testek.get(i).getId() == valasz){
 					sporaszorastkezd(Testek.get(i),Testek.get(i).getTekton());
 				}
 			}
