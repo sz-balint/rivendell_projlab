@@ -222,9 +222,11 @@ startGameButton.addActionListener(e -> {
     jatek.setJelenKor(0);
 
     jatek.palyaGeneralas(jatekosok.size());
-    jatek.palyaFeltoltes();
+    //jatek.palyaFeltoltes();
 
     Palyakep palya = new Palyakep(jatek.getJatekter(), jatek);
+    palya.calculateAllNeighbors();
+    jatek.palyaFeltoltes();
     JatekKep jatekKep = new JatekKep(jatek, palya);
     palya.inicializalJatekterObjektumokat(jatek);//idk
     jatekKep.setVisible(true);
@@ -235,12 +237,35 @@ startGameButton.addActionListener(e -> {
 
         
         //Betoltes
+
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(KezdoKep.this, "betolt");
+                try {
+                    Fajlkezelo fajlkezelo = new Fajlkezelo();
+                    JatekLogika jatek = fajlkezelo.load();
+
+                    Palyakep palya = new Palyakep(jatek.getJatekter(), jatek);
+                    palya.setTektonCenters(); // Vizualizációhoz beállítjuk a középpontokat
+
+                    palya.calculateAllNeighbors();
+                    palya.inicializalJatekterObjektumokat(jatek);
+
+                    JatekKep jatekKep = new JatekKep(jatek, palya);
+                    jatekKep.setVisible(true);
+
+                    palya.setTektonCenters();                      // pozíciókat belső térképen újraszámolja
+                    palya.inicializalJatekterObjektumokat(jatek); // rovarokat/gombákat újra elhelyezi
+                    palya.updateGameState();                       // Voronoi-diagram újrarajzolása
+                    dispose();
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(KezdoKep.this, "Hiba történt betöltés közben.");
+                }
             }
         });
+
 
         //Kilepes
         exitButton.addActionListener(new ActionListener() {

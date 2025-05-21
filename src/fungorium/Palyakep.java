@@ -58,7 +58,7 @@ public class Palyakep extends JPanel {
         new Color(101, 67, 33)     // zombifonal - dark coffee (mély barna)
     };
 
-    
+
     ///így tudtam megoldani hogy az egérkattintásra átadódjona kattintott élőlény
     public interface ObjektumKivalasztasListener {
             void onObjectSelected(Object obj);
@@ -273,7 +273,7 @@ public class Palyakep extends JPanel {
 
     //jó lenne ha ezt az addrovarfv hivna meg és 
     // Rovar hozzáadása egy Tektonhoz
-    public void addRovar(Rovar rovar, int tektonId) {
+    /*public void addRovar(Rovar rovar, int tektonId) {
         Point position = tektonCenters.get(tektonId);
         if (position != null) {
             // Új élőlény létrehozása és tárolása
@@ -282,7 +282,20 @@ public class Palyakep extends JPanel {
             System.out.println(rovar.getId());
         }
         drawingPanel.repaint(); // Rajzoló panel frissítése
+    }*/
+
+    public void addRovar(Rovar rovar, int tektonId) {
+    Point position = tektonCenters.get(tektonId);
+    if (position != null) {
+        Tekton tekton = jatekLogika.getTektonById(tektonId);
+        rovar.setHol(tekton); // ← ez hiányzott
+        Elolenyek eloleny = new Elolenyek(rovar, position);
+        rovarok.put(rovar.getId(), eloleny);
+        System.out.println(rovar.getId());
     }
+    drawingPanel.repaint();
+}
+
 
     // Rovar mozgatása új Tektonra
     public void moveRovar(Rovar rovar, int newTektonId) {
@@ -312,7 +325,7 @@ public class Palyakep extends JPanel {
     }
 
     // Gombatest hozzáadása egy Tektonhoz
-    public void addGombaTest(GombaTest gombaTest, int tektonId) {
+   /* public void addGombaTest(GombaTest gombaTest, int tektonId) {
         Point position = tektonCenters.get(tektonId);
         if (position != null) {
             Elolenyek eloleny = new Elolenyek(gombaTest, position);
@@ -320,7 +333,20 @@ public class Palyakep extends JPanel {
             tectons.get(tektonId).ujTest(gombaTest);//hihi
         }
         drawingPanel.repaint();
+    }*/
+
+    public void addGombaTest(GombaTest gombaTest, int tektonId) {
+        Point position = tektonCenters.get(tektonId);
+        if (position != null) {
+            Tekton tekton = jatekLogika.getTektonById(tektonId);
+            gombaTest.setTekton(tekton); // ← ez hiányzott
+            Elolenyek eloleny = new Elolenyek(gombaTest, position);
+            gombatestek.put(gombaTest.getId(), eloleny);
+            tekton.ujTest(gombaTest); // már jól csináltad
+        }
+        drawingPanel.repaint();
     }
+
 
     public void addGombaFonal(GombaFonal gombaFonal, int tektonId, int tektonId2) {
         Point position = tektonCenters.get(tektonId);
@@ -425,7 +451,7 @@ public class Palyakep extends JPanel {
     }
 
 
-    private void updateGameState() {
+    public void updateGameState() {
         calculateAllAreas();         // Tektonok területének kiszámítása
         updateVoronoiDiagram();      // Voronoi-diagram újrarajzolása
         calculateAllNeighbors();     // Szomszédságok frissítése
@@ -448,14 +474,11 @@ public class Palyakep extends JPanel {
 
         // Minden Tektonhoz pozíciót rendelünk és színt állítunk
         for (Tekton t : tectons) {
-            Point position = findValidPosition();
-            tektonVisualData.put(t.getId(), new TektonVisualData(position));
-            assignColor(t);
-
-            // Következő szabad ID frissítése
-            if (t.getId() >= nextTektonId) {
-                nextTektonId = t.getId() + 1;
+            if (!tektonVisualData.containsKey(t.getId())) {
+                Point position = findValidPosition(); // csak ha még nincs
+                tektonVisualData.put(t.getId(), new TektonVisualData(position));
             }
+            assignColor(t);
         }
 
         updateGameState();  // Teljes játéktér frissítése
@@ -677,14 +700,17 @@ public class Palyakep extends JPanel {
 
             // Rovarok kirajzolása
             for (Elolenyek rovar : rovarok.values()) {
+                calculateAllNeighbors();
                 rovar.rajzol(g);
                 
             }
             for (Elolenyek gombaTest : gombatestek.values()) {
+                calculateAllNeighbors();
                 gombaTest.rajzol(g);
             }
 
             for (Elolenyek gombaFonal : gombaFonal.values()) {
+                calculateAllNeighbors();
                 gombaFonal.rajzol(g);
             }
         }
@@ -1311,7 +1337,7 @@ public class Palyakep extends JPanel {
         calculateAllNeighbors();
     }
 
-    private void calculateAllNeighbors() {
+    public void calculateAllNeighbors() {
         for (Tekton t : tectons) {
             t.getSzomszedok().clear();
         }

@@ -15,12 +15,14 @@ public class Elolenyek {
     public static void setTektonVisualData(Map<Integer, Palyakep.TektonVisualData> data) {
         tektonVisualData = data;
     }
+
+    private static Map<Integer, Integer> tektonNRovarok = new HashMap<>(); //Rovarok száma egy adott tektonon
     
     private Rovar rovar;
     private GombaTest gombaTest;
     private GombaFonal gombaFonal;
 
-    private static int meret = 32; // Rovar mérete
+    private static int meret = 32; // Rovar/Gomba mérete
     private Color color;
     private Point currentPos;
     private Point targetPos;
@@ -31,6 +33,10 @@ public class Elolenyek {
         this.rovar = rovar;
         this.currentPos = new Point(initialPos);
         this.targetPos = new Point(initialPos);
+        int i = 0;
+        if(tektonNRovarok.get(rovar.getHol().getId()) != null)
+            i = tektonNRovarok.get(rovar.getHol().getId());
+        tektonNRovarok.put(rovar.getHol().getId(), i+1);
         setColorBasedOnPlayer();
     }
 
@@ -75,6 +81,14 @@ public class Elolenyek {
         }
     }
 
+    private void setTektonNRovarok(){
+        JatekLogika  jl = new JatekLogika();
+        List<Tekton> tektons = jl.getJatekter();
+        for (Tekton tekton : tektons) {
+            tektonNRovarok.put(tekton.getId(),tekton.getRovarok().size());
+        }
+    }
+
     //Modositott rajzolás
     public void rajzol(Graphics g) {
         if (rovar == null && gombaTest == null && gombaFonal == null) return;
@@ -83,8 +97,22 @@ public class Elolenyek {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
         if (rovar != null) {
+            setTektonNRovarok();
             Palyakep.TektonVisualData tvd = tektonVisualData.get(rovar.getHol().getId());
             Point position = (tvd != null ? tvd.position : null);
+
+            Point rPos[] = {
+                new Point(-20, 20), new Point(0, 20), new Point(20, 20),
+                new Point(-20, 0),                      new Point(20, 0),
+                new Point(-20, -20), new Point(0, -20), new Point(20, -20)
+            };
+
+            int n = 0;
+            if(tektonNRovarok.get(rovar.getHol().getId()) != null)
+                n = (int) tektonNRovarok.get(rovar.getHol().getId());
+
+            position = new Point((int)position.getX() + rPos[(n+1)%8].x, (int)position.getY() + rPos[(n+1)%8].y);
+
             int[] xPoints = {
                 (int)position.getX(),
                 (int)position.getX() - meret/2,
@@ -109,7 +137,7 @@ public class Elolenyek {
             Palyakep.TektonVisualData tvd = tektonVisualData.get(gombaTest.getTekton().getId());
             Point position = (tvd != null ? tvd.position : null);
             int x = (int)position.getX() - meret/2;
-            int y = (int)position.getY()- meret/2;
+            int y = (int)position.getY() - meret/2;
 
             // Kör kitöltése játékos színével
             g2d.setColor(color);
@@ -147,17 +175,17 @@ public class Elolenyek {
     }
 
     @Override
-    public String toString() {
-        if (this.getRovar() != null) {
-            return "Rovar #" + getRovar().getId() + " a Tekton #" + getRovar().getHol().getId() + "-on";
-        } else if (this.getGombaTest() != null) {
-            return "Gombatest #" + getGombaTest().getId() + " a Tekton #" + getGombaTest().getTekton().getId() + "-on";
-        } else if (this.getGombaFonal() != null) {
-            return "Gombafonal #" + getGombaFonal().getId() + " két Tekton között: " +
-                getGombaFonal().getTekton1().getId() + " és " + getGombaFonal().getTekton2().getId();
-        }
-        return "Ismeretlen élőlény";
+public String toString() {
+    if (this.getRovar() != null) {
+        return "Rovar #" + getRovar().getId() + " a Tekton #" + getRovar().getHol().getId() + "-on";
+    } else if (this.getGombaTest() != null) {
+        return "Gombatest #" + getGombaTest().getId() + " a Tekton #" + getGombaTest().getTekton().getId() + "-on";
+    } else if (this.getGombaFonal() != null) {
+        return "Gombafonal #" + getGombaFonal().getId() + " két Tekton között: " +
+               getGombaFonal().getTekton1().getId() + " és " + getGombaFonal().getTekton2().getId();
     }
+    return "Ismeretlen élőlény";
+}
 
 
     private Color getStateColor() {

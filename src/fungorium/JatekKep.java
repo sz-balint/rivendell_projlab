@@ -3,6 +3,7 @@ package fungorium;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -134,7 +135,37 @@ public class JatekKep extends JFrame {
         });
         jobbSzal.add(passButton);
 
+        // === SAVE gomb ===
+    JButton saveButton = new JButton("SAVE");
+    saveButton.setFont(new Font("Serif", Font.PLAIN, 18));
+    saveButton.setForeground(vilagos);
+    saveButton.setBackground(sotet);
+    saveButton.setBorder(BorderFactory.createLineBorder(vilagos, 2));
+    saveButton.setBounds(20, 590, 170, 40);
+    saveButton.addActionListener(e -> {
+        try {
+            
+            Fajlkezelo fajlkezelo = new Fajlkezelo();
+            fajlkezelo.save(jatek);
+            JOptionPane.showMessageDialog(this, "Játék sikeresen elmentve!", "Mentés", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Hiba történt a mentés során!", "Mentési hiba", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+    });
+    jobbSzal.add(saveButton);
 
+    // === KILÉPÉS gomb ===
+    JButton kilepesButton = new JButton("KILÉPÉS");
+    kilepesButton.setFont(new Font("Serif", Font.PLAIN, 18));
+    kilepesButton.setForeground(vilagos);
+    kilepesButton.setBackground(sotet);
+    kilepesButton.setBorder(BorderFactory.createLineBorder(vilagos, 2));
+    kilepesButton.setBounds(200, 590, 170, 40);
+    kilepesButton.addActionListener(e -> {
+        System.exit(0);
+    });
+    jobbSzal.add(kilepesButton);
 
         frissul();
     }

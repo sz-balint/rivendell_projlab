@@ -46,6 +46,7 @@ public class GombaTest {
 
     //Visszaadja melyik tektonon van
     public Tekton getTekton() {return hol;}
+    public void setTekton(Tekton h) { hol=h;}
     
     // A gombatest elpusztul
     public void elpusztul() {
@@ -104,16 +105,59 @@ public class GombaTest {
            '}';
     }
 
+
+
     public static GombaTest fromString(String str) {
-        JatekLogika jatek = new JatekLogika();
-        String[] parts = str.replace("GombaTest{", "").replace("}", "").split(",");
-        Tekton hol = jatek.getTektonById(Integer.parseInt(parts[0].split("=")[1].trim()));
-        int kor = Integer.parseInt(parts[1].split("=")[1].trim());
-        boolean elegOreg = Boolean.parseBoolean(parts[2].split("=")[1].trim());
-        int utolsoSporaszoras = Integer.parseInt(parts[3].split("=")[1].trim());
-        int sporaszorasokSzama = Integer.parseInt(parts[4].split("=")[1].trim());
-        return new GombaTest(hol, kor, elegOreg, utolsoSporaszoras, sporaszorasokSzama, (Gombasz)jatek.getJatekosByNev(parts[5].split("=")[1].trim()));
+        try {
+            JatekLogika jatek = new JatekLogika();
+            str = str.replace("GombaTest{", "").replace("}", "");
+
+            String[] parts = str.split(",");
+            int id = -1;
+            Tekton hol = null;
+            int kor = 0;
+            boolean elegOreg = false;
+            int utolsoSporaszoras = 0;
+            int sporaszorasokSzama = 0;
+            Gombasz kie = null;
+
+            for (String part : parts) {
+                String[] keyValue = part.trim().split("=");
+                if (keyValue.length != 2) continue;
+
+                String key = keyValue[0].trim();
+                String value = keyValue[1].trim();
+
+                switch (key) {
+                    case "hol":
+                        int tektonId = Integer.parseInt(value.replace("#", ""));
+                        hol = jatek.getTektonById(tektonId);
+                        break;
+                    case "kor":
+                        kor = Integer.parseInt(value);
+                        break;
+                    case "elegOreg":
+                        elegOreg = Boolean.parseBoolean(value);
+                        break;
+                    case "utolsoSporaszoras":
+                        utolsoSporaszoras = Integer.parseInt(value);
+                        break;
+                    case "sporaszorasokSzama":
+                        sporaszorasokSzama = Integer.parseInt(value);
+                        break;
+                    case "kie":
+                        kie = (Gombasz) jatek.getJatekosByNev(value);
+                        break;
+                }
+            }
+
+            return new GombaTest(hol, kor, elegOreg, utolsoSporaszoras, sporaszorasokSzama, kie);
+        } catch (Exception e) {
+            System.out.println("Hiba történt GombaTest fromString során: " + e.getMessage());
+            return null;
+        }
     }
+
 
 
 	public void setUtolsoSporaszoras(int i) {
