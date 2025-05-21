@@ -15,6 +15,7 @@ public class Tekton {
     private GombaTest gombaTest; // Az adott tektonon levo gombatest
     private List<Tekton> kapcsoltTekton; // Azon tektonok, amelyekkel foal koti ossze
 
+
 	private String kapcsoltTektonStr;
 	private String szomszedokStr;
     
@@ -346,7 +347,6 @@ public Tekton fromString(String data) {
 				break;
 			case "rovarok":
 				List<Rovar> rovarLista = Rovar.fromString(value);
-				if (rovarLista != null) tekton.rovarok.addAll(rovarLista);
 				break;
 			case "gombaTest":
 				tekton.gombaTest = GombaTest.fromString(value);
@@ -365,28 +365,28 @@ public Tekton fromString(String data) {
 
 
 	public void strToAttr() {
-	JatekLogika jatek = new JatekLogika();
+		JatekLogika jatek = new JatekLogika();
 
-	if (szomszedokStr != null && !szomszedokStr.isBlank()) {
-		szomszedokStr = szomszedokStr.replace("[", "").replace("]", "").replace(",", "").trim();
-		String[] szomszedokArray = szomszedokStr.split("#");
-		for (String s : szomszedokArray) {
-			if (!s.trim().isEmpty()) {
-				szomszedok.add(jatek.getTektonById(Integer.parseInt(s.trim())));
+		if (szomszedokStr != null && !szomszedokStr.isBlank()) {
+			szomszedokStr = szomszedokStr.replace("[", "").replace("]", "").replace(",", "").trim();
+			String[] szomszedokArray = szomszedokStr.split("#");
+			for (String s : szomszedokArray) {
+				if (!s.trim().isEmpty()) {
+					szomszedok.add(jatek.getTektonById(Integer.parseInt(s.trim())));
+				}
+			}
+		}
+
+		if (kapcsoltTektonStr != null && !kapcsoltTektonStr.isBlank()) {
+			kapcsoltTektonStr = kapcsoltTektonStr.replace("[", "").replace("]", "").replace(",", "").trim();
+			String[] kapcsoltTektonArray = kapcsoltTektonStr.split("#");
+			for (String s : kapcsoltTektonArray) {
+				if (!s.trim().isEmpty()) {
+					kapcsoltTekton.add(jatek.getTektonById(Integer.parseInt(s.trim())));
+				}
 			}
 		}
 	}
-
-	if (kapcsoltTektonStr != null && !kapcsoltTektonStr.isBlank()) {
-		kapcsoltTektonStr = kapcsoltTektonStr.replace("[", "").replace("]", "").replace(",", "").trim();
-		String[] kapcsoltTektonArray = kapcsoltTektonStr.split("#");
-		for (String s : kapcsoltTektonArray) {
-			if (!s.trim().isEmpty()) {
-				kapcsoltTekton.add(jatek.getTektonById(Integer.parseInt(s.trim())));
-			}
-		}
-	}
-}
 
 
 

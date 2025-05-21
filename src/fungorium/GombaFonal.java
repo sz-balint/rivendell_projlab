@@ -175,7 +175,7 @@ public class GombaFonal {
 public static List<GombaFonal> fromString(String str) {
     List<GombaFonal> lista = new ArrayList<>();
     try {
-        if (str == null || !str.contains("GombaFonal{")) return lista;
+        if (str == null || !str.contains("GombaFonal")) return lista;
 
         JatekLogika jatek = new JatekLogika();
         int index = 0;

@@ -112,7 +112,7 @@ public class Elolenyek {
             if(tektonNRovarok.get(rovar.getHol().getId()) != null)
                 n = (int) tektonNRovarok.get(rovar.getHol().getId());
 
-            position = new Point((int)position.getX() + rPos[(n+1)%8].x, (int)position.getY() + rPos[(n+1)%8].y);
+            position = new Point((int)position.getX() + rPos[n].x, (int)position.getY() + rPos[n].y);
 
             int[] xPoints = {
                 (int)position.getX(),

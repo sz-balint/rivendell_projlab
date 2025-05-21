@@ -71,19 +71,17 @@ public class Palyakep extends JPanel {
 
 
     // Rovarok tárolása ID alapján
-    private Map<Integer, Elolenyek> rovarok = new HashMap<>();
+    private static Map<Integer, Elolenyek> rovarok = new HashMap<>();
 
     // Tekton középpontok tárolása
-    private Map<Integer, Point> tektonCenters = new HashMap<>();
+    private static Map<Integer, Point> tektonCenters = new HashMap<>();
 
     // Gombatestek tárolása ID alapján
-    private Map<Integer, Elolenyek> gombatestek = new HashMap<>();
+    private static Map<Integer, Elolenyek> gombatestek = new HashMap<>();
 
-    private Map<Integer, Elolenyek> gombaFonal = new HashMap<>();
+    private static Map<Integer, Elolenyek> gombaFonal = new HashMap<>();
 
-    private Map<Integer, Elolenyek> sporak = new HashMap<>();
-
-    private List<Elolenyek> sporak = new ArrayList<>(); 
+    private static List<Elolenyek> sporak = new ArrayList<>();
 
     public void inicializalJatekterObjektumokat(JatekLogika jatekLogika) {
         for (Jatekos j : jatekLogika.getJatekosok()) {
