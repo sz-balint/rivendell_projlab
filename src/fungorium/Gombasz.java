@@ -237,7 +237,7 @@ public class Gombasz extends Jatekos {
     	
     	//Gombasz uj Fonalat noveszt
     	if (parancs[0].equals("fonalnoveszt")) { 
-			int valasz2 = Integer.parseInt(parancs[1]);
+			int valasz2 = Integer.parseInt(parancs[2]);
 			Tekton kezdoTekton = null;
             for (Tekton te : jatek.getJatekter()) {
 				if (te.getId()==valasz2) 
