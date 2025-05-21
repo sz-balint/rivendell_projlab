@@ -167,7 +167,7 @@ public void setJatekosokSzama(int szam) {
 				case "load": {
 					Fajlkezelo fk = new Fajlkezelo();
 					try {
-						jatek = fk.load(parancsok[1]);
+						jatek = fk.load();
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

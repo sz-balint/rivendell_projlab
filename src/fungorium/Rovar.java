@@ -1,5 +1,8 @@
 package fungorium;
 
+import java.util.ArrayList;
+import java.util.List;
+
 enum Allapot {
     NORMAL, BENULT, GYORSITOTT, LASSITOTT, VAGASKEPTELEN
 }
@@ -43,6 +46,10 @@ public class Rovar {
     public Tekton getHol() {
         return hol;
     }
+     public void setHol(Tekton h) {
+        this.hol=h;
+    }
+
 
     // Visszaadja a rovászt
     public Rovarasz getKie() {
@@ -151,11 +158,60 @@ public class Rovar {
            '}';
 	}
 
-    public static Rovar fromString(String str){
-        String[] parts = str.replace("Rovar{", "").replace("}", "").split(",");
-        Tekton hol = new Tekton(parts[0].split("=")[1]);
-        Allapot allapot = Allapot.valueOf(parts[1].split("=")[1]);
-        Rovarasz kie = new Rovarasz(parts[2].split("=")[1], Integer.parseInt(parts[3].split("=")[1]), "Rovarasz");
-        return new Rovar(hol, allapot, kie);
+
+   public static List<Rovar> fromString(String str) {
+    List<Rovar> lista = new ArrayList<>();
+    try {
+        if (str == null || !str.contains("Rovar{")) return lista;
+
+        JatekLogika jatek = new JatekLogika();
+        int index = 0;
+        while ((index = str.indexOf("Rovar{", index)) != -1) {
+            int end = str.indexOf("}", index);
+            if (end == -1) break;
+
+            String content = str.substring(index + 6, end);
+
+            int holStart = content.indexOf("hol='#") + 6;
+            int holEnd = content.indexOf(",", holStart);
+            int holId = Integer.parseInt(content.substring(holStart, holEnd).trim());
+            Tekton hol = jatek.getTektonById(holId);
+
+            int allStart = content.indexOf("allapot=") + 8;
+            int allEnd = content.indexOf(",", allStart);
+            String allapotStr = content.substring(allStart, allEnd).trim();
+            Allapot allapot = Allapot.valueOf(allapotStr);
+
+            int kieStart = content.indexOf("kie=Rovarasz{nev=") + "kie=Rovarasz{nev=".length();
+            int kieEnd = content.indexOf(",", kieStart);
+            String nev = content.substring(kieStart, kieEnd).trim();
+            Rovarasz kie = (Rovarasz) jatek.getJatekosByNev(nev);
+
+            lista.add(new Rovar(hol, allapot, kie));
+            index = end + 1;
+        }
+
+    } catch (Exception e) {
+        System.err.println("Hiba a Rovar.fromString feldolgozásában: " + e.getMessage());
     }
+    return lista;
+}
+
+
+
+
+
+private static String getErtek(String s, String kulcs) {
+    if (!s.contains("=")) {
+        throw new IllegalArgumentException("Hiányzó '=' jel a '" + kulcs + "' mezőnél: " + s);
+    }
+    String[] kv = s.split("=", 2);
+    if (kv.length < 2 || kv[1].isEmpty()) {
+        throw new IllegalArgumentException("Hiányzó érték a '" + kulcs + "' mezőhöz: " + s);
+    }
+    return kv[1];
+}
+
+
+
 }

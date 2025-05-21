@@ -47,13 +47,25 @@ public class Spora {
            '}';
 	}
 
-	// Static factory method to create a Spora instance from a string representation
-	public static Spora fromString(String s) {
-		String[] parts = s.replace("Spora{", "").replace("}", "").split(",");
-		int sporaType = Integer.parseInt(parts[0].split("=")[1]);
-		int tapertek = Integer.parseInt(parts[1].split("=")[1]);
-		int tektonId = Integer.parseInt(parts[2].split("=")[1].replace("#", ""));
-		JatekLogika jatek = new JatekLogika();
-		return new Spora(sporaType, tapertek, jatek.getTektonById(tektonId));
-	}
+	public static Spora fromSerializedData(String s, Tekton hol) {
+    try {
+        s = s.replace("Spora{", "").replace("}", "").trim();
+        String[] parts = s.split(",");
+        if (parts.length < 2) {
+            System.err.println("Hibás spóra adat: '" + s + "'");
+            return null;
+        }
+
+        int sporaType = Integer.parseInt(parts[0].split("=")[1]);
+        int tapertek = Integer.parseInt(parts[1].split("=")[1]);
+
+        return new Spora(sporaType, tapertek, hol);
+    } catch (Exception e) {
+        System.err.println("Spóra beolvasási hiba: '" + s + "'");
+        e.printStackTrace();
+        return null;
+    }
+}
+
+
 }

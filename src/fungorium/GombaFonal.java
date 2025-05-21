@@ -166,23 +166,59 @@ public class GombaFonal {
            '}';
     }
 
-    public static GombaFonal fromString(String str){
+
+public static List<GombaFonal> fromString(String str) {
+    List<GombaFonal> lista = new ArrayList<>();
+    try {
+        if (str == null || !str.contains("GombaFonal{")) return lista;
+
         JatekLogika jatek = new JatekLogika();
-        String[] parts = str.replace("GombaFonal{", "").replace("}", "").split(",");
-        String tektonok1 = parts[0].split("=")[1].split("#")[1];
-        String tektonok2 = parts[0].split("=")[1].split("#")[2];
-        String kie = parts[1].split("=")[1];
-        String megel = parts[2].split("=")[1];
-        String el = parts[3].split("=")[1];
-        
-        return new GombaFonal(
-            jatek.getTektonById(Integer.parseInt(tektonok1)),
-            jatek.getTektonById(Integer.parseInt(tektonok2)),
-            (Gombasz) jatek.getJatekosByNev(kie),
-            Integer.parseInt(megel),
-            Boolean.parseBoolean(el)
-        );
+        int index = 0;
+        while ((index = str.indexOf("GombaFonal{", index)) != -1) {
+            int end = str.indexOf("}", index);
+            if (end == -1) break;
+
+            String content = str.substring(index + "GombaFonal{".length(), end);
+
+            String tektonRaw = content.substring(content.indexOf("[#") + 2, content.indexOf("]", content.indexOf("[#")));
+            String[] ids = tektonRaw.split(",");
+            int t1 = Integer.parseInt(ids[0].trim());
+            int t2 = Integer.parseInt(ids[1].trim());
+            Tekton tek1 = jatek.getTektonById(t1);
+            Tekton tek2 = jatek.getTektonById(t2);
+
+            int kieStart = content.indexOf("kie=Gombasz{nev=") + "kie=Gombasz{nev=".length();
+            int kieEnd = content.indexOf(",", kieStart);
+            String nev = content.substring(kieStart, kieEnd).trim();
+            Gombasz g = (Gombasz) jatek.getJatekosByNev(nev);
+
+            int megel = Integer.parseInt(content.substring(content.indexOf("megel=") + 6, content.indexOf(",", content.indexOf("megel="))).trim());
+            boolean el = Boolean.parseBoolean(content.substring(content.indexOf("el=") + 3).trim());
+
+            lista.add(new GombaFonal(tek1, tek2, g, megel, el));
+            index = end + 1;
+        }
+
+    } catch (Exception e) {
+        System.err.println("Hiba a GombaFonal.fromString feldolgozásában: " + e.getMessage());
     }
+    return lista;
+}
+
+
+
+private static String getErtek(String s, String kulcs) {
+    if (!s.contains("=")) {
+        throw new IllegalArgumentException("Hiányzó '=' jel a '" + kulcs + "' mezőnél: " + s);
+    }
+    String[] kv = s.split("=", 2);
+    if (kv.length < 2 || kv[1].isEmpty()) {
+        throw new IllegalArgumentException("Hiányzó érték a '" + kulcs + "' mezőhöz: " + s);
+    }
+    return kv[1];
+}
+
+
 
     public Tekton getTekton1() {
         return kapcsoltTektonok.get(0);
