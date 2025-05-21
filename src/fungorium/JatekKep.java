@@ -2,18 +2,15 @@ package fungorium;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.io.IOException;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import java.awt.event.ActionListener;
 
 
 
@@ -137,28 +134,7 @@ public class JatekKep extends JFrame {
         });
         jobbSzal.add(passButton);
 
-        palyaKep.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if (currentAction != null) {
-                Object clickedObject = palyaKep.getObjectAt(e.getX(), e.getY());
-                
-                if (clickedObject != null) {
-                    System.out.println("[DEBUG] Object selected: " + 
-                        clickedObject.getClass().getSimpleName() + 
-                        " (Step " + (currentStep + 1) + " of " + actionSteps.length + ")");
 
-                    // EZ A FONTOS: KISZERVEZETT MŰVELET
-                    handleObjectSelection(clickedObject); 
-                } else {
-                    JOptionPane.showMessageDialog(JatekKep.this, 
-                        "Nincs érvényes célpont a kiválasztott helyen!", 
-                        "Hibás célpont", 
-                        JOptionPane.WARNING_MESSAGE);
-                }
-            }
-        }
-    });
 
         frissul();
     }
@@ -192,7 +168,7 @@ private String getActionInstruction(String action) {
     }
 }
 private void handleObjectSelection(Object obj) {
-    selectedObjects.add(obj);
+        selectedObjects.add(obj);
 
     // Objektum típusa alapján neve vagy ID megjelenítése
     String objDesc = obj instanceof Rovar ? "Rovar #" + ((Rovar)obj).getId() :
@@ -206,13 +182,10 @@ private void handleObjectSelection(Object obj) {
         "Kiválasztás",
         JOptionPane.INFORMATION_MESSAGE);
 
-    currentStep++; // 
-
     if (currentStep < actionSteps.length - 1) {
         currentStep++;
         promptNextStep(); // következő lépés promptolása
     } else {
-        currentStep++;
         validateAndExecuteAction(); // utolsó után hajtódik végre
     }
 }
@@ -395,7 +368,7 @@ private void performAction() {
                             String.valueOf(end.getId())
                         };
                         if (jatek.vanValid(currentPlayer, command)) {
-                            gombasz.Kor("fonalnoveszt", jatek, command);
+                            gombasz.Kor(command, jatek);
                             jatek.ujKor();
                             frissul();
                             resetAction();
@@ -411,7 +384,7 @@ private void performAction() {
 
         // Általános érvényesség-ellenőrzés és művelet végrehajtása
         if (command != null && jatek.vanValid(currentPlayer, command)) {
-            currentPlayer.Kor(currentAction.toLowerCase(), jatek, command);
+            currentPlayer.Kor(command, jatek);
             palyaKep.drawingPanel.repaint();//
             jatek.ujKor();
             frissul();
@@ -570,7 +543,10 @@ private void setupActionButton(JButton button, String action) {
             
             if (command != null && jatek.vanValid(currentPlayer, command)) {
                 System.out.println("[DEBUG] Executing command: " + String.join(" ", command));
-                currentPlayer.Kor(currentAction.toLowerCase(), jatek, command);
+                Object newItem = currentPlayer.Kor(command, jatek);
+                if (newItem != null) {
+                    palyaKep.insertItem(newItem);
+                }
                 palyaKep.drawingPanel.repaint();
                 jatek.ujKor();
                 frissul();

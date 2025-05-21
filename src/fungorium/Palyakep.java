@@ -1,16 +1,13 @@
 package fungorium;
 
-import javax.swing.*;
-
-import org.w3c.dom.events.MouseEvent;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.awt.event.MouseAdapter;
+import javax.swing.*;
 //import javax.swing.Timer;
 
 
@@ -26,6 +23,7 @@ import java.awt.event.MouseAdapter;
 public class Palyakep extends JPanel {
     private List<Tekton> tectons; //Tektonok listája a játéktéren
     private JatekLogika jatekLogika;
+    private JatekKep jatekKep;
     private int nextTektonId = 1;
     private BufferedImage diagramImage;
     public final JPanel drawingPanel = new DrawingPanel();
@@ -82,6 +80,8 @@ public class Palyakep extends JPanel {
     private Map<Integer, Elolenyek> gombatestek = new HashMap<>();
 
     private Map<Integer, Elolenyek> gombaFonal = new HashMap<>(); 
+
+    private List<Elolenyek> sporak = new ArrayList<>(); 
 
     public void inicializalJatekterObjektumokat(JatekLogika jatekLogika) {
         for (Jatekos j : jatekLogika.getJatekosok()) {
@@ -251,6 +251,26 @@ public class Palyakep extends JPanel {
         return null;
     }
 
+    public void insertItem(Object object) {
+        if (object instanceof List<?> && !((List<?>)object).isEmpty() 
+        && ((List<?>)object).get(0) instanceof Spora) {
+            List<Spora> sporak = (List<Spora>)object;
+            for (Spora spora: sporak) {
+                addSpora(spora);
+            }
+        }
+        else if (object instanceof GombaFonal fonal) {
+            addGombaFonal(fonal, fonal.getTekton1().getId(),
+            fonal.getTekton2().getId());
+        }
+        else if (object instanceof GombaTest test) {
+            addGombaTest(test, test.getTekton().getId());
+        }
+        else if (object instanceof Rovar rovar) {
+            addRovar(rovar, rovar.getHol().getId());
+        }        
+    }
+
     //jó lenne ha ezt az addrovarfv hivna meg és 
     // Rovar hozzáadása egy Tektonhoz
     public void addRovar(Rovar rovar, int tektonId) {
@@ -308,6 +328,15 @@ public class Palyakep extends JPanel {
         if (position != null && position2 != null) {
             Elolenyek eloleny = new Elolenyek(gombaFonal, position, position2);
             this.gombaFonal.put(gombaFonal.getId(), eloleny);
+        }
+        drawingPanel.repaint();
+    }
+
+    public void addSpora(Spora spora) {
+        Point position = tektonCenters.get(spora.getHol().getId());
+        if (position != null) {
+            Elolenyek eloleny = new Elolenyek(spora, position);
+            sporak.add(eloleny);
         }
         drawingPanel.repaint();
     }
@@ -593,6 +622,7 @@ public class Palyakep extends JPanel {
                             }
                         }else if (tekton != null) {
                             hoveredTektonId = tekton.getId();
+                            listener.onObjectSelected(tekton);
                             System.out.println("[KIVÁLASZTVA] Tekton #" + tekton.getId());
                         } else {
                             hoveredElolenyId = null;

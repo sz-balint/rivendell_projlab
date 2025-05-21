@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class GombaFonal {
     private List<Tekton> kapcsoltTektonok; // Azon két tekton listája, amelyeken a fonál nő
-    public Gombasz kie;  // A gombász, akihez a fonál tartozik.
+    private Gombasz kie;  // A gombász, akihez a fonál tartozik.
     private int megel;  // A túlélési idő, amíg a fonál test nélkül életben maradhat, ebből számolunk le ha már nem él
     private boolean el=true; // Jelzi, hogy a fonál még él-e.
     private int id; // A fonalak azonosítására szolgál
@@ -16,13 +16,14 @@ public class GombaFonal {
 	public int getId() {
 		return id;
 	}
+
+    public Gombasz getKie() {
+        return kie;
+    }
 	
     // Gombafonál létrehozása csak tekton listával + Gombásszal (szükségessége kérdéses)
     public GombaFonal(List<Tekton> tekt, Gombasz g) {
-		kapcsoltTektonok = tekt;
-        kie = g;
-        megel = random.nextInt(5) + 1;
-        id = idCounter++; // Beállítja az egyedi azonosítót és növeli a számlálót
+        this(tekt.get(0), tekt.get(1), g); // Properly call the other constructor
     }
 
     // Gombafonál létrehozása két tektonnal + Gombásszal
@@ -30,6 +31,10 @@ public class GombaFonal {
 		kapcsoltTektonok = new ArrayList<>();
         kapcsoltTektonok.add(tek1);
         kapcsoltTektonok.add(tek2);
+        tek1.ujFonal(this);
+        tek1.ujKapcsoltTekton(tek2);
+        tek2.ujFonal(this);
+        tek2.ujKapcsoltTekton(tek1);
         kie = g;
         megel = random.nextInt(5) + 1;
         id = idCounter++;
@@ -37,18 +42,18 @@ public class GombaFonal {
 
     // Gombafonál létrehozása pontos adatokkal, tekton listával 
     public GombaFonal(List<Tekton> tekt, Gombasz g, int m, boolean e) {
-		kapcsoltTektonok = tekt;
-        kie = g;
-        megel = m;
-        el = e;
-        id = idCounter++;
+        this(tekt.get(0), tekt.get(1), g, m, e); 
     }
 
     // Gombafonál létrehozása pontos adatokkal, két tektonnal
-    public GombaFonal(Tekton tekt1, Tekton tek2, Gombasz g, int m, boolean e) {
+    public GombaFonal(Tekton tek1, Tekton tek2, Gombasz g, int m, boolean e) {
 		kapcsoltTektonok = new ArrayList<>();
-        kapcsoltTektonok.add(tekt1);
+        kapcsoltTektonok.add(tek1);
         kapcsoltTektonok.add(tek2);
+        tek1.ujFonal(this);
+        tek1.ujKapcsoltTekton(tek2);
+        tek2.ujFonal(this);
+        tek2.ujKapcsoltTekton(tek1);
         kie = g;
         megel = m;
         el = e;

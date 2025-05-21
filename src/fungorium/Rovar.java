@@ -19,6 +19,7 @@ public class Rovar {
     //üres konstruktor
     public Rovar(){
         this.allapot = Allapot.NORMAL;
+        id = idCounter++;
     }
 
     // Rovar létrehozása megadott állapottal

@@ -238,7 +238,7 @@ public class Tekton {
 		if (fonalak != null) {
             for (GombaFonal fonal : fonalak) {
 				//Ha az adott fonál a megfelelő gombászé, akkor hozzáadjuk a listához
-				if (fonal.kie==g ) gf.add(fonal);					
+				if (fonal.getKie()==g ) gf.add(fonal);					
             }
         }
 		return gf;
