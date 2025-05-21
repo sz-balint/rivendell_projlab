@@ -36,6 +36,8 @@ public class JatekKep extends JFrame {
     private int currentStep = 0;
     private String[] actionSteps = null;
     private List<Spora> sporak = new ArrayList<>();
+    //Palyakep pk = new Palyakep(jatekter, jatekLogika);
+    //jatekLogika.setPalyaKep(pk);
 
     public JatekKep(JatekLogika jat, Palyakep palyaKep) {
         super("Játék");

@@ -883,7 +883,7 @@ private Elolenyek findClickedEloleny(int x, int y) {
      * Megpróbálja szétválasztani a legnagyobb területű Tektonokat új Tekton létrehozása érdekében.
      * A folyamat validációval és rollback mechanizmussal biztosítja a játékegyenletességet.
      */
-    private void executeSplit(ActionEvent e) {
+    public void executeSplit() {
         if (tectons.size() >= MAX_TECTONS) {
             return; // Ha elértük a maximum Tekton számot, nem osztunk tovább
         }
