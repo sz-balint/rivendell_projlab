@@ -192,17 +192,17 @@ public class Elolenyek {
     }
 
     @Override
-    public String toString() {
-        if (this.getRovar() != null) {
-            return "Rovar #" + getRovar().getId() + " a Tekton #" + getRovar().getHol().getId() + "-on";
-        } else if (this.getGombaTest() != null) {
-            return "Gombatest #" + getGombaTest().getId() + " a Tekton #" + getGombaTest().getTekton().getId() + "-on";
-        } else if (this.getGombaFonal() != null) {
-            return "Gombafonal #" + getGombaFonal().getId() + " két Tekton között: " +
-                getGombaFonal().getTekton1().getId() + " és " + getGombaFonal().getTekton2().getId();
-        }
-        return "Ismeretlen élőlény";
+public String toString() {
+    if (this.getRovar() != null) {
+        return "Rovar #" + getRovar().getId() + " a Tekton #" + getRovar().getHol().getId() + "-on";
+    } else if (this.getGombaTest() != null) {
+        return "Gombatest #" + getGombaTest().getId() + " a Tekton #" + getGombaTest().getTekton().getId() + "-on";
+    } else if (this.getGombaFonal() != null) {
+        return "Gombafonal #" + getGombaFonal().getId() + " két Tekton között: " +
+               getGombaFonal().getTekton1().getId() + " és " + getGombaFonal().getTekton2().getId();
     }
+    return "Ismeretlen élőlény";
+}
 
 
     private Color getStateColor() {

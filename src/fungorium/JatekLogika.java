@@ -1,60 +1,64 @@
 package fungorium;
 
 import java.util.ArrayList;
+import java.util.*;
+import java.awt.*;
+import javax.swing.*;
 
 // A j t k logik j t vez rl  oszt ly, kezeli a k r ket, a j t kosok l p seit  s a tektonokat.
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class JatekLogika {
-    public static int korokSzama;   // A j t k  sszes k reinek sz ma.
-    public static List<Jatekos> Jatekosok;  // A j t kban r sztvev  j t kosok list ja.
-    private static int jelenKor;   // Az aktu lis k r sz ma.
-    private static Jatekos aktivJatekos;   // Az a j t kos, aki  ppen soron van.
-    private static List<Tekton> Jatekter;  // A j t k  sszes tektonj t tartalmaz  lista.
+    public int korokSzama;   // A j t k  sszes k reinek sz ma.
+    public  List<Jatekos> jatekosok;  // A j t kban r sztvev  j t kosok list ja.
+    private  int jelenKor;   // Az aktu lis k r sz ma.
+    private  Jatekos aktivJatekos;   // Az a j t kos, aki  ppen soron van.
+    private  List<Tekton> jatekter;  // A j t k  sszes tektonj t tartalmaz  lista.
 
     //Konstruktorok:
     
     //Üres állapot generálása
     public JatekLogika(){  
         korokSzama=1;
-        Jatekosok = new ArrayList<>();
+        jatekosok = new ArrayList<>();
         jelenKor = 0;
-        Jatekter = new ArrayList<>();
+        jatekter = new ArrayList<>();
     }
 
     //Megadott állapot beállítása
     public JatekLogika(int korokSzama, List<Jatekos> Jatekosok, int jelenKor, Jatekos aktivJatekos,List<Tekton> Jatekter){
         this.korokSzama = korokSzama;
-        this.Jatekosok = Jatekosok;
+        this.jatekosok = Jatekosok;
         this.jelenKor = jelenKor;
         this.aktivJatekos = aktivJatekos;
-        this.Jatekter = Jatekter;
+        this.jatekter = Jatekter;
     }
 
 
 
     public void palyaGeneralas(int jatekosokSzama) {
         int tektonokSzama = 2 * jatekosokSzama;
-        Jatekter.clear(); // Clear any existing plates
+        jatekter.clear(); // Clear any existing plates
 
         for (int i = 0; i < tektonokSzama; i++) {
-            Jatekter.add(new Tekton("sima"));
+            jatekter.add(new Tekton("sima"));
         }
         
         for (int i = 0; i < tektonokSzama - 1; i++) {
-            Jatekter.get(i).addSzomszed(Jatekter.get(i + 1));
-            Jatekter.get(i + 1).addSzomszed(Jatekter.get(i)); // Ensure bidirectional
+            jatekter.get(i).addSzomszed(jatekter.get(i + 1));
+            jatekter.get(i + 1).addSzomszed(jatekter.get(i)); // Ensure bidirectional
         }
         
         Random random = new Random();
         for (int i = 0; i < tektonokSzama; i++) {
             int t1 = random.nextInt(tektonokSzama);
             int t2 = random.nextInt(tektonokSzama);
-            if (t1 != t2 && !Jatekter.get(t1).getSzomszedok().contains(Jatekter.get(t2))) {
-                Jatekter.get(t1).addSzomszed(Jatekter.get(t2));
-                Jatekter.get(t2).addSzomszed(Jatekter.get(t1));
+            if (t1 != t2 && !jatekter.get(t1).getSzomszedok().contains(jatekter.get(t2))) {
+                jatekter.get(t1).addSzomszed(jatekter.get(t2));
+                jatekter.get(t2).addSzomszed(jatekter.get(t1));
             }
         }
     }
@@ -62,7 +66,7 @@ public class JatekLogika {
     public void palyaFeltoltes() {
         Random random = new Random();
 
-        for (Jatekos j : Jatekosok) {
+        for (Jatekos j : jatekosok) {
             if (j instanceof Rovarasz) {
                 Rovarasz r = (Rovarasz) j;
     
@@ -73,7 +77,7 @@ public class JatekLogika {
                 Rovar rovar = new Rovar();
                 rovar.setKie(r);
     
-                Tekton randomTekton = Jatekter.get(random.nextInt(Jatekter.size()));
+                Tekton randomTekton = jatekter.get(random.nextInt(jatekter.size()));
                 rovar.lep(randomTekton);
     
                 r.UjRovar(rovar);
@@ -84,7 +88,7 @@ public class JatekLogika {
                 int attempts = 0;
                 
                 do {
-                    randomTekton = Jatekter.get(random.nextInt(Jatekter.size()));
+                    randomTekton = jatekter.get(random.nextInt(jatekter.size()));
                     attempts++;
                     if (attempts > 100) break;
                 } while (randomTekton.getGombaTest() != null || !randomTekton.vanHely());
@@ -109,8 +113,8 @@ public class JatekLogika {
     // Meghívja a Jatekter egy random tektonjára a kettétörés függvényt és az új tektont elmenti
    public void tores() {
         Random rnd = new Random();
-        int idx = rnd.nextInt(Jatekter.size());
-        Jatekter.add(Jatekter.get(idx).kettetores());
+        int idx = rnd.nextInt(jatekter.size());
+        jatekter.add(jatekter.get(idx).kettetores());
     }
 
     //Getterek, setterek és adderek:
@@ -118,9 +122,9 @@ public class JatekLogika {
     public int getKorokSzama() { return korokSzama; }
     public void setKorokSzama(int k) { this.korokSzama = k; }
 
-    public List<Jatekos> getJatekosok() { return Jatekosok; }
-    public void setJatekosok(List<Jatekos> j) { this.Jatekosok = j; }
-    public void addJatekos(Jatekos j) { this.Jatekosok.add(j); }
+    public List<Jatekos> getJatekosok() { return jatekosok; }
+    public void setJatekosok(List<Jatekos> j) { this.jatekosok = j; }
+    public void addJatekos(Jatekos j) { this.jatekosok.add(j); }
 
     public int getJelenKor() { return jelenKor; }
     public void setJelenKor(int k) { this.jelenKor = k; }
@@ -128,15 +132,15 @@ public class JatekLogika {
     public Jatekos getAktivJatekos() { return aktivJatekos; }
     public void setAktivJatekos(Jatekos j) { this.aktivJatekos = j; }
 
-    public List<Tekton> getJatekter() { return Jatekter; }
-    public void setJatekter(List<Tekton> t) { this.Jatekter = t; }
+    public List<Tekton> getJatekter() { return jatekter; }
+    public void setJatekter(List<Tekton> t) { this.jatekter = t; }
     public void addTekton(Tekton t) { 
-     	Jatekter.add(t); 
-     	if (Jatekter.size() > 3) {
+     	jatekter.add(t); 
+     	if (jatekter.size() > 3) {
      		Random rnd = new Random();
      		List <Integer> szomszedok = new ArrayList<Integer>();
      		for (int i = rnd.nextInt(2,3);i > 0; i--) {
-     			int tek = rnd.nextInt(Jatekter.size());
+     			int tek = rnd.nextInt(jatekter.size());
      			boolean volte = false;
      			for (int szom : szomszedok) {
      				if (szom == tek) volte = true;
@@ -145,7 +149,7 @@ public class JatekLogika {
      				i++;
      			}
      			else {
-     				Tekton tekton = Jatekter.get(tek);
+     				Tekton tekton = jatekter.get(tek);
      				t.addSzomszed(tekton);
      				tekton.addSzomszed(t);
      				szomszedok.add(tek);
@@ -154,7 +158,7 @@ public class JatekLogika {
      		
      	}
      	else {
-     		for (Tekton tekton : Jatekter) {
+     		for (Tekton tekton : jatekter) {
  				t.addSzomszed(tekton);
  				tekton.addSzomszed(t);
  			}
@@ -189,13 +193,13 @@ public class JatekLogika {
             return;
         }
 
-        int i = Jatekosok.indexOf(aktivJatekos);
+        int i = jatekosok.indexOf(aktivJatekos);
         i++;
-        if (i >= Jatekosok.size()) {
+        if (i >= jatekosok.size()) {
             i = 0;
         }
 
-        aktivJatekos = Jatekosok.get(i);
+        aktivJatekos = jatekosok.get(i);
         jelenKor++;
     }
 
@@ -212,7 +216,7 @@ public class JatekLogika {
         List<Jatekos> gombasz = new ArrayList<>();
         List<Jatekos> rovarasz = new ArrayList<>();
 
-        for (Jatekos jatekos : Jatekosok) {
+        for (Jatekos jatekos : jatekosok) {
             if(jatekos.getTipus().equals( "Gombasz")) {
                 gombasz.add(jatekos);
             } else if (jatekos.getTipus().equals( "Rovarasz")) {
@@ -251,7 +255,7 @@ public class JatekLogika {
 
     }
 public Tekton findTektonById(int id) {
-        for (Tekton tekton : Jatekter) {
+        for (Tekton tekton : jatekter) {
             if (tekton.getId() == id) {
                 return tekton;
             }
@@ -280,10 +284,10 @@ public Tekton findTektonById(int id) {
      	}
      	case "ujTest": {
  			int id = Integer.parseInt(parancsok[1]);
- 			for(int i=0; i < Jatekter.size(); i++) {
- 				if(Jatekter.get(i).getId()==id) {
- 					if (Jatekter.get(i).getSporakSzama() > 4 && Jatekter.get(i).vanHely())
- 						for (GombaFonal fonal : Jatekter.get(i).getFonalak()) {
+ 			for(int i=0; i < jatekter.size(); i++) {
+ 				if(jatekter.get(i).getId()==id) {
+ 					if (jatekter.get(i).getSporakSzama() > 4 && jatekter.get(i).vanHely())
+ 						for (GombaFonal fonal : jatekter.get(i).getFonalak()) {
  							if (fonal.kie == getAktivJatekos()) return true;
  						}
  					return false;
@@ -301,10 +305,10 @@ public Tekton findTektonById(int id) {
  				if (tekton.getId() == t2id) t2 = tekton; 
  			}
  			if (t1 == null || t2 == null) return false;
- 			for(int i=0; i < Jatekter.size(); i++) { 
- 				if (Jatekter.get(i).getGombaTest() != null)
- 					if (Jatekter.get(i).getGombaTest().getId() == id) {
- 						Gombasz gombasz = Jatekter.get(i).getGombaTest().kie;
+ 			for(int i=0; i < jatekter.size(); i++) { 
+ 				if (jatekter.get(i).getGombaTest() != null)
+ 					if (jatekter.get(i).getGombaTest().getId() == id) {
+ 						Gombasz gombasz = jatekter.get(i).getGombaTest().kie;
  						if (gombasz == getAktivJatekos()) {
  							for (GombaFonal fonal : gombasz.getFonalak()) {
  								for (Tekton tekton : fonal.getKapcsoltTektonok()) {
@@ -322,7 +326,7 @@ public Tekton findTektonById(int id) {
      		int fid = Integer.parseInt(parancsok[1]), rid = Integer.parseInt(parancsok[2]);
      		GombaFonal f = null;
      		Rovar r = null;
-     		for (Tekton tekton : Jatekter) {
+     		for (Tekton tekton : jatekter) {
  				for (GombaFonal fonal : tekton.getFonalak()) {
  					if (fonal.getId() == fid) f = fonal;
  				}
@@ -342,7 +346,7 @@ public Tekton findTektonById(int id) {
      		int tid = Integer.parseInt(parancsok[1]), rid = Integer.parseInt(parancsok[2]);
      		Tekton t = null;
      		Rovar r = null;
-     		for (Tekton tekton : Jatekter) {
+     		for (Tekton tekton : jatekter) {
      			if (tekton.getId() == tid) t = tekton;
  				for (Rovar rovar : tekton.getRovarok()) {
  					if (rovar.getId() == rid) r = rovar;
@@ -359,7 +363,7 @@ public Tekton findTektonById(int id) {
      	case "eszik": {
      		int rid = Integer.parseInt(parancsok[1]);
      		Rovar r = null;
-     		for (Tekton tekton : Jatekter) {
+     		for (Tekton tekton : jatekter) {
  				for (Rovar rovar : tekton.getRovarok()) {
  					if (rovar.getId() == rid) r = rovar;
  				}
@@ -382,15 +386,22 @@ public Tekton findTektonById(int id) {
           .append(aktivJatekos.nev)
           .append("\n");
 
+        sb.append("Voronoi-pontok:\n");
+        for (Map.Entry<Integer, Palyakep.TektonVisualData> entry : Palyakep.tektonVisualData.entrySet()) {
+            int id = entry.getKey();
+            Point p = entry.getValue().position;
+            sb.append(id).append(";").append(p.x).append(";").append(p.y).append("\n");
+        }
+
         // játékosok
         sb.append("JATEKOSOK:\n");
-        for (Jatekos j : Jatekosok) {
+        for (Jatekos j : jatekosok) {
             sb.append(j.toString()).append("\n");
         }
 
         // tektonok
         sb.append("TEKTONOK:\n");
-        for (Tekton t : Jatekter) {
+        for (Tekton t : jatekter) {
             sb.append(t.listaz()).append("\n");
         }
 
@@ -398,7 +409,7 @@ public Tekton findTektonById(int id) {
     }
 
     public Tekton getTektonById(int id) {
-        for (Tekton t : Jatekter) {
+        for (Tekton t : jatekter) {
             if (t.getId() == id) {
                 return t;
             }
@@ -407,7 +418,7 @@ public Tekton findTektonById(int id) {
     }
 
     public Jatekos getJatekosByNev(String nev) {
-        for (Jatekos j : Jatekosok) {
+        for (Jatekos j : jatekosok) {
             if (j.nev.equals(nev)) {
                 return j;
             }
