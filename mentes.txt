@@ -1,9 +1,0 @@
-20;0;a
-JATEKOSOK:
-Gombasz{nev=a,pontok=0}
-Rovarasz{nev=s,pontok=1}
-TEKTONOK:
-Tekton{id:0;tulajdonsagok:'testnelkuli';szomszedok:[#1, #2, #3];sporakSzama:0;sporak:[];fonalak:[];rovarok:[Rovar{hol='#0,allapot=NORMAL,kie=Rovarasz{nev=s,pontok=1}}];gombaTest:null;kapcsoltTekton:[]}
-Tekton{id:1;tulajdonsagok:'egyfonalas';szomszedok:[#0, #3];sporakSzama:0;sporak:[];fonalak:[GombaFonal{kapcsoltTektonok=[#2, #1],kie=Gombasz{nev=a,pontok=0},megel=1,el=true}];rovarok:[];gombaTest:null;kapcsoltTekton:[]}
-Tekton{id:2;tulajdonsagok:'egyfonalas';szomszedok:[#0, #3];sporakSzama:0;sporak:[];fonalak:[GombaFonal{kapcsoltTektonok=[#2, #1],kie=Gombasz{nev=a,pontok=0},megel=1,el=true}, GombaFonal{kapcsoltTektonok=[#2, #3],kie=Gombasz{nev=a,pontok=0},megel=4,el=true}];rovarok:[];gombaTest:GombaTest{hol=#2,kor=0,elegOreg=false,utolsoSporaszoras=0,sporaszorasokSzama=0,kie=Gombasz{nev=a,pontok=0}};kapcsoltTekton:[]}
-Tekton{id:3;tulajdonsagok:'sima';szomszedok:[#0, #1, #2];sporakSzama:0;sporak:[];fonalak:[GombaFonal{kapcsoltTektonok=[#2, #3],kie=Gombasz{nev=a,pontok=0},megel=4,el=true}];rovarok:[];gombaTest:null;kapcsoltTekton:[]}
