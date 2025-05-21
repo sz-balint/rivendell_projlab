@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 
 public class Elolenyek {
@@ -170,20 +171,20 @@ public class Elolenyek {
             if (kapcsoltTektonok.size() == 2) {
                 Tekton t1 = kapcsoltTektonok.get(0);
                 Tekton t2 = kapcsoltTektonok.get(1);
-                
+
                 Palyakep.TektonVisualData tvd1 = tektonVisualData.get(t1.getId());
                 Palyakep.TektonVisualData tvd2 = tektonVisualData.get(t2.getId());
-                
+
                 if (tvd1 != null && tvd2 != null) {
                     Point p1 = tvd1.position;
                     Point p2 = tvd2.position;
-                    
+
                     // Vonal rajzolása
                     g2d.setColor(color);  // A játékos színét használjuk
                     g2d.setStroke(new BasicStroke(5));  // Vastagabb vonal
                     g2d.drawLine(
-                        (int)(p1.x), (int)(p1.y),
-                        (int)(p2.x), (int)(p2.y)
+                            (int) (p1.x), (int) (p1.y),
+                            (int) (p2.x), (int) (p2.y)
                     );
                 }
             }

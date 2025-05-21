@@ -81,7 +81,9 @@ public class Palyakep extends JPanel {
     // Gombatestek tárolása ID alapján
     private Map<Integer, Elolenyek> gombatestek = new HashMap<>();
 
-    private Map<Integer, Elolenyek> gombaFonal = new HashMap<>(); 
+    private Map<Integer, Elolenyek> gombaFonal = new HashMap<>();
+
+    private Map<Integer, Elolenyek> sporak = new HashMap<>();
 
     public void inicializalJatekterObjektumokat(JatekLogika jatekLogika) {
         for (Jatekos j : jatekLogika.getJatekosok()) {
