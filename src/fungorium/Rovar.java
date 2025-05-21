@@ -91,6 +91,8 @@ public class Rovar {
     public void eszik(Spora s) {
         s.getHol().sporaElvesz(s); // Spóra eltávolítása a tektonról
         allapotFrissites(s.getsporaType()); // Állapot frissítése a spóra típusa alapján
+        System.out.println("Spóra eltávolítva: " + s);
+        System.out.println("Rovar új állapota: " + this.allapot);
     }
 
 

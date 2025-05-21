@@ -141,17 +141,18 @@ public class Gombasz extends Jatekos {
         Scanner scanner = new Scanner(System.in);
     	//Gombasz Sporaszoras lepese
     	if (parancs.equals("sporaszoras")) { 
-    		System.out.println("Lehetséges Tektonok: "); 
+    		//System.out.println("Lehetséges Tektonok: "); 
     		
 			for(int i=0; i < Testek.size(); i++) { //Kiirjuk a szomszedos Tektonokat
 				System.out.println(Testek.get(i).getTekton().listaz());
 			}
 			
-			System.out.println("Add meg a választott Tektonok id-át: "); //Megvajuk a Tekton id-t
+			//System.out.println("Add meg a választott Tektonok id-át: "); //Megvajuk a Tekton id-t
 			int valasz = scanner.nextInt();
 			
 			for(int i=0; i < Testek.size(); i++) { //Megkeressuk es ratesszuk a sporat
-				if(Testek.get(i).getTekton().getId()==valasz) {
+				//if(Testek.get(i).getTekton().getId()==valasz) {
+                if (Testek.get(i).getId() == valasz){
 					sporaszorastkezd(Testek.get(i),Testek.get(i).getTekton());
 				}
 			}
@@ -179,18 +180,18 @@ public class Gombasz extends Jatekos {
     	//Gombasz uj Fonalat noveszt
     	if (parancs.equals("fonalnoveszt")) { 
     		//Kiirjuk a GombaTesteket
-			System.out.println("Lehetséges GombaTestek: ");
+			//System.out.println("Lehetséges GombaTestek: ");
 			for(int i = 0; i < Testek.size(); i++) {
 				System.out.println(i + 1 + ". " + Testek.get(i).toString());
 			}
 			
-			System.out.println("Add meg a sorszámát:");
+			//System.out.println("Add meg a sorszámát:");
 			int valasz2 = scanner.nextInt();
 			
 			//A valasztott Test Tektonja lesz a kezdo Tekton
 			Tekton kezdoTekton = Testek.get(valasz2-1).getTekton();
 			
-			System.out.println("Lehetséges cél Tektonok: "); 
+			//System.out.println("Lehetséges cél Tektonok: "); 
 			//Kiirjuk, hogy melyikek lehetnek a cel Tektonok, tulajdonkeppen a szomszedok
 			for (Tekton tekt :kezdoTekton.getSzomszedok()) {
 				System.out.println(tekt.listaz());
@@ -237,7 +238,7 @@ public class Gombasz extends Jatekos {
     	
     	//Gombasz uj Fonalat noveszt
     	if (parancs[0].equals("fonalnoveszt")) { 
-			int valasz2 = Integer.parseInt(parancs[1]);
+			int valasz2 = Integer.parseInt(parancs[2]);
 			Tekton kezdoTekton = null;
             for (Tekton te : jatek.getJatekter()) {
 				if (te.getId()==valasz2) 

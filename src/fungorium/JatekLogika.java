@@ -17,6 +17,8 @@ public class JatekLogika {
     private  int jelenKor;   // Az aktu lis k r sz ma.
     private  Jatekos aktivJatekos;   // Az a j t kos, aki  ppen soron van.
     private  List<Tekton> jatekter;  // A j t k  sszes tektonj t tartalmaz  lista.
+    private Palyakep palyaKep;
+    public void setPalyaKep(Palyakep pk) { this.palyaKep = pk; }
 
     //Konstruktorok:
     
@@ -178,22 +180,27 @@ public class JatekLogika {
     // Egy  j k r ind t sa.
     // Megnézi hogy vége van-e a játéknak, ha nem akkor növeli az aktuális kör számát 
     // és továbblép a következő játékosra
+public void ujKor() {
+    if (jatekVege()) return;
+
+    int i = jatekosok.indexOf(aktivJatekos);
+    i++;
+    if (i >= jatekosok.size()) i = 0;
+
+    aktivJatekos = jatekosok.get(i);
+    jelenKor++;
+
+    // Minden második kör után hívjuk meg a palyaKep.executeSplit-et
+    if (jelenKor % (jatekosok.size() * 2) == 0 && palyaKep != null) {
+        System.out.println("Kör végi tekton osztódás indul...");
+        palyaKep.executeSplit();
+        palyaKep.drawingPanel.repaint();
+}
+    }
+
+
+
     /*public void ujKor() {
-        if (jatekVege()) {
-            return;
-        }
-
-        int i = Jatekosok.indexOf(aktivJatekos);
-        i++;
-        if (i == Jatekosok.size())
-            i=0;
-        aktivJatekos = Jatekosok.get(i);
-
-        jelenKor++;
-        if (jelenKor % Jatekosok.size() == 0) tores();
-    }*/
-
-    public void ujKor() {
         if (jatekVege()) {
             return;
         }
@@ -206,7 +213,7 @@ public class JatekLogika {
 
         aktivJatekos = jatekosok.get(i);
         jelenKor++;
-    }
+    }*/
 
 
     // Ellen rzi, hogy v ge van-e a j t knak,  s kihirdeti a gy ztest.
@@ -277,13 +284,21 @@ public Tekton findTektonById(int id) {
      	switch (parancs) {
      	
      	case "sporaszoras": {
+            System.out.println("lefut??");
  			List<GombaTest> Testek = ((Gombasz)getAktivJatekos()).getTestek();
  			int id = Integer.parseInt(parancsok[1]);
  			for(int i=0; i < Testek.size(); i++) {
- 				if(Testek.get(i).getTekton().getId()==id) {
- 					if (Testek.get(i).utolsoSporaszoras < 2) return false;
- 					else return true;
- 				}
+ 				/*if(Testek.get(i).getTekton().getId()==id) {
+ 					//if (Testek.get(i).utolsoSporaszoras < 2) return false;
+ 					//else return true;
+                    System.out.println("igaz");
+                    return true;
+ 				}*/
+                if (Testek.get(i).getId() == id) {
+                    //System.out.println("igaz");
+                    return true;
+                }
+
  			}
  			break;
      	}

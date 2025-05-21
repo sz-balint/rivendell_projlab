@@ -39,15 +39,67 @@ public class Rovarasz extends Jatekos {
     // A rovarász pontjainak frissítése, ha a rovar spórát evett.
     @Override
     public void pontokFrissit() { pontok++; }
-   
-    @Override
-    public Object Kor(String[] parancs, JatekLogika jatek) {
+
+   public void Kor(String parancs, JatekLogika jatek, String[] parameterek) {
         try {
-            switch (parancs[0].toLowerCase()) {
+            switch (parancs.toLowerCase()) {
                 case "vagas":
-                    if (parancs.length >= 3) {
-                        int fonalId = Integer.parseInt(parancs[1]);
-                        int rovarId = Integer.parseInt(parancs[2]);
+                    if (parameterek.length >= 2) {
+                        int fonalId = Integer.parseInt(parameterek[0]);
+                        int rovarId = Integer.parseInt(parameterek[1]);
+
+                        Rovar rovar = findRovarById(rovarId);
+                        GombaFonal fonal = findFonalById(rovar.getHol(), fonalId);
+
+                        if (rovar != null && fonal != null) {
+                            fonalVagas(rovar, fonal);
+                        }
+                    }
+                    break;
+
+                case "lep":
+                    if (parameterek.length >= 2) {
+                        int tektonId = Integer.parseInt(parameterek[0]);
+                        int rovarId = Integer.parseInt(parameterek[1]);
+
+                        Rovar rovar = findRovarById(rovarId);
+                        Tekton celTekton = jatek.findTektonById(tektonId);
+
+                        if (rovar != null && celTekton != null &&
+                                rovar.getHol().getSzomszedok().contains(celTekton)) {
+                            rovarLepes(rovar, celTekton);
+                            System.out.println("rovarlepett ");
+                            System.out.println(celTekton.getId());
+                        }
+                    }
+                    break;
+
+                case "eszik":
+                    if (parameterek.length >= 1) {
+                        int rovarId = Integer.parseInt(parameterek[0]);
+                        Rovar rovar = findRovarById(rovarId);
+
+                        if (rovar != null && !rovar.getHol().getSporak().isEmpty()) {
+                            Random random = new Random();
+                            Spora spora = rovar.getHol().getSporak()
+                                    .get(random.nextInt(rovar.getHol().getSporak().size()));
+                            eves(rovar, spora);
+                        }
+                    }
+                    break;
+            }
+        } catch (NumberFormatException e) {
+            System.err.println("Hibás paraméter formátum: " + e.getMessage());
+        }
+    }
+
+    /*public void Kor(String parancs, JatekLogika jatek, String[] parameterek) {
+        try {
+            switch (parancs.toLowerCase()) {
+                case "vagas":
+                    if (parameterek.length >= 2) {
+                        int fonalId = Integer.parseInt(parameterek[0]);
+                        int rovarId = Integer.parseInt(parameterek[1]);
                         
                         Rovar rovar = findRovarById(rovarId);
                         GombaFonal fonal = findFonalById(rovar.getHol(), fonalId);
@@ -60,9 +112,9 @@ public class Rovarasz extends Jatekos {
                     break;
                     
                 case "lep":
-                    if (parancs.length >= 3) {
-                        int tektonId = Integer.parseInt(parancs[1]);
-                        int rovarId = Integer.parseInt(parancs[2]);
+                    if (parameterek.length >= 2) {
+                        int tektonId = Integer.parseInt(parameterek[0]);
+                        int rovarId = Integer.parseInt(parameterek[1]);
                         
                         Rovar rovar = findRovarById(rovarId);
                         Tekton celTekton = jatek.findTektonById(tektonId);
@@ -79,8 +131,8 @@ public class Rovarasz extends Jatekos {
                     break;
                     
                 case "eszik":
-                    if (parancs.length >= 2) {
-                        int rovarId = Integer.parseInt(parancs[1]);
+                    if (parameterek.length >= 1) {
+                        int rovarId = Integer.parseInt(parameterek[0]);
                         Rovar rovar = findRovarById(rovarId);
                         
                         if (rovar != null && !rovar.getHol().getSporak().isEmpty()) {
@@ -95,8 +147,7 @@ public class Rovarasz extends Jatekos {
         } catch (NumberFormatException e) {
             System.err.println("Hibás paraméter formátum: " + e.getMessage());
         }
-        return null;
-    }
+    }*/
 
     private Rovar findRovarById(int id) {
         for (Rovar rovar : Rovarok) {
@@ -116,8 +167,56 @@ public class Rovarasz extends Jatekos {
         }
         return null;
     }
-
     @Override
+public void Kor(String parancs, JatekLogika jatek) {
+    if (Rovarok.isEmpty()) {
+        System.out.println("[INFO] Nincs rovar a játékosnál.");
+        return;
+    }
+
+    Rovar rovar = Rovarok.get(0); // első rovarral dolgozunk alapértelmezetten
+
+    switch (parancs.toLowerCase()) {
+        case "vagas":
+            if (!rovar.getHol().getFonalak().isEmpty()) {
+                GombaFonal fonal = rovar.getHol().getFonalak().get(0); // első fonal
+                fonalVagas(rovar, fonal);
+                System.out.println("[INFO] Rovar #" + rovar.getId() + " elvágta a fonalat #" + fonal.getId());
+            } else {
+                System.out.println("[INFO] Nincs fonal ezen a tektonon.");
+            }
+            break;
+
+        case "lep":
+            List<Tekton> szomszedok = rovar.getHol().getSzomszedok();
+            if (!szomszedok.isEmpty()) {
+                Tekton cel = szomszedok.get(0); // első szomszéd tekton
+                rovarLepes(rovar, cel);
+                System.out.println("[INFO] Rovar #" + rovar.getId() + " átlépett a tekton #" + cel.getId() + "-ra.");
+            } else {
+                System.out.println("[INFO] Nincs szomszédos tekton.");
+            }
+            break;
+
+        case "eszik":
+            List<Spora> sporak = rovar.getHol().getSporak();
+            if (!sporak.isEmpty()) {
+                Spora spora = sporak.get(new Random().nextInt(sporak.size()));
+                eves(rovar, spora);
+                System.out.println("[INFO] Rovar #" + rovar.getId() + " megevett egy spórát.");
+            } else {
+                System.out.println("[INFO] Nincs spóra a tektonon.");
+            }
+            break;
+
+        default:
+            System.out.println("[HIBA] Ismeretlen parancs: " + parancs);
+            break;
+    }
+}
+
+
+    /* @Override
     public void Kor(String parancs,JatekLogika jatek) {
     	Scanner scanner = new Scanner(System.in);
     	//Rovarasz vagas lepese
@@ -181,7 +280,7 @@ public class Rovarasz extends Jatekos {
 			System.out.println(tekton.getId());
 		}
     	
-    	//Rovarasz sporat eszik
+    	//Gombasz uj Fonalat noveszt
     	if (parancs.equals("eszik")) { 
     		//Kivalasszuk melyik Rovarral akarunk lepni
     		System.out.println("Valassz Rovarat: "); 
@@ -199,7 +298,9 @@ public class Rovarasz extends Jatekos {
 			if(rovar.getHol().getSporak().size()!=0) {
 				//Keresunk egy random Sporat
 				Random random = new Random();
-				Spora spora = rovar.getHol().getSporak().get(random.nextInt());
+				Spora spora = rovar.getHol().getSporak().get(
+                    random.nextInt(rovar.getHol().getSporak().size())
+                );
 				
 				eves(rovar,spora);
 			} else {
@@ -209,8 +310,8 @@ public class Rovarasz extends Jatekos {
 		}
     	String valasz = scanner.nextLine();
     	
-    	//scanner.close();
-    }
+    	scanner.close();
+    }*/
     
     @Override
     public String toString() {

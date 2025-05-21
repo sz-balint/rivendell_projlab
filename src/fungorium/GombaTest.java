@@ -62,7 +62,7 @@ public class GombaTest {
     // A gombatest sporakat szor egy kozeli tektonra
     public List<Spora> sporaSzoras() {
 		//Megnezzuk termelt-e eleg sporat
-    	if (utolsoSporaszoras<2) return null;
+    	//if (utolsoSporaszoras<2) return null;
     	List<Tekton> sz = new ArrayList<>();
 		//Megnezzuk eleg oreg-e hogy tavolabbra szorjon
     	if (!elegOreg) sz.addAll(hol.getSzomszedok());  
@@ -70,18 +70,16 @@ public class GombaTest {
 		//A megfelelo tektonok kozul 3ra sporat rak
     	System.out.println("sz size: " + sz.size());
         List<Spora> list = new ArrayList<>();
-    	for (int i=0; i<3; i++){
-            //Egy random számot generál 0-tól a szomszédok száma-1 ig
-            int r=random.nextInt(sz.size()-1);
-            //Csinál egy spórát ami a random szomszéd tektonon lesz
-    		Spora sp= new Spora(1,2,sz.get(r));
-            //A sporát a tektonra rakja
-    		sz.get(r).sporatKap(sp);
+        int maxSpora = Math.min(3, sz.size()); // Maximum 3 spórát szór, de csak ha van elég cél
+
+        for (int i = 0; i < maxSpora; i++) {
+            int r = random.nextInt(sz.size());
+            Spora sp = new Spora(1, 2, sz.get(r));
+            sz.get(r).sporatKap(sp);
             list.add(sp);
-    		System.out.println("Spóra szórva a tektonra. Tekton ID: " + sz.get(r).getId() + ".");
-            //A tektont eltávolítja a lehetséges szomszédok közül
+            System.out.println("Spóra szórva a tektonra. Tekton ID: " + sz.get(r).getId() + ".");
             sz.remove(r);
-    		}
+        }
         //Töröljük az sz-et a biztonság kedvéért
         sz.clear();
         //Növeljük a sporaszorasok számát
