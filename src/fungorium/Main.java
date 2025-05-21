@@ -7,10 +7,7 @@
 
 package fungorium;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-
 import javax.swing.SwingUtilities;
 
 public class Main {
@@ -19,7 +16,11 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println(System.getProperty("user.dir"));
-
+        SwingUtilities.invokeLater(() -> {
+                    KezdoKep frame = new KezdoKep(); // ez nyitja meg a kezdőképernyőt
+                    frame.setVisible(true);
+                });
+        /*
         System.out.print("Szeretnél tesztet futtatni? (i = igen, n = CLI játék, g = grafikus játék): ");
         String valasz = scanner.nextLine().trim().toLowerCase();
 
@@ -43,5 +44,6 @@ public class Main {
             default:
                 System.out.println("Hibás válasz! Használj 'i', 'n' vagy 'g' betűt.");
         }
+                */
     }
 }

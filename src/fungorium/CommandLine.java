@@ -7,8 +7,6 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import javax.swing.SwingUtilities;
-
 public class CommandLine {
 //Commandline osztalyban van egy jateklogika objektum
 //letudja kerni a jateklogikabol az allapotot és vissza is tudja adni
@@ -331,8 +329,8 @@ public void setJatekosokSzama(int szam) {
 			for(int i=0; i < jatek.getJatekter().size(); i++) {
 				if(jatek.getJatekter().get(i).getId()==id) {
 					for (GombaFonal fonal : jatek.getJatekter().get(i).getFonalak())
-						if (fonal.kie == jatek.getAktivJatekos())  {
-							fonal.kie.testNoveszt(fonal, jatek.getJatekter().get(i));
+						if (fonal.getKie() == jatek.getAktivJatekos())  {
+							fonal.getKie().testNoveszt(fonal, jatek.getJatekter().get(i));
 							System.out.println("Test téve a(z) " + id + "-jú tektonra.");
 						}
 				}

@@ -91,11 +91,13 @@ public class JatekLogika {
                     randomTekton = jatekter.get(random.nextInt(jatekter.size()));
                     attempts++;
                     if (attempts > 100) break;
-                } while (randomTekton.getGombaTest() != null || !randomTekton.vanHely());
+                } while (randomTekton.getGombaTest() != null && !randomTekton.vanHely());
                 
                 if (randomTekton.getGombaTest() == null && randomTekton.vanHely()) {
                     GombaTest test = new GombaTest(randomTekton, g);
+                    randomTekton.setTest(test);
                     g.UjGombaTest(test);
+                    System.err.println("Gombatest létrehozva: " + test.getId()+" "+ test.getTekton().getId());
                     
                     for (Tekton szomszed : randomTekton.getSzomszedok()) {
                         if (szomszed.vanHely()) {
@@ -105,6 +107,9 @@ public class JatekLogika {
                             szomszed.ujFonal(fonal);
                         }
                     }
+                }
+                else {
+                    System.out.println("Nem sikerült gombatestet létrehozni veletlen tektonon.");
                 }
             }
         }
@@ -282,13 +287,13 @@ public Tekton findTektonById(int id) {
  			}
  			break;
      	}
-     	case "ujTest": {
+     	case "ujtest": {
  			int id = Integer.parseInt(parancsok[1]);
  			for(int i=0; i < jatekter.size(); i++) {
  				if(jatekter.get(i).getId()==id) {
  					if (jatekter.get(i).getSporakSzama() > 4 && jatekter.get(i).vanHely())
  						for (GombaFonal fonal : jatekter.get(i).getFonalak()) {
- 							if (fonal.kie == getAktivJatekos()) return true;
+ 							if (fonal.getKie() == getAktivJatekos()) return true;
  						}
  					return false;
  				}

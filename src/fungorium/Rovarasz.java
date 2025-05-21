@@ -40,13 +40,14 @@ public class Rovarasz extends Jatekos {
     @Override
     public void pontokFrissit() { pontok++; }
    
-    public void Kor(String parancs, JatekLogika jatek, String[] parameterek) {
+    @Override
+    public Object Kor(String[] parancs, JatekLogika jatek) {
         try {
-            switch (parancs.toLowerCase()) {
+            switch (parancs[0].toLowerCase()) {
                 case "vagas":
-                    if (parameterek.length >= 2) {
-                        int fonalId = Integer.parseInt(parameterek[0]);
-                        int rovarId = Integer.parseInt(parameterek[1]);
+                    if (parancs.length >= 3) {
+                        int fonalId = Integer.parseInt(parancs[1]);
+                        int rovarId = Integer.parseInt(parancs[2]);
                         
                         Rovar rovar = findRovarById(rovarId);
                         GombaFonal fonal = findFonalById(rovar.getHol(), fonalId);
@@ -59,9 +60,9 @@ public class Rovarasz extends Jatekos {
                     break;
                     
                 case "lep":
-                    if (parameterek.length >= 2) {
-                        int tektonId = Integer.parseInt(parameterek[0]);
-                        int rovarId = Integer.parseInt(parameterek[1]);
+                    if (parancs.length >= 3) {
+                        int tektonId = Integer.parseInt(parancs[1]);
+                        int rovarId = Integer.parseInt(parancs[2]);
                         
                         Rovar rovar = findRovarById(rovarId);
                         Tekton celTekton = jatek.findTektonById(tektonId);
@@ -78,8 +79,8 @@ public class Rovarasz extends Jatekos {
                     break;
                     
                 case "eszik":
-                    if (parameterek.length >= 1) {
-                        int rovarId = Integer.parseInt(parameterek[0]);
+                    if (parancs.length >= 2) {
+                        int rovarId = Integer.parseInt(parancs[1]);
                         Rovar rovar = findRovarById(rovarId);
                         
                         if (rovar != null && !rovar.getHol().getSporak().isEmpty()) {
@@ -94,6 +95,7 @@ public class Rovarasz extends Jatekos {
         } catch (NumberFormatException e) {
             System.err.println("Hibás paraméter formátum: " + e.getMessage());
         }
+        return null;
     }
 
     private Rovar findRovarById(int id) {
@@ -179,7 +181,7 @@ public class Rovarasz extends Jatekos {
 			System.out.println(tekton.getId());
 		}
     	
-    	//Gombasz uj Fonalat noveszt
+    	//Rovarasz sporat eszik
     	if (parancs.equals("eszik")) { 
     		//Kivalasszuk melyik Rovarral akarunk lepni
     		System.out.println("Valassz Rovarat: "); 

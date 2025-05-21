@@ -1,11 +1,11 @@
 package fungorium;
 
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.*;
 
 public class KezdoKep extends JFrame {
 	//Szinek
@@ -20,6 +20,10 @@ public class KezdoKep extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         setSize(550, 350);	//Meret
         setLocationRelativeTo(null); // Ablak kozepre igazitasa        
+        jatekosok.add(new Gombasz("Játékos1", 0, "Gombasz",Color.RED)); // Gombasz
+        jatekosok.add(new Rovarasz("Játékos2", 0, "Rovarasz",Color.BLUE)); // Rovarasz
+        jatekosok.add(new Gombasz("Játékos3", 0, "Gombasz",Color.GREEN)); // Gombasz
+        jatekosok.add(new Rovarasz("Játékos4", 0, "Rovarasz",Color.YELLOW)); // Rovarasz
 
         // Fo panel letrehozasa
         JPanel mainPanel = new JPanel();

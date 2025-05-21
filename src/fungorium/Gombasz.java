@@ -50,15 +50,16 @@ public class Gombasz extends Jatekos {
     }
 
     // Meghatározza, merre nőjenek a fonalak két tekton között.
-    public void fonalIrany(Tekton indulo, Tekton erkezo) { 
+    public GombaFonal fonalIrany(Tekton indulo, Tekton erkezo) { 
     	GombaFonal fonal = new GombaFonal(indulo, erkezo, this);
     	indulo.getFonalak().add(fonal);
     	erkezo.getFonalak().add(fonal);
+        return fonal;
     }
 
     // Sporaszoras elinditasa a gombasz dontese alapjan.
-    public void sporaszorastkezd(GombaTest test, Tekton tekton) {
-        test.sporaSzoras();
+    public List<Spora> sporaszorastkezd(GombaTest test, Tekton tekton) {
+        return test.sporaSzoras();
     }
 
     // uj gombatest hozzaadasa a listahoz.
@@ -210,6 +211,50 @@ public class Gombasz extends Jatekos {
     	//scanner.close();
     }
     
+    @Override
+    public Object Kor(String[] parancs, JatekLogika jatek) {
+    	//Gombasz Sporaszoras lepese
+    	if (parancs[0].equals("sporaszoras")) { 
+			int valasz = Integer.parseInt(parancs[1]);
+            for(int i=0; i < Testek.size(); i++) { //Megkeressuk es ratesszuk a sporat
+				if(Testek.get(i).getTekton().getId()==valasz) {
+					return sporaszorastkezd(Testek.get(i),Testek.get(i).getTekton());
+				}
+			}
+		}
+    	
+    	//Gombasz uj GombaTest letrehozasa
+    	if (parancs[0].equals("ujTest")) { 
+        int valasz = Integer.parseInt(parancs[1]);
+       	for(int i=0; i < Testek.size(); i++) { //Megkeressuk 
+				if(jatek.getJatekter().get(i).getId()==valasz) {
+					GombaTest test = new GombaTest(jatek.getJatekter().get(i), this); //letrehozunk egy testet
+					UjGombaTest(test,jatek.getJatekter().get(i)); //majd ratesszuk
+                    return test;
+				}
+			}
+		}
+    	
+    	//Gombasz uj Fonalat noveszt
+    	if (parancs[0].equals("fonalnoveszt")) { 
+			int valasz2 = Integer.parseInt(parancs[1]);
+			Tekton kezdoTekton = null;
+            for (Tekton te : jatek.getJatekter()) {
+				if (te.getId()==valasz2) 
+					kezdoTekton = te;
+			}
+			valasz2 = Integer.parseInt(parancs[3]);
+			//A valasztott lesz a cel Tekton
+			Tekton celTekton = null;
+			for (Tekton te : jatek.getJatekter()) {
+				if (te.getId()==valasz2) 
+					celTekton = te;
+			}
+			return fonalIrany(kezdoTekton, celTekton);
+		}
+        return null;
+    }
+
     @Override
     public String toString() {
         return "Gombasz{" +

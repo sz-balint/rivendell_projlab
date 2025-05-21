@@ -55,46 +55,30 @@ public class Elolenyek {
         setColorBasedOnPlayer();
     }
 
+    public Elolenyek(Spora spora, Point initialPos) {
+        this.currentPos = new Point(initialPos);
+        this.targetPos = new Point(initialPos);
+    }
+
     private void setColorBasedOnPlayer() {
         if (rovar != null) {
             if (rovar.getKie() == null) {
-                color = Color.YELLOW;
+                color = Color.GRAY;
                 return;
             }
-            int playerId = Math.abs(rovar.getKie().getNev().hashCode()) % 4;
-            switch (playerId) {
-                case 0: color = Color.RED; break;
-                case 1: color = Color.BLUE; break;
-                case 2: color = Color.GREEN; break;
-                case 3: color = Color.MAGENTA; break;
-                default: color = Color.YELLOW;
-            }
+            color = rovar.getKie().getSzin();
         } else if (gombaTest != null) {
             if (gombaTest.getKie() == null) {
-                color = Color.YELLOW;
+                color = Color.GRAY;
                 return;
             }
-            int playerId = Math.abs(gombaTest.getKie().getNev().hashCode()) % 4;
-            switch (playerId) {
-                case 0: color = Color.RED; break;
-                case 1: color = Color.BLUE; break;
-                case 2: color = Color.GREEN; break;
-                case 3: color = Color.MAGENTA; break;
-                default: color = Color.YELLOW;
-            }
+            color = gombaTest.getKie().getSzin();
         } else if (gombaFonal != null) {
-            if (gombaFonal.kie == null) {
-                color = Color.YELLOW;
+            if (gombaFonal.getKie() == null) {
+                color = Color.GRAY;
                 return;
             }
-            int playerId = Math.abs(gombaFonal.kie.getNev().hashCode()) % 4;
-            switch (playerId) {
-                case 0: color = Color.RED; break;
-                case 1: color = Color.BLUE; break;
-                case 2: color = Color.GREEN; break;
-                case 3: color = Color.MAGENTA; break;
-                default: color = Color.YELLOW;
-            }
+            color = gombaFonal.getKie().getSzin();
         }
     }
 
