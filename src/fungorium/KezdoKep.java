@@ -288,5 +288,7 @@ startGameButton.addActionListener(e -> {
     public ArrayList<Jatekos> getJatekosok() {
         return jatekosok;
     }
+
+
 }
 

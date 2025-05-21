@@ -20,6 +20,9 @@ public class Main {
                     KezdoKep frame = new KezdoKep(); // ez nyitja meg a kezdőképernyőt
                     frame.setVisible(true);
                 });
+
+
+
         /*
         System.out.print("Szeretnél tesztet futtatni? (i = igen, n = CLI játék, g = grafikus játék): ");
         String valasz = scanner.nextLine().trim().toLowerCase();

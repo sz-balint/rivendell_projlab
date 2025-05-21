@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.*;
-//import javax.swing.Timer;
+import javax.swing.Timer;
 
 
 //van egy tektonlista
@@ -462,9 +462,9 @@ private Elolenyek findClickedEloleny(int x, int y) {
         //setResizable(false);                      // Ne lehessen átméretezni
 
         // Időzítő 500ms-enként: Tekton osztódás vagy rovar mozgatás
-       /*  Timer autoSplitTimer = new Timer(50, e -> {
+         /*Timer autoSplitTimer = new Timer(50, e -> {
             if (tectons.size() < MAX_TECTONS) {
-                executeSplit(null);  // Új Tekton létrehozása szétválasztással
+                executeSplit();  // Új Tekton létrehozása szétválasztással
             } else if (!rovarMarMozgatva && dummy != null) {
                 Tekton jelenlegi = dummy.getHol();
                 List<Tekton> szomszedok = jelenlegi.getSzomszedok();

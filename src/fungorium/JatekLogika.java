@@ -119,9 +119,7 @@ public class JatekLogika {
 
     // Meghívja a Jatekter egy random tektonjára a kettétörés függvényt és az új tektont elmenti
    public void tores() {
-        Random rnd = new Random();
-        int idx = rnd.nextInt(jatekter.size());
-        jatekter.add(jatekter.get(idx).kettetores());
+        palyaKep.executeSplit();
     }
 
     //Getterek, setterek és adderek:
