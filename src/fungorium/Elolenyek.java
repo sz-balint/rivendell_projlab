@@ -97,6 +97,14 @@ public class Elolenyek {
         }
     }
 
+    private void setTektonNRovarok(){
+        JatekLogika  jl = new JatekLogika();
+        List<Tekton> tektons = jl.getJatekter();
+        for (Tekton tekton : tektons) {
+            tektonNRovarok.put(tekton.getId(),tekton.getRovarok().size());
+        }
+    }
+
     //Modositott rajzolás
     public void rajzol(Graphics g) {
         if (rovar == null && gombaTest == null && gombaFonal == null) return;
@@ -105,6 +113,7 @@ public class Elolenyek {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
         if (rovar != null) {
+            setTektonNRovarok();
             Palyakep.TektonVisualData tvd = tektonVisualData.get(rovar.getHol().getId());
             Point position = (tvd != null ? tvd.position : null);
 
@@ -118,7 +127,7 @@ public class Elolenyek {
             if(tektonNRovarok.get(rovar.getHol().getId()) != null)
                 n = (int) tektonNRovarok.get(rovar.getHol().getId());
 
-            position = new Point((int)position.getX() + rPos[n+1].x, (int)position.getY() + rPos[n+1].y);
+            position = new Point((int)position.getX() + rPos[(n+1)%8].x, (int)position.getY() + rPos[(n+1)%8].y);
 
             int[] xPoints = {
                 (int)position.getX(),
@@ -138,9 +147,6 @@ public class Elolenyek {
             // Keret rajzolása (állapottól függően)
             g2d.setColor(getStateColor());
             g2d.drawPolygon(xPoints, yPoints, 3);
-
-            int i = tektonNRovarok.get(rovar.getHol().getId());
-            tektonNRovarok.put(rovar.getHol().getId(),i+1);
         } 
         
          if (gombaTest != null) {
